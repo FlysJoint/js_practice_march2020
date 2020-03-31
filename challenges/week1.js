@@ -1,6 +1,13 @@
 function capitalize(word) {
   if (word === undefined) throw new Error("word is required");
   // Add your code here!
+
+  let output = '';
+
+  for (let i = 0; i < word.length; i++) {
+    i === 0 ? output += word[0].toUpperCase() : output += word[i];
+  }
+  return output;
 }
 
 function generateInitials(firstName, lastName) {
@@ -10,7 +17,7 @@ function generateInitials(firstName, lastName) {
 }
 
 function addVAT(originalPrice, vatRate) {
-  if (originalPrice === undefined) throw new Error("originalPrice is requied");
+  if (originalPrice === undefined) throw new Error("originalPrice is required");
   if (vatRate === undefined) throw new Error("vatRate is required");
   // Add your code here!
 }

@@ -11,15 +11,30 @@ const {
   simpleFizzBuzz
 } = require("../challenges/week1");
 
-describe("capitalize", () => {
+describe.only("capitalize", () => {
   test("returns a capitalized string", () => {
-    expect(capitalize("hello")).toBe("Hello");
-    expect(capitalize("the quick fox")).toBe("The quick fox");
-    expect(capitalize("oh no, bears!!!")).toBe("Oh no, bears!!!");
+    expect(capitalize("single")).toBe("Single");
+    expect(capitalize("multiple words in string")).toBe("Multiple words in string");
+    expect(capitalize("multiple words with symbols!!!")).toBe("Multiple words with symbols!!!");
+    expect(capitalize("l")).toBe("L");
   });
 
-  test("does nothing if the string is already capitalized", () => {
-    expect(capitalize("Hello")).toBe("Hello");
+  test("does nothing if the string is already capitalized" /* does nothing is not the same as return a capitalised string!*/, () => {
+    expect(capitalize("Capitalised")).toBe("Capitalised");
+    expect(capitalize("X")).toBe("X");
+  });
+
+  test("does nothing if there is no input", () => {
+    expect(capitalize("")).toBe("");
+  });
+
+  /* There's no way to know whether to capitalise the first capitalisable letter if it's
+     later in the string as it depends on the context so I chose to only capitalise if it
+     was the very first character in the string otherwise leave it alone. */
+  test("does nothing if first char not capitalisable", () => {
+    expect(capitalize("1. Need more client input")).toBe("1. Need more client input");
+    expect(capitalize("(because there is no way to know)")).toBe("(because there is no way to know)");
+    expect(capitalize(" about handling capitalisation later in string")).toBe(" about handling capitalisation later in string");
   });
 });
 
