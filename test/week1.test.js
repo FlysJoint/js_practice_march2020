@@ -11,21 +11,31 @@ const {
   simpleFizzBuzz
 } = require("../challenges/week1");
 
-describe.only("capitalize", () => {
+xdescribe("capitalize", () => {
+
+  test("does nothing if there is no input", () => {
+    expect(capitalize("")).toBe("");
+  });
+
+  test("throws an error if no argument", () => {
+    expect(capitalize).toThrow(new Error("word is required"));
+
+    expect(() => {
+      generateInitials("FirstNameOnly", "");
+    }).toThrow();
+  });
+
   test("returns a capitalized string", () => {
     expect(capitalize("single")).toBe("Single");
     expect(capitalize("multiple words in string")).toBe("Multiple words in string");
     expect(capitalize("multiple words with symbols!!!")).toBe("Multiple words with symbols!!!");
     expect(capitalize("l")).toBe("L");
+    //expect(capitalize("e acute")).toBe("E ACUTE");
   });
 
   test("does nothing if the string is already capitalized" /* does nothing is not the same as return a capitalised string!*/, () => {
     expect(capitalize("Capitalised")).toBe("Capitalised");
     expect(capitalize("X")).toBe("X");
-  });
-
-  test("does nothing if there is no input", () => {
-    expect(capitalize("")).toBe("");
   });
 
   /* There's no way to know whether to capitalise the first capitalisable letter if it's
@@ -39,12 +49,145 @@ describe.only("capitalize", () => {
 });
 
 describe("generateInitials", () => {
+
+  test("throws error if arguments are missing", () => {
+    expect(generateInitials).toThrow();
+    expect(() => {
+      generateInitials("OneNameOnly");
+    }).toThrow(); // because it will assume one argument is first argument
+    
+    expect(() => {
+      generateInitials("FirstNameOnly", "");
+    }).toThrow();
+    
+    expect(() => {
+      generateInitials("", "LastNameOnly");
+    }).toThrow();
+  });
+
+ test("throws error if not a string", () => { // I wasn't expecting these to pass as I hadn't explicitly written the code for them.
+    expect(() => {
+      generateInitials(123, 456);
+    }).toThrow();
+    
+    expect(() => {
+      generateInitials(null, null);
+    }).toThrow();
+    
+    expect(() => {
+      generateInitials(true, false);
+    }).toThrow();
+  });
+
+  test("throws error if anything other than letters and hyphens", () => {
+    
+    expect(() => {
+      generateInitials("B0r!s", "John5on");
+    }).toThrow();
+    
+    expect(() => {
+      generateInitials("M4tt", "hanc0ck");
+    }).toThrow();
+    
+    expect(() => {
+      generateInitials("4dr!an", "m0!3");
+    }).toThrow();
+
+    expect(() => {
+      generateInitials("[@", "`{");
+    }).toThrow();
+  });
+
   test("returns the initials of a firstname and surname", () => {
     expect(generateInitials("Frederic", "Bonneville")).toBe("F.B");
+    expect(generateInitials("Terry", "Thomas")).toBe("T.T");
+    expect(generateInitials("Zygote", "Derriere")).toBe("Z.D");
+    expect(generateInitials("Éowyn", "Österreich")).toBe("É.Ö");
   });
+
+  test("returns the initials of a firstname and double-barrelled surname", () => {
+    expect(generateInitials("Balthazar", "Farquar-Smith")).toBe("BF-S");
+    expect(generateInitials("Henry", "Rolls-Royce")).toBe("HR-R");
+    expect(generateInitials("Lobelia", "Sackville-Baggins")).toBe("LS-B");
+    expect(() => {
+      generateInitials("-g-ty-sdf-hgfj-", "HJF-szg-nbsd-"); // coder skill limitations :(
+    }).not.toThrow();    
+  });
+
+  test("returns the initials of a firstname and complex surname", () => {
+    expect(generateInitials("Maria", "von Trapp")).toBe("MvT");
+    expect(generateInitials("Ruud", "van Nistelrooy")).toBe("RvN");
+    expect(generateInitials("Kevin", "de Bruyne")).toBe("KdB");
+    expect(generateInitials("John", "le Carre")).toBe("JlC"); // will fail because I've not added all possible connectors to the array, see drupal link in function
+  });
+
+  test("returns the capitalized initials of a firstname and surname", () => {
+    expect(generateInitials("frederic", "bonneville")).toBe("F.B");
+    expect(generateInitials("terry", "thomas")).toBe("T.T");
+    expect(generateInitials("zygote", "derriere")).toBe("Z.D");
+    expect(generateInitials("éowyn", "österreich")).toBe("É.Ö");
+
+
+  });
+
+  test("returns the capitalized initials of a firstname and double-barrelled surname", () => {
+    expect(generateInitials("balthazar", "Farquar-smith")).toBe("BF-S");
+    expect(generateInitials("Henry", "rolls-royce")).toBe("HR-R");
+    expect(generateInitials("lobelia", "sackville-Baggins")).toBe("LS-B");
+  });
+
+  test("returns the capitalised initials of a firstname and complex surname", () => {
+    expect(generateInitials("maria", "von Trapp")).toBe("MvT");
+    expect(generateInitials("Ruud", "van nistelrooy")).toBe("RvN");
+    expect(generateInitials("kevin", "De bruyne")).toBe("KdB");
+  });
+
+// ff needs to stay lowercase? Are both letters included as one initial?
 });
 
-describe("addVAT", () => {
+xdescribe("addVAT", () => {
+  test("throws error is missing arguments", () => {
+    expect(() => {
+      addVAT();
+    }).toThrow();
+
+    expect(() => {
+      addVAT(100);
+    }).toThrow();
+  });  
+
+  test("throws error when arguments aren't numbers", () => {
+    expect(() => {
+      addVAT('100');
+    }).toThrow();
+
+    expect(() => {
+      addVAT('100', 20);
+    }).toThrow();
+
+    expect(() => {
+      addVAT(100, '20');
+    }).toThrow();
+
+    expect(() => {
+      addVAT('100', '20');
+    }).toThrow();
+  });
+
+  test("throw error if vat is negative", () => {
+    expect(() => {
+      addVAT(50 + 50, -200);
+    }).toThrow();
+
+    expect(() => {
+      addVAT(100, -200);
+    }).toThrow();
+    
+    expect(() => {
+      addVAT(100, -20);
+    }).toThrow();
+  });
+
   test("adds a VAT of 20% to a price of 100", () => {
     expect(addVAT(100, 20)).toBe(120);
   });
@@ -55,10 +198,38 @@ describe("addVAT", () => {
 
   test("adds a VAT of 17.5% to a price of 33.50", () => {
     expect(addVAT(33.5, 17.5)).toBe(39.36);
+    expect(addVAT(33.5, 17.5)).not.toBeGreaterThan(39.36);
+    expect(addVAT(33.5, 17.5)).toBeCloseTo(39.36);
   });
 
-  test("adds a VAT of 0% to a price of 25", () => {
+  test("adds a VAT of 13.6% to a price of 32.47", () => {
+    expect(addVAT(32.47, 13.6)).toBe(36.89);
+    expect(addVAT(32.47, 13.6)).not.toBeGreaterThan(36.89);
+    expect(addVAT(32.47, 13.6)).toBeCloseTo(36.89);
+  });
+
+  test("adds a VAT of 9.99% to a price of 77.77", () => {
+    expect(addVAT(77.77, 9.99)).toBe(85.54);
+    expect(addVAT(77.77, 9.99)).not.toBeGreaterThan(85.54);
+    expect(addVAT(77.77, 9.99)).toBeCloseTo(85.54);
+  });
+
+  test("adds a VAT of 0% to a price", () => {
     expect(addVAT(25, 0)).toBe(25);
+    expect(addVAT(0, 0)).toBe(0);
+    expect(addVAT(-25, 0)).toBe(-25);
+  });
+
+  test("adds a VAT to a price of 0", () => {
+    expect(addVAT(0, 10)).toBe(0);
+    expect(addVAT(0, 20)).not.toBeGreaterThan(0);
+    expect(addVAT(0, 20)).toBeLessThanOrEqual(0);
+  });
+
+  test("adds a VAT to a sum", () => {
+    expect(addVAT(50 + 50, 20)).toBe(120);
+    expect(addVAT(-100 + 200, 20)).toBe(120);
+    expect(addVAT(200 + -100, 20)).toBe(120);
   });
 });
 
@@ -80,7 +251,7 @@ describe("getSalePrice", () => {
   });
 });
 
-describe("getMiddleCharacter", () => {
+xdescribe("getMiddleCharacter", () => {
   test("returns the middle character from a string of odd length", () => {
     expect(getMiddleCharacter("bears!!!!")).toBe("s");
   });
@@ -90,7 +261,7 @@ describe("getMiddleCharacter", () => {
   });
 });
 
-describe("reverseWord", () => {
+xdescribe("reverseWord", () => {
   test("returns the provided word, reversed", () => {
     expect(reverseWord("foo")).toBe("oof");
   });
@@ -102,7 +273,7 @@ describe("reverseWord", () => {
   });
 });
 
-describe("reverseAllWords", () => {
+xdescribe("reverseAllWords", () => {
   test("reverses a single word in an array", () => {
     expect(reverseAllWords(["jest"])).toEqual(["tsej"]);
   });
@@ -114,7 +285,7 @@ describe("reverseAllWords", () => {
   });
 });
 
-describe("countLinuxUsers", () => {
+xdescribe("countLinuxUsers", () => {
   test("returns 0 if no Linux users found", () => {
     const users = [
       { name: "Heather", OS: "Windows 8", type: "Windows" },
@@ -139,7 +310,7 @@ describe("countLinuxUsers", () => {
   });
 });
 
-describe("getMeanScore", () => {
+xdescribe("getMeanScore", () => {
   test("returns the mean score from an array of scores", () => {
     expect(getMeanScore([8, 9, 7])).toBe(8);
     expect(getMeanScore([88, 86, 93])).toBe(89);
@@ -150,7 +321,7 @@ describe("getMeanScore", () => {
   });
 });
 
-describe("simpleFizzBuzz", () => {
+xdescribe("simpleFizzBuzz", () => {
   test("returns 'fizz' if the number is divisible by 3", () => {
     expect(simpleFizzBuzz(3)).toBe("fizz");
   });
