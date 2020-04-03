@@ -233,7 +233,7 @@ xdescribe("addVAT", () => {
   });
 });
 
-describe("getSalePrice", () => {
+xdescribe("getSalePrice", () => {
 
   test("throws error if missing arguments", () => {
     expect(() => {
@@ -251,11 +251,11 @@ describe("getSalePrice", () => {
     }).toThrow();
 
     expect(() => {
-      getSalePrice('100', 20);
+      getSalePrice('six', 20);
     }).toThrow();
 
     expect(() => {
-      getSalePrice(100, '20');
+      getSalePrice(100, true);
     }).toThrow();
 
     expect(() => {
@@ -306,12 +306,15 @@ describe("getSalePrice", () => {
 
 });
 
-xdescribe("getMiddleCharacter", () => {
+describe("getMiddleCharacter", () => {
   test("returns the middle character from a string of odd length", () => {
+    expect(getMiddleCharacter("abcde")).toBe("c");
     expect(getMiddleCharacter("bears!!!!")).toBe("s");
+    expect(getMiddleCharacter("Do geese see God?")).toBe(" ");
   });
 
   test("returns the middle 2 characters from a string of even length", () => {
+    expect(getMiddleCharacter("fghijk")).toBe("hi");
     expect(getMiddleCharacter("help!!")).toBe("lp");
   });
 });

@@ -65,6 +65,7 @@ function addVAT(originalPrice, vatRate) {
 }
 
 function getSalePrice(originalPrice, reduction) {
+
   if (originalPrice === undefined || originalPrice < 0 || typeof originalPrice !== 'number') throw new Error("originalPrice must be positive number");
   if (reduction === undefined ||reduction < 0 || typeof reduction !== 'number') throw new Error("reduction must be positive number");
   // Add your code here!
@@ -77,6 +78,9 @@ function getSalePrice(originalPrice, reduction) {
 function getMiddleCharacter(str) {
   if (str === undefined) throw new Error("str is required");
   // Add your code here!
+
+  return str.length % 2 === 0 ? str.substr((str.length / 2) - 1, 2) : str[(Math.floor(str.length / 2))];
+
 }
 
 function reverseWord(word) {
