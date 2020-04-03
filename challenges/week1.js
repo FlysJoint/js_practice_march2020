@@ -116,8 +116,24 @@ function reverseAllWords(words, extraParam) {
 }
 
 function countLinuxUsers(users) {
-  if (users === undefined) throw new Error("users is required");
-  // Add your code here!
+  if (typeof users !== 'object') throw new Error("users object is required");
+  if (users.length === 0) throw new Error('at least one user required!'); 
+
+// Add your code here!
+  let count = 0;
+
+  users.forEach(user => {
+    if (user.hasOwnProperty('type')) {
+      if(user.type === 'Linux') {
+        count++;
+      }
+    }
+    else {
+      throw new Error('"type" property not found in ' + user.name);
+    }
+  });
+
+  return count;
 }
 
 function getMeanScore(scores) {

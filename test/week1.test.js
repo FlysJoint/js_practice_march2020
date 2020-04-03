@@ -79,7 +79,7 @@ describe("generateInitials", () => {
     }).toThrow();
   });
 
- test("throws error if not a string", () => { // I wasn't expecting these to pass as I hadn't explicitly written the code for them.
+  test("throws error if not a string", () => { // I wasn't expecting these to pass as I hadn't explicitly written the code for them.
     expect(() => {
       generateInitials(123, 456);
     }).toThrow();
@@ -428,7 +428,7 @@ describe("reverseWord", () => {
   });
 });
 
-describe.only("reverseAllWords", () => {
+describe("reverseAllWords", () => {
 
 
   test("throw error if not an array", () => {
@@ -469,6 +469,10 @@ describe.only("reverseAllWords", () => {
     }).toThrow();
 
     expect(() => {
+      reverseAllWords(['looking', 'over', 'a', 4, 'leaf', 'clover']);
+    }).toThrow();
+
+    expect(() => {
       reverseAllWords([1, 2, 3]);
     }).toThrow();
   });
@@ -494,7 +498,40 @@ describe.only("reverseAllWords", () => {
   });
 });
 
-xdescribe("countLinuxUsers", () => {
+describe.only("countLinuxUsers", () => {
+  
+  test("throw error if users not an object", () => {
+    const users = 'I am not the object you are looking for!';
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+
+  });
+
+  test("throw error if no users", () => {
+    const users = [];
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+  });
+
+  test("throw error if a user has no type property", () => {
+    const users = [
+      { name: "Paul", OS: "Firefox OS", type: "Unknown" },
+      { name: "Sheila", OS: "Windows 10", type: "Windows" },
+      { name: "Heather", colour: "Red", car: "Ferrari" },
+      { name: "Pedro", OS: "Windows 95", type: "Windows" }
+    ];
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+  });
+
+// error if type value not a single string
+// check the os is compatible with the type (not an error as the bug might be os not type)
+
+
+
   test("returns 0 if no Linux users found", () => {
     const users = [
       { name: "Heather", OS: "Windows 8", type: "Windows" },
