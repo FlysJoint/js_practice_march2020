@@ -146,7 +146,7 @@ xdescribe("generateInitials", () => {
 });
 
 xdescribe("addVAT", () => {
-  test("throws error is missing arguments", () => {
+  test("throws error if missing arguments", () => {
     expect(() => {
       addVAT();
     }).toThrow();
@@ -234,6 +234,49 @@ xdescribe("addVAT", () => {
 });
 
 describe("getSalePrice", () => {
+
+  test("throws error if missing arguments", () => {
+    expect(() => {
+      getSalePrice();
+    }).toThrow();
+
+    expect(() => {
+      getSalePriceT(100);
+    }).toThrow();
+  });  
+
+  test("throws error when arguments aren't numbers", () => {
+    expect(() => {
+      getSalePrice('100');
+    }).toThrow();
+
+    expect(() => {
+      getSalePrice('100', 20);
+    }).toThrow();
+
+    expect(() => {
+      getSalePrice(100, '20');
+    }).toThrow();
+
+    expect(() => {
+      getSalePrice('100', '20');
+    }).toThrow();
+  });
+
+  test("throw error if numbers are negative", () => {
+    expect(() => {
+      getSalePrice(-50, -200);
+    }).toThrow();
+
+    expect(() => {
+      getSalePrice(100, -200);
+    }).toThrow();
+    
+    expect(() => {
+      getSalePrice(-100, 50);
+    }).toThrow();
+  });
+
   test("reduces a price of 100 by 50%", () => {
     expect(getSalePrice(100, 50)).toBe(50);
   });
@@ -253,6 +296,14 @@ describe("getSalePrice", () => {
   test("reduces a price of 50 by 0%", () => {
     expect(getSalePrice(50, 0)).toBe(50);
   });
+
+  test("doesn't reduce a price lower than 0", () => {
+    expect(getSalePrice(100, 100)).toBe(0);
+    expect(getSalePrice(100, 101)).toBe(0);
+    expect(getSalePrice(100, 200)).toBe(0);
+    expect(getSalePrice(5, 150)).toBe(0);
+  });
+
 });
 
 xdescribe("getMiddleCharacter", () => {

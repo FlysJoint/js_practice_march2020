@@ -65,10 +65,13 @@ function addVAT(originalPrice, vatRate) {
 }
 
 function getSalePrice(originalPrice, reduction) {
-  if (originalPrice === undefined) throw new Error("originalPrice is required");
-  if (reduction === undefined) throw new Error("reduction is required");
+  if (originalPrice === undefined || originalPrice < 0 || typeof originalPrice !== 'number') throw new Error("originalPrice must be positive number");
+  if (reduction === undefined ||reduction < 0 || typeof reduction !== 'number') throw new Error("reduction must be positive number");
   // Add your code here!
-  return Math.round(originalPrice * (100 - reduction)) / 100;
+
+  let newPrice = Math.round(originalPrice * (100 - reduction)) / 100;
+  
+  return newPrice > 0 ? newPrice : 0;
 }
 
 function getMiddleCharacter(str) {
