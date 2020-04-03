@@ -68,7 +68,7 @@ function getSalePrice(originalPrice, reduction) {
   if (originalPrice === undefined) throw new Error("originalPrice is required");
   if (reduction === undefined) throw new Error("reduction is required");
   // Add your code here!
-  return originalPrice * ((100 - reduction) / 100);
+  return Math.round(originalPrice * (100 - reduction)) / 100;
 }
 
 function getMiddleCharacter(str) {

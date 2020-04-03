@@ -48,7 +48,7 @@ xdescribe("capitalize", () => {
   });
 });
 
-describe("generateInitials", () => {
+xdescribe("generateInitials", () => {
 
   test("throws error if arguments are missing", () => {
     expect(generateInitials).toThrow();
@@ -240,10 +240,14 @@ describe("getSalePrice", () => {
 
   test("reduces a price of 100 by 33.3%", () => {
     expect(getSalePrice(100, 33.3)).toBe(66.7);
+    expect(getSalePrice(100, 33.3)).not.toBeLessThan(66.7);
+    expect(getSalePrice(100, 33.3)).toBeCloseTo(66.7);
   });
 
   test("reduces a price of 79.99 by 15%", () => {
     expect(getSalePrice(79.99, 15)).toBe(67.99);
+    expect(getSalePrice(79.99, 15)).not.toBeLessThan(67.99);
+    expect(getSalePrice(79.99, 15)).toBeCloseTo(67.99);
   });
 
   test("reduces a price of 50 by 0%", () => {
