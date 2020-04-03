@@ -307,15 +307,41 @@ xdescribe("getSalePrice", () => {
 });
 
 describe("getMiddleCharacter", () => {
+
+  test("throw error if not a string", () => {
+
+    expect(() => {
+      getMiddleCharacter();
+    }).toThrow();
+
+    expect(() => {
+      getMiddleCharacter(true);
+    }).toThrow();
+
+    expect(() => {
+      getMiddleCharacter(null);
+    }).toThrow();
+
+    expect(() => {
+      getMiddleCharacter(146);
+    }).toThrow();
+
+  });
+
   test("returns the middle character from a string of odd length", () => {
     expect(getMiddleCharacter("abcde")).toBe("c");
     expect(getMiddleCharacter("bears!!!!")).toBe("s");
     expect(getMiddleCharacter("Do geese see God?")).toBe(" ");
+    expect(getMiddleCharacter("1")).toBe("1");
+    expect(getMiddleCharacter("123")).toBe("2");
   });
 
   test("returns the middle 2 characters from a string of even length", () => {
     expect(getMiddleCharacter("fghijk")).toBe("hi");
     expect(getMiddleCharacter("help!!")).toBe("lp");
+    expect(getMiddleCharacter("pocket-handkerchief!")).toBe("nd");
+    expect(getMiddleCharacter("II")).toBe("II");
+    expect(getMiddleCharacter("")).toBe("");
   });
 });
 
