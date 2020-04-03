@@ -11,7 +11,7 @@ const {
   simpleFizzBuzz
 } = require("../challenges/week1");
 
-xdescribe("capitalize", () => {
+describe("capitalize", () => {
 
   test("does nothing if there is no input", () => {
     expect(capitalize("")).toBe("");
@@ -22,6 +22,13 @@ xdescribe("capitalize", () => {
 
     expect(() => {
       generateInitials("FirstNameOnly", "");
+    }).toThrow();
+  });
+
+  test("throws an error if too many arguments", () => {
+
+    expect(() => {
+      generateInitials("Too", "Many", "Names");
     }).toThrow();
   });
 
@@ -48,7 +55,7 @@ xdescribe("capitalize", () => {
   });
 });
 
-xdescribe("generateInitials", () => {
+describe("generateInitials", () => {
 
   test("throws error if arguments are missing", () => {
     expect(generateInitials).toThrow();
@@ -62,6 +69,13 @@ xdescribe("generateInitials", () => {
     
     expect(() => {
       generateInitials("", "LastNameOnly");
+    }).toThrow();
+  });
+
+  test("throws error if too many arguments", () => {
+    
+    expect(() => {
+      generateInitials("Too", "Many", "Names");
     }).toThrow();
   });
 
@@ -145,7 +159,7 @@ xdescribe("generateInitials", () => {
 // ff needs to stay lowercase? Are both letters included as one initial?
 });
 
-xdescribe("addVAT", () => {
+describe("addVAT", () => {
   test("throws error if missing arguments", () => {
     expect(() => {
       addVAT();
@@ -153,6 +167,13 @@ xdescribe("addVAT", () => {
 
     expect(() => {
       addVAT(100);
+    }).toThrow();
+  });  
+
+  test("throws error if too many arguments", () => {
+
+    expect(() => {
+      addVAT(100, 54, 76);
     }).toThrow();
   });  
 
@@ -233,7 +254,7 @@ xdescribe("addVAT", () => {
   });
 });
 
-xdescribe("getSalePrice", () => {
+describe("getSalePrice", () => {
 
   test("throws error if missing arguments", () => {
     expect(() => {
@@ -244,6 +265,12 @@ xdescribe("getSalePrice", () => {
       getSalePriceT(100);
     }).toThrow();
   });  
+
+  test("throws error if too many arguments", () => {
+    expect(() => {
+      getSalePriceT(100, 75, 50);
+    }).toThrow();
+  }); 
 
   test("throws error when arguments aren't numbers", () => {
     expect(() => {
@@ -323,7 +350,15 @@ describe("getMiddleCharacter", () => {
     }).toThrow();
 
     expect(() => {
+      getMiddleCharacter(undefined);
+    }).toThrow();
+
+    expect(() => {
       getMiddleCharacter(146);
+    }).toThrow();
+
+    expect(() => {
+      getMiddleCharacter('too many ', 'arguments');
     }).toThrow();
 
   });
@@ -332,7 +367,7 @@ describe("getMiddleCharacter", () => {
     expect(getMiddleCharacter("abcde")).toBe("c");
     expect(getMiddleCharacter("bears!!!!")).toBe("s");
     expect(getMiddleCharacter("Do geese see God?")).toBe(" ");
-    expect(getMiddleCharacter("1")).toBe("1");
+    expect(getMiddleCharacter("1")).toBe("1"); // string length same as return
     expect(getMiddleCharacter("123")).toBe("2");
   });
 
@@ -340,29 +375,119 @@ describe("getMiddleCharacter", () => {
     expect(getMiddleCharacter("fghijk")).toBe("hi");
     expect(getMiddleCharacter("help!!")).toBe("lp");
     expect(getMiddleCharacter("pocket-handkerchief!")).toBe("nd");
-    expect(getMiddleCharacter("II")).toBe("II");
-    expect(getMiddleCharacter("")).toBe("");
+    expect(getMiddleCharacter("II")).toBe("II"); // string length same length as return
+    expect(getMiddleCharacter("")).toBe(""); // string length less than return
   });
+
+  // I feel like there's more edge cases I'm not anticipating
 });
 
-xdescribe("reverseWord", () => {
+describe("reverseWord", () => {
+  
+  test("throw error if not a string", () => {
+
+    expect(() => {
+      reverseWord();
+    }).toThrow();
+
+    expect(() => {
+      reverseWord(true);
+    }).toThrow();
+
+    expect(() => {
+      reverseWord(null);
+    }).toThrow();
+
+    expect(() => {
+      reverseWord(undefined);
+    }).toThrow();
+
+    expect(() => {
+      reverseWord(146);
+    }).toThrow();
+
+    expect(() => {
+      reverseWord('too', 'many', 'arguments');
+    }).toThrow();
+
+
+
+  });
+
   test("returns the provided word, reversed", () => {
     expect(reverseWord("foo")).toBe("oof");
+    expect(reverseWord("12345")).toBe("54321");
+    expect(reverseWord("kayak")).toBe("kayak");
   });
 
   test("returns a longer sentence, reversed", () => {
     expect(reverseWord("why would you even want to do this?")).toBe(
       "?siht od ot tnaw neve uoy dluow yhw"
     );
+    expect(reverseWord("do geese see god")).toBe("dog ees eseeg od");
   });
 });
 
-xdescribe("reverseAllWords", () => {
+describe.only("reverseAllWords", () => {
+
+
+  test("throw error if not an array", () => {
+
+    expect(() => {
+      reverseAllWords();
+    }).toThrow();
+
+    expect(() => {
+      reverseAllWords(true);
+    }).toThrow();
+
+    expect(() => {
+      rreverseAllWords(null);
+    }).toThrow();
+
+    expect(() => {
+      reverseAllWords(undefined);
+    }).toThrow();
+
+    expect(() => {
+      reverseAllWords(146);
+    }).toThrow();
+  });
+
+  test("throw error if not an array of strings", () => { // I wasn't expecting this test to pass. Is it because reverseWord() is handling it?
+
+    expect(() => {
+      reverseAllWords([true, false, true]);
+    }).toThrow();
+
+    expect(() => {
+      reverseAllWords([null, null, null]);
+    }).toThrow();
+
+    expect(() => {
+      reverseAllWords([undefined, undefined, undefined]);
+    }).toThrow();
+
+    expect(() => {
+      reverseAllWords([1, 2, 3]);
+    }).toThrow();
+  });
+
+  test("throw error if too many arguments", () => {
+     expect(() => {
+      reverseAllWords(['too', 'many'], ['arguments']);
+    }).toThrow();
+  });
+
   test("reverses a single word in an array", () => {
     expect(reverseAllWords(["jest"])).toEqual(["tsej"]);
   });
 
-  test("reverses a multiple words in an array", () => {
+  test("reverses a single word in an array", () => {
+    expect(reverseAllWords(["jest"])).toEqual(["tsej"]);
+  });
+
+  test("reverses multiple words in an array", () => {
     expect(
       reverseAllWords(["jest", "mocha", "rspec", "jasmine", "selenium"])
     ).toEqual(["tsej", "ahcom", "cepsr", "enimsaj", "muineles"]);
