@@ -498,7 +498,7 @@ describe("reverseAllWords", () => {
   });
 });
 
-describe.only("countLinuxUsers", () => {
+describe("countLinuxUsers", () => {
   
   test("throw error if users not an object", () => {
     const users = 'I am not the object you are looking for!';
@@ -515,6 +515,29 @@ describe.only("countLinuxUsers", () => {
     }).toThrow();
   });
 
+  test("throw error if too many arguments", () => {
+    const users = [
+      { name: "Paul", OS: "Firefox OS", type: "Unknown" },
+      { name: "Sheila", OS: "Windows 10", type: "Windows" },
+      { name: "Pedro", OS: "Windows 95", type: "Windows" }
+    ];
+    expect(() => {
+      countLinuxUsers(users, 'an extra parameter');
+    }).toThrow();
+    expect(() => {
+      countLinuxUsers(users, 17);
+    }).toThrow();
+    expect(() => {
+      countLinuxUsers(users, false);
+    }).toThrow();
+    expect(() => {
+      countLinuxUsers(users, null);
+    }).toThrow();
+    expect(() => {
+      countLinuxUsers(users, undefined);
+    }).not.toThrow();
+  });
+
   test("throw error if a user has no type property", () => {
     const users = [
       { name: "Paul", OS: "Firefox OS", type: "Unknown" },
@@ -527,22 +550,68 @@ describe.only("countLinuxUsers", () => {
     }).toThrow();
   });
 
-  test("throw error if type property has no string value", () => {
+  test("throw error if type property has no string value", () => { // could I test for this in one object or would only the first value get ever get checked?
     const users = [
-      { name: "Paul", OS: "Firefox OS", type: true },
-      { name: "Sheila", OS: "Windows 10", type: undefined },
-      { name: "Heather", OS: "Ubuntu 18.04", type: 18.04  },
-      { name: "Pedro", OS: "Windows 95", type: null }
+      { name: "Paul", OS: "Firefox OS", type: 'Unknown' },
+      { name: "Sheila", OS: "Windows 10", type: 'Windows' },
+      { name: "Heather", OS: "Ubuntu 18.04", type: true },
+      { name: "Pedro", OS: "Windows 95", type: 'Windows' }
     ];
     expect(() => {
       countLinuxUsers(users);
     }).toThrow();
   });
 
+  test("throw error if type property has no string value", () => {
+    const users = [
+      { name: "Paul", OS: "Firefox OS", type: 'Unknown' },
+      { name: "Sheila", OS: "Windows 10", type: 'Windows' },
+      { name: "Heather", OS: "Ubuntu 18.04", type: undefined },
+      { name: "Pedro", OS: "Windows 95", type: 'Windows' }
+    ];
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+  });
 
-// error if type value not a single string
-// check the os is compatible with the type (not an error as the bug might be os not type)
+  test("throw error if type property has no string value", () => {
+    const users = [
+      { name: "Paul", OS: "Firefox OS", type: 'Unknown' },
+      { name: "Sheila", OS: "Windows 10", type: 'Windows' },
+      { name: "Heather", OS: "Ubuntu 18.04", type: 18.04 },
+      { name: "Pedro", OS: "Windows 95", type: 'Windows' }
+    ];
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+  });
 
+  test("throw error if type property has no string value", () => {
+    const users = [
+      { name: "Paul", OS: "Firefox OS", type: 'Unknown' },
+      { name: "Sheila", OS: "Windows 10", type: 'Windows' },
+      { name: "Heather", OS: "Ubuntu 18.04", type: null },
+      { name: "Pedro", OS: "Windows 95", type: 'Windows' }
+    ];
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+  });
+
+  test("throw error if type property has no string value", () => {
+    const users = [
+      { name: "Paul", OS: "Firefox OS", type: 'Unknown' },
+      { name: "Sheila", OS: "Windows 10", type: 'Windows' },
+      { name: "Heather", OS: "Ubuntu 18.04", type: ['Lin', 'ux'] },
+      { name: "Pedro", OS: "Windows 95", type: 'Windows' }
+    ];
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+  });
+
+// check the os is compatible with the type (not an error as the bug might be os not type) -overkill?
+// as we're only looking for a short, specific string, could we check for single typos?
 
   test("returns 0 if no Linux users found", () => {
     const users = [
@@ -568,31 +637,111 @@ describe.only("countLinuxUsers", () => {
   });
 });
 
-xdescribe("getMeanScore", () => {
+describe("getMeanScore", () => {
+  test("throw error if too many arguments", () => {
+    expect(() => {
+      getMeanScore([1, 2], [3]);
+    }).toThrow();
+  });
+
+  test("throw error if no arguments", () => {
+    expect(() => {
+      getMeanScore();
+    }).toThrow();
+  });
+
+  test("throw error if non-numbers used", () => {
+    expect(() => {
+      getMeanScore([true, false, true]);
+    }).toThrow();
+
+    expect(() => {
+      getMeanScore([null, null, null]);
+    }).toThrow();
+
+    expect(() => {
+      getMeanScore([1, 2, 3, null, 5]);
+    }).toThrow();
+
+    expect(() => {
+      getMeanScore([undefined, undefined, undefined]);
+    }).toThrow();
+
+    expect(() => {
+      getMeanScore(['we', 'are', 'strings']);
+    }).toThrow();
+
+    expect(() => {
+      getMeanScore([1, 2, 'tree']);
+    }).toThrow();
+  });
+
   test("returns the mean score from an array of scores", () => {
     expect(getMeanScore([8, 9, 7])).toBe(8);
     expect(getMeanScore([88, 86, 93])).toBe(89);
+    expect(getMeanScore([-88, -86, -93])).toBe(-89);
   });
 
   test("returns the mean to 2 decimal places", () => {
     expect(getMeanScore([24, 44, 56, 11, 12, 17, 34])).toBe(28.29);
+    expect(getMeanScore([-24, -44, -56, -11, -12, -17, -34])).toBe(-28.29);
+    expect(getMeanScore([456, 277, 981, 110, 2, -45, 0])).toBe(254.43);
   });
+
+// check non-numbers throw
+
 });
 
-xdescribe("simpleFizzBuzz", () => {
+describe("simpleFizzBuzz", () => {
+  
+  test("throw error if no argument", () => {
+    expect(() => {
+      simpleFizzBuzz();
+    }).toThrow();
+  });
+
+  test("throw error if not a number", () => {
+    expect(() => {
+      simpleFizzBuzz(null);
+    }).toThrow();
+    expect(() => {
+      simpleFizzBuzz(undefined);
+    }).toThrow();
+    expect(() => {
+      simpleFizzBuzz([30, 27]);
+    }).toThrow();
+    expect(() => {
+      simpleFizzBuzz('one hundred and fifty');
+    }).toThrow();
+  });
+
+  test("throw error if too many arguments", () => {
+    expect(() => {
+      simpleFizzBuzz(15, 5);
+    }).toThrow();
+  });
+
   test("returns 'fizz' if the number is divisible by 3", () => {
     expect(simpleFizzBuzz(3)).toBe("fizz");
+    expect(simpleFizzBuzz(18)).toBe("fizz");
+    expect(simpleFizzBuzz(-3)).toBe("fizz");
   });
 
   test("returns 'buzz' if the number is divisible by 5", () => {
     expect(simpleFizzBuzz(5)).toBe("buzz");
+    expect(simpleFizzBuzz(10)).toBe("buzz");
+    expect(simpleFizzBuzz(-5)).toBe("buzz");
   });
 
   test("returns the number if the number is divisible by neither 3 nor 5", () => {
     expect(simpleFizzBuzz(4)).toBe(4);
+    expect(simpleFizzBuzz(13)).toBe(13);
+    expect(simpleFizzBuzz(-22)).toBe(-22);
   });
 
   test("returns 'fizzbuzz' if the number is divisible by 3 and 5", () => {
     expect(simpleFizzBuzz(15)).toBe("fizzbuzz");
+    expect(simpleFizzBuzz(45)).toBe("fizzbuzz");
+    expect(simpleFizzBuzz(-15)).toBe("fizzbuzz");
   });
 });

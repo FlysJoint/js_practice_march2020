@@ -115,17 +115,19 @@ function reverseAllWords(words, extraParam) {
 
 }
 
-function countLinuxUsers(users) {
+function countLinuxUsers(users, extraParam) {
   if (typeof users !== 'object') throw new Error("users object is required");
   if (users.length === 0) throw new Error('at least one user required!'); 
+  if (extraParam !== undefined) throw new Error('too many arguments!');
 
 // Add your code here!
   let count = 0;
 
+// lot of ifs, refactor if you can
   users.forEach(user => {
     if (typeof user.type === 'string') {
       if (user.hasOwnProperty('type')) {
-        if(user.type === 'Linux') {
+        if (user.type === 'Linux') {
           count++;
         }
       }
@@ -141,14 +143,36 @@ function countLinuxUsers(users) {
   return count;
 }
 
-function getMeanScore(scores) {
+function getMeanScore(scores, extraParam) {
   if (scores === undefined) throw new Error("scores is required");
+  if (extraParam !== undefined) throw new Error("too many arguments");
   // Add your code here!
+
+scores.forEach(score => {
+  if (typeof score !== 'number') throw new Error("all scores must be numbers");
+});
+
+  const answer = (scores.reduce((total, num) => total + num)) / scores.length;
+  return Number.isInteger(answer) ? answer : parseFloat(answer.toFixed(2));
 }
 
-function simpleFizzBuzz(n) {
-  if (n === undefined) throw new Error("n is required");
+function simpleFizzBuzz(n, extraParam) {
+  if (typeof n !== 'number') throw new Error("number n is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
   // Add your code here!
+
+  if (n % 3 === 0 && n % 5 === 0) {  // don't do this do a switch with fall down
+    return 'fizzbuzz';
+  }
+  else if (n % 3 === 0) {
+    return 'fizz';
+  }
+  else if (n% 5 === 0) {
+    return 'buzz';
+  }
+  else {
+    return n;
+  }
 }
 
 module.exports = {
