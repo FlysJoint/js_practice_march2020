@@ -527,9 +527,21 @@ describe.only("countLinuxUsers", () => {
     }).toThrow();
   });
 
+  test("throw error if type property has no string value", () => {
+    const users = [
+      { name: "Paul", OS: "Firefox OS", type: true },
+      { name: "Sheila", OS: "Windows 10", type: undefined },
+      { name: "Heather", OS: "Ubuntu 18.04", type: 18.04  },
+      { name: "Pedro", OS: "Windows 95", type: null }
+    ];
+    expect(() => {
+      countLinuxUsers(users);
+    }).toThrow();
+  });
+
+
 // error if type value not a single string
 // check the os is compatible with the type (not an error as the bug might be os not type)
-
 
 
   test("returns 0 if no Linux users found", () => {

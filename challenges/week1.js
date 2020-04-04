@@ -123,13 +123,18 @@ function countLinuxUsers(users) {
   let count = 0;
 
   users.forEach(user => {
-    if (user.hasOwnProperty('type')) {
-      if(user.type === 'Linux') {
-        count++;
+    if (typeof user.type === 'string') {
+      if (user.hasOwnProperty('type')) {
+        if(user.type === 'Linux') {
+          count++;
+        }
+      }
+      else {
+        throw new Error('"type" property not found in ' + user.name);
       }
     }
     else {
-      throw new Error('"type" property not found in ' + user.name);
+      throw new Error('"type is not a string');
     }
   });
 
