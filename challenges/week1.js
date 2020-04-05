@@ -161,18 +161,13 @@ function simpleFizzBuzz(n, extraParam) {
   if (extraParam !== undefined) throw new Error('too many arguments');
   // Add your code here!
 
-  if (n % 3 === 0 && n % 5 === 0) {  // don't do this do a switch with fall down
-    return 'fizzbuzz';
-  }
-  else if (n % 3 === 0) {
-    return 'fizz';
-  }
-  else if (n% 5 === 0) {
-    return 'buzz';
-  }
-  else {
-    return n;
-  }
+  let answer = '';
+
+  if (n % 3 === 0) answer += 'fizz'; // changed my mind about the swiitch
+  if (n % 5 === 0) answer += 'buzz';
+  if (n % 5 !== 0 && n % 3 !== 0) answer = n;
+
+  return answer;
 }
 
 module.exports = {

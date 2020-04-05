@@ -725,23 +725,31 @@ describe("simpleFizzBuzz", () => {
     expect(simpleFizzBuzz(3)).toBe("fizz");
     expect(simpleFizzBuzz(18)).toBe("fizz");
     expect(simpleFizzBuzz(-3)).toBe("fizz");
+    expect(simpleFizzBuzz(999)).toBe("fizz");
+    expect(simpleFizzBuzz(-66666)).toBe("fizz");
   });
 
   test("returns 'buzz' if the number is divisible by 5", () => {
     expect(simpleFizzBuzz(5)).toBe("buzz");
     expect(simpleFizzBuzz(10)).toBe("buzz");
     expect(simpleFizzBuzz(-5)).toBe("buzz");
+    expect(simpleFizzBuzz(245)).toBe("buzz");
+    expect(simpleFizzBuzz(-3460)).toBe("buzz");
   });
 
   test("returns the number if the number is divisible by neither 3 nor 5", () => {
     expect(simpleFizzBuzz(4)).toBe(4);
     expect(simpleFizzBuzz(13)).toBe(13);
     expect(simpleFizzBuzz(-22)).toBe(-22);
+    expect(simpleFizzBuzz(911)).toBe(911);
+    expect(simpleFizzBuzz(-4096)).toBe(-4096);
   });
 
   test("returns 'fizzbuzz' if the number is divisible by 3 and 5", () => {
     expect(simpleFizzBuzz(15)).toBe("fizzbuzz");
     expect(simpleFizzBuzz(45)).toBe("fizzbuzz");
     expect(simpleFizzBuzz(-15)).toBe("fizzbuzz");
+    expect(simpleFizzBuzz(0)).toBe("fizzbuzz");
+    expect(simpleFizzBuzz(-45000000)).toBe("fizzbuzz");
   });
 });
