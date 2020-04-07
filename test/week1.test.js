@@ -262,13 +262,13 @@ describe("getSalePrice", () => {
     }).toThrow();
 
     expect(() => {
-      getSalePriceT(100);
+      getSalePrice(100);
     }).toThrow();
   });  
 
   test("throws error if too many arguments", () => {
     expect(() => {
-      getSalePriceT(100, 75, 50);
+      getSalePrice(100, 75, 50);
     }).toThrow();
   }); 
 
@@ -442,7 +442,7 @@ describe("reverseAllWords", () => {
     }).toThrow();
 
     expect(() => {
-      rreverseAllWords(null);
+      reverseAllWords(null);
     }).toThrow();
 
     expect(() => {
