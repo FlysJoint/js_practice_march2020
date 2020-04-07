@@ -7,6 +7,131 @@ const {
 } = require("../challenges/week2");
 
 describe("getFillings", () => {
+
+  // too many arguments
+  test("throw error if too many arguments", () => {
+    const sandwich = {
+      bread: "Sourdough",
+      fillings: ["brie", "relish", "lettuce"],
+      accompaniment: "crisps"
+    };
+    expect(() => {
+      getFillings(sandwich, sandwich2);
+    }).toThrow(); // 'Too many arguments'
+    expect(() => {
+      getFillings(sandwich, 2);
+    }).toThrow(); // 'Too many arguments'
+    expect(() => {
+      getFillings(sandwich, null);
+    }).toThrow(); // 'Too many arguments'
+    expect(() => {
+      getFillings(sandwich, 'extra');
+    }).toThrow(); // 'Too many arguments'
+    expect(() => {
+      getFillings(sandwich, false);
+    }).toThrow(); // 'Too many arguments'
+  });
+
+  // test sandwich is object
+  test("throw argument isn't an object", () => {
+    const sandwich1 = 4;
+    const sandwich2 = 'not a sandwich';
+    const sandwich3 = null;
+    const sandwich4 = undefined;
+    const sandwich5 = true;
+    expect(() => getFillings()).toThrow(); // 'No arguments'
+    expect(() => getFillings(sandwich1)).toThrow(); // argument not an object
+    expect(() => getFillings(sandwich2)).toThrow(); // argument not an object
+    expect(() => getFillings(sandwich3)).toThrow(); // argument not an object
+    expect(() => getFillings(sandwich4)).toThrow(); // argument not an object
+    expect(() => getFillings(sandwich5)).toThrow(); // argument not an object
+  });
+
+  // test fillings array exists
+  test("test sandwich has fillings property", () => {
+
+    const sandwich = {
+      bread: "Sourdough",
+      fillings: ["brie", "relish", "lettuce"],
+      accompaniment: "crisps"
+    };
+    const sandwich2 = {
+      bread: "Hovis",
+      accompaniment: "bleach"
+    };
+    const sandwich3 = {
+      bread: "Hovis",
+      filings: ['iron', 'tax'],
+      accompaniment: "bleach"
+    };
+    const sandwich4 = {
+      bread: "Hovis",
+      fillings: true,
+      accompaniment: "knife"
+    };
+    const sandwich5 = {
+      bread: "yes",
+      fillings: null,
+      accompaniment: "knife"
+    };
+    const sandwich6 = {
+      bread: "seeded",
+      fillings: 5,
+      accompaniment: "another sandwich"
+    };
+    
+    expect(() => getFillings(sandwich)).not.toThrow(); // fillings property not found
+    expect(() => getFillings(sandwich2)).toThrow(); // fillings property not found
+    expect(() => getFillings(sandwich3)).toThrow(); // fillings property not found
+    expect(() => getFillings(sandwich4)).not.toThrow(); // fillings property not found
+    expect(() => getFillings(sandwich5)).not.toThrow(); // fillings property not found
+    expect(() => getFillings(sandwich6)).not.toThrow(); // fillings property not found
+});
+
+
+  // test array isn't empty
+  // test fillings exist
+  xtest("test sandwich fillings array has strings", () => {
+
+    const expected = { 
+      bread: expect.any(String),
+      fillings: expect.any(Array),// expect any strings? [expect.any(String)]
+      accompaniment: expect.any(String)
+    };
+
+    const sandwich = {
+      bread: "Sourdough",
+      fillings: ["brie", "relish", "lettuce"],
+      accompaniment: "crisps"
+    };
+    const sandwich2 = {
+      bread: "Hovis",
+      fillings: [],
+      accompaniment: "bleach"
+    };
+    const sandwich3 = {
+      bread: "Hovis",
+      fillings: [6, 23],
+      accompaniment: "vodka"
+    };
+    const sandwich4 = {
+      bread: "Kingsmill",
+      fillings: [true, false],
+      accompaniment: "vodka"
+    };
+    const sandwich5 = {
+      bread: "White",
+      fillings: [null],
+      accompaniment: "vodka"
+    };
+  
+    expect(sandwich).toEqual(expect.objectContaining(expected));
+    expect(sandwich2).toEqual(expect.objectContaining(expected));
+    expect(sandwich3).not.toEqual(expect.objectContaining(expected));
+});
+    // test array has strings in it
+  // test all ingredients are unique - don't throw, just count uniques
+
   test("returns the fillings of a sandwich", () => {
     const sandwich = {
       bread: "Sourdough",

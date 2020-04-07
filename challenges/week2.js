@@ -1,10 +1,26 @@
-function getFillings(sandwich) {
-  if (sandwich === undefined) throw new Error("ingredients is required");
-  // Your code here!
+function getFillings(sandwich, extraParam) {
 
-// do pertinent error messages
+//if (sandwich === undefined) throw new Error("ingredients is required");
+  if (typeof sandwich !== 'object') throw new Error("Object argument required");
+  if (extraParam !== undefined) throw new Error('Too many arguments');
+  
 
-  return sandwich.fillings;
+  if (Object.keys(sandwich).includes('fillings') === true) {
+    console.log('fillings');
+
+    return sandwich.fillings;
+  }
+  else {
+
+    console.log('no fillings');
+    throw new Error('Fillings property not found');
+
+  }
+
+
+// Your code here!
+
+
 
 }
 
