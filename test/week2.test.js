@@ -47,14 +47,9 @@ describe("getFillings", () => {
     expect(() => getFillings(sandwich5)).toThrow(); // argument not an object
   });
 
-  // test fillings array exists
+  // test fillings property exists
   test("test sandwich has fillings property", () => {
 
-    const sandwich = {
-      bread: "Sourdough",
-      fillings: ["brie", "relish", "lettuce"],
-      accompaniment: "crisps"
-    };
     const sandwich2 = {
       bread: "Hovis",
       accompaniment: "bleach"
@@ -66,71 +61,195 @@ describe("getFillings", () => {
     };
     const sandwich4 = {
       bread: "Hovis",
-      fillings: true,
-      accompaniment: "knife"
-    };
-    const sandwich5 = {
-      bread: "yes",
-      fillings: null,
-      accompaniment: "knife"
-    };
-    const sandwich6 = {
-      bread: "seeded",
-      fillings: 5,
-      accompaniment: "another sandwich"
+      fillings: ['pickle', 'beetroot'],
+      accompaniment: 5
     };
     
-    expect(() => getFillings(sandwich)).not.toThrow(); // fillings property not found
     expect(() => getFillings(sandwich2)).toThrow(); // fillings property not found
     expect(() => getFillings(sandwich3)).toThrow(); // fillings property not found
-    expect(() => getFillings(sandwich4)).not.toThrow(); // fillings property not found
-    expect(() => getFillings(sandwich5)).not.toThrow(); // fillings property not found
-    expect(() => getFillings(sandwich6)).not.toThrow(); // fillings property not found
+    expect(() => getFillings(sandwich4)).not.toThrow(); // fillings property found
 });
 
+  // test fillings is an array
+  test("test sandwich fillings property is an array", () => {
 
-  // test array isn't empty
-  // test fillings exist
-  xtest("test sandwich fillings array has strings", () => {
-
-    const expected = { 
-      bread: expect.any(String),
-      fillings: expect.any(Array),// expect any strings? [expect.any(String)]
-      accompaniment: expect.any(String)
-    };
-
-    const sandwich = {
-      bread: "Sourdough",
-      fillings: ["brie", "relish", "lettuce"],
-      accompaniment: "crisps"
-    };
     const sandwich2 = {
+      bread: 'baguette',
+      fillings: 'boursin',
+      accompaniment: 'red wine'
+    };
+    const sandwich3 = {
+      bread: 'baguette',
+      fillings: 5,
+      accompaniment: 'red wine'
+    };
+    const sandwich4 = {
+      bread: 'baguette',
+      fillings: true,
+      accompaniment: 'red wine'
+    };
+    const sandwich5 = {
+      bread: 'baguette',
+      fillings: null,
+      accompaniment: 'red wine'
+    };
+    const sandwich6 = {
+      bread: 'baguette',
+      fillings: {veg: ['lettuce', 'tomato']},
+      accompaniment: 'red wine'
+    };
+    const sandwich7 = {
+      bread: 'baguette',
+      fillings: undefined,
+      accompaniment: 'red wine'
+    };
+    const sandwich8 = {
+      bread: 'baguette',
+      fillings: ['boursin'],
+      accompaniment: 'red wine'
+    };
+
+    expect(() => getFillings(sandwich2)).toThrow(); // fillings value not an array
+    expect(() => getFillings(sandwich3)).toThrow(); // fillings value not an array
+    expect(() => getFillings(sandwich4)).toThrow(); // fillings value not an array
+    expect(() => getFillings(sandwich5)).toThrow(); // fillings value not an array
+    expect(() => getFillings(sandwich6)).toThrow(); // fillings value not an array
+    expect(() => getFillings(sandwich7)).toThrow(); // fillings value not an array
+    expect(() => getFillings(sandwich8)).not.toThrow(); // fillings value IS an array
+});
+    
+  // test fillings array contains only strings
+  test("test sandwich fillings array contains only strings", () => {
+
+    // fillings empty
+    const sandwich1 = {
       bread: "Hovis",
       fillings: [],
       accompaniment: "bleach"
     };
-    const sandwich3 = {
+
+    // all items in array are invalid
+    const sandwich2 = {
       bread: "Hovis",
       fillings: [6, 23],
       accompaniment: "vodka"
     };
-    const sandwich4 = {
+    const sandwich3 = {
       bread: "Kingsmill",
       fillings: [true, false],
       accompaniment: "vodka"
     };
-    const sandwich5 = {
+    const sandwich4 = {
       bread: "White",
       fillings: [null],
       accompaniment: "vodka"
     };
-  
-    expect(sandwich).toEqual(expect.objectContaining(expected));
-    expect(sandwich2).toEqual(expect.objectContaining(expected));
-    expect(sandwich3).not.toEqual(expect.objectContaining(expected));
+    const sandwich5 = {
+      bread: "White",
+      fillings: [undefined],
+      accompaniment: "vodka"
+    };
+    const sandwich6 = {
+      bread: "White",
+      fillings: [['lettuce', 'tomato'],['mayo']],
+      accompaniment: "vodka"
+    };
+    const sandwich7 = {
+      bread: "White",
+      fillings: [{ veg: 'lettuce', sauce: 'mayo'}],
+      accompaniment: "vodka"
+    };
+
+    // array valid
+    const sandwich8 = {
+      bread: "White",
+      fillings: ['lettuce'],
+      accompaniment: "vodka"
+    };
+
+    // some items in array invalid
+    const sandwich9 = {
+      bread: "White",
+      fillings: ['butter', 8],
+      accompaniment: "vodka"
+    };
+    const sandwich10 = {
+      bread: "White",
+      fillings: ['butter', true],
+      accompaniment: "vodka"
+    };
+    const sandwich11 = {
+      bread: "White",
+      fillings: ['butter', null], // throw?
+      accompaniment: "vodka"
+    };
+    const sandwich12 = {
+      bread: "White",
+      fillings: ['butter', undefined],
+      accompaniment: "vodka"
+    };
+    const sandwich12a = {
+      bread: "White",
+      fillings: [undefined, 'butter', undefined],
+      accompaniment: "vodka"
+    };
+    const sandwich12b = {
+      bread: "White",
+      fillings: [undefined, undefined, undefined, undefined, 'butter', undefined],
+      accompaniment: "vodka"
+    };
+    const sandwich12c = {
+      bread: "White",
+      fillings: ['butter', 'butter', 'butter', 'butter', 'butter',  'butter', undefined, 1],
+      accompaniment: "vodka"
+    };
+    const sandwich12d = {
+      bread: "White",
+      fillings: [true, 'butter', 'butter', 'butter', 'butter', 'butter',  'butter', undefined, 'butter', 'butter', 'butter', 'butter',  'butter'],
+      accompaniment: "vodka"
+    };
+    const sandwich13 = {
+      bread: "White",
+      fillings: ['butter', ['what', 'about', 'this?']],
+      accompaniment: "vodka"
+    };
+    const sandwich14 = {
+      bread: "White",
+      fillings: ['butter', {sauce: 'mayo'}],
+      accompaniment: "vodka"
+    };
+
+    // all items in array valid
+    const sandwich15 = {
+      bread: "White",
+      fillings: ['bacon', 'lettuce', 'tomato'],
+      accompaniment: "vodka"
+    };
+
+    expect(() => getFillings(sandwich1)).toThrow(); // fillings array empty
+    expect(() => getFillings(sandwich2)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich3)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich4)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich5)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich6)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich7)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich8)).not.toThrow(); // fillings array contains only strings
+
+    expect(() => getFillings(sandwich9)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich10)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich11)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich12)).not.toThrow(); // fillings array doesn't contain only strings, but it's not invalid
+    expect(() => getFillings(sandwich12a)).not.toThrow(); // fillings array doesn't contain only strings, but it's not invalid
+    expect(() => getFillings(sandwich12b)).not.toThrow(); // fillings array doesn't contain only strings, but it's not invalid
+    expect(() => getFillings(sandwich12c)).toThrow(); // fillings array doesn't contain only strings, but at least one is invalid
+    expect(() => getFillings(sandwich12d)).toThrow(); // fillings array doesn't contain only strings, but at least one is invalid
+    
+    expect(() => getFillings(sandwich13)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich14)).toThrow(); // fillings array doesn't contain only strings
+    expect(() => getFillings(sandwich15)).not.toThrow(); // fillings array contains only strings
 });
-    // test array has strings in it
-  // test all ingredients are unique - don't throw, just count uniques
+
+// Do we care about repetitions? Client input requested
 
   test("returns the fillings of a sandwich", () => {
     const sandwich = {
@@ -146,6 +265,13 @@ describe("getFillings", () => {
       accompaniment: "wedges"
     };
     expect(getFillings(sandwich2)).toEqual(["smoked salmon", "dill"]);
+
+    const sandwich3 = {
+      bread: "brown bread",
+      fillings: ['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'and Spam'],
+      accompaniment: "baked beans"
+    };
+    expect(getFillings(sandwich3)).toEqual(['Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'Spam', 'and Spam']);
   });
 });
 
