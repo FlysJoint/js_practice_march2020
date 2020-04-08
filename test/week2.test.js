@@ -250,7 +250,6 @@ describe("getFillings", () => {
 });
 
 // Do we care about repetitions? Client input requested
-
   test("returns the fillings of a sandwich", () => {
     const sandwich = {
       bread: "Sourdough",
@@ -276,22 +275,175 @@ describe("getFillings", () => {
 });
 
 describe("isFromManchester", () => {
-  test("returns true if the person is from Manchester", () => {
+  
+  test("throws error if no arguments", () => {
+    expect(() => isFromManchester()).toThrow();
+  });
+
+  test("throws error if too many arguments", () => {
     const person = {
       name: "Mohammed",
       city: "Manchester",
       age: 23
     };
-    expect(isFromManchester(person)).toBe(true);
+    const plusOne = {
+      name: "Ken",
+      city: "Manchester",
+      age: 75
+    };
+    expect(() => isFromManchester(person, plusOne)).toThrow();
+  });
+
+  test("throws error if person not an object", () => {
+    const person1 = 4;
+    const person2 = true;
+    const person3 = null;
+    const person4 = undefined;
+    const person5 = 'Mohammed';
+    const person6 = ['Mohammed', 'Manchester'];
+    const person7 = [['name:', 'Mohammed'], ['city:', 'Manchester']];
+
+    expect(() => isFromManchester(person1)).toThrow();      // because not an object
+    expect(() => isFromManchester(person2)).toThrow();      // because not an object
+    expect(() => isFromManchester(person3)).toThrow();      // because not an object
+    expect(() => isFromManchester(person4)).toThrow();      // because not an object
+    expect(() => isFromManchester(person5)).toThrow();      // because not an object
+    expect(() => isFromManchester(person6)).toThrow();      // because arrays are objects, but not object required
+    expect(() => isFromManchester(person7)).toThrow();      // because arrays are objects, but not object required
+
+  });
+
+  // test city property exists
+  test("test person has city property", () => {
+
+    const person2 = {};
+    const person3 = {
+      name: "Mohammed",
+      age: 23
+    };
+    const person4 = {
+      name: "Dave",
+      town: 'Macclesfield',
+      age: 64
+    };
+    const person5 = {
+      city: 'Liverpool',
+      name: "Paul",
+      age: 32
+    };
+    
+    expect(() => isFromManchester(person2)).toThrow(); // city property not found
+    expect(() => isFromManchester(person3)).toThrow(); // city property not found
+    expect(() => isFromManchester(person4)).toThrow(); // city property not found
+    expect(() => isFromManchester(person5)).not.toThrow(); // city property found, but in unusual position
+  });
+
+  // test city value is string
+  test("test city value is string", () => {
+
+    const person2 = {
+      city: 1,
+      name: "Paul",
+      age: true
+    };
+    const person3 = {
+      name: "Paul",
+      city: true,
+      age: null
+    };
+    const person4 = {
+      name: "Paul",
+      age: 32,
+      city: null
+    };
+    const person5 = {
+      name: "Max",
+      city: undefined,
+      age: 'sixteen'
+    };
+    const person6 = {
+      name: false,
+      city: ['Kingston', '-upon-', 'Thames'],
+      age: undefined
+    };
+    const person7 = {
+      name: 'Deirdre',
+      city: {suburb: 'Trafford'},
+      age: 56
+    };
+    const person8 = {
+      name: 'Pierre',
+      city: 'Paris',
+      age: 40  
+    };
+    
+    expect(() => isFromManchester(person2)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person3)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person4)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person5)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person6)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person7)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person8)).not.toThrow(); // city value IS a string
+  });
+
+  // test city value isn't empty
+  test("test city value isn't empty", () => {
+
+    const person2 = {
+      name: 'Peter',
+      city: '',
+      age: 50  
+    };
+    const person3 = {
+      name: 'Peter',
+      city: 'M4nc435t3r',
+      age: 50  
+    };
+
+    expect(() => isFromManchester(person2)).toThrow(); // city value empty
+    expect(() => isFromManchester(person3)).not.toThrow(); // city value isn't empty
+  });
+
+  test("returns true if the person is from Manchester", () => {
+    const person2 = {
+      name: "Mohammed",
+      city: "Manchester",
+      age: 23
+    };
+    const person3 = {
+      name: "Mohammed",
+      city: "Manchester, England",
+      age: 23
+    };
+    const person4 = {
+      name: "Mohammed",
+      city: "Manchester, Australia",
+      age: 23
+    };
+    expect(isFromManchester(person2)).toBe(true);
+    expect(isFromManchester(person3)).toBe(false); // should this be true? Client input required
+    expect(isFromManchester(person4)).toBe(false); // this should be false, but if the above is 'fixed' this may be a false positive. Additional nation property required?
   });
 
   test("returns false if the person is not Manchester", () => {
-    const person = {
+    const person2 = {
       name: "Anisa",
       city: "Leeds",
       age: 39
     };
-    expect(isFromManchester(person)).toBe(false);
+    const person3 = {
+      name: "Bill",
+      city: "Winston-Salem", // any additional parsing has to be careful not to exclude valid placenames
+      age: 256
+    };
+    const person4 = {
+      name: "Farmer Giles",
+      city: "Westward Ho!", // any additional parsing has to be careful not to exclude valid placenames
+      age: 62
+    };
+    expect(isFromManchester(person2)).toBe(false);
+    expect(isFromManchester(person3)).toBe(false);
+    expect(isFromManchester(person4)).toBe(false);
   });
 });
 

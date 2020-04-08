@@ -1,17 +1,10 @@
 function getFillings(sandwich, extraParam) {
 
   if (typeof sandwich !== 'object') throw new Error("Object argument required");
-  if (extraParam !== undefined) throw new Error('Too many arguments');
-
-  if (Object.keys(sandwich).includes('fillings') === false) {
-    throw new Error('Fillings property not found');
-  }
-  else if (Array.isArray(sandwich.fillings) !== true) {
-    throw new Error('Fillings property must be an array');
-  }
-  else if (sandwich.fillings.length === 0) {
-    throw new Error('fillings array must not be empty');
-  }
+  else if (extraParam !== undefined) throw new Error('Too many arguments');
+  else if (Object.keys(sandwich).includes('fillings') === false) throw new Error('Fillings property not found');
+  else if (Array.isArray(sandwich.fillings) !== true) throw new Error('Fillings property must be an array');
+  else if (sandwich.fillings.length === 0) throw new Error('fillings array must not be empty');
   else {
 
     let stringScore = 0;
@@ -35,13 +28,13 @@ function getFillings(sandwich, extraParam) {
   }
 }
 
-function isFromManchester(person) {
-  if (person === undefined) throw new Error("person is required");
-  // Your code here!
-
-  //do pertinent error messages
-
-  return person.city === 'Manchester';
+function isFromManchester(person, extraParam) {
+  if (extraParam !== undefined) throw new Error('too many arguments');
+  else if (typeof person !== 'object' || Array.isArray(person)) throw new Error('non-array person object required');
+  else if (Object.keys(person).includes('city') === false) throw new Error('City property not found');
+  else if (typeof person.city !== 'string') throw new Error('City value not a string');  
+  else if (person.city === '') throw new Error('City value is empty!');  
+  else return person.city === 'Manchester';
 }
 
 function getBusNumbers(people) {
