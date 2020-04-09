@@ -39,26 +39,18 @@ function isFromManchester(person, extraParam) {
 
 function getBusNumbers(people, extraParam) {
 
-console.log(people);
-
-let input = parseFloat( people);
-
   if (typeof people !== 'number') throw new Error("number of people is required");
   else if (extraParam !== undefined) throw new Error('too many arguments');
-  else if (people < 0) throw new Error ('people value must be positive!');
+  else if (people < 0) throw new Error ('people value cant be negative!');
 
   else if (Number.isInteger(people) === false) throw new Error('people value must be whole number');
   // else if (Math.ceil(people) !== people) throw new Error('people value must be whole number');
   // else if (people.toString().includes('.')) throw new Error('people value must be whole number');
   // else if (people.toFixed() === people) throw new Error('people value must be whole number');
   // else if (people === 42) throw new Error('people value must be whole number');
- 
   else  {
-
-  //console.log (input);
-
-  const busLimit = 40; // use variable rather than magic number
-  return Math.ceil(people / busLimit);
+    const busLimit = 40; // use variable rather than magic number
+    return people > 0 ? Math.ceil(people / busLimit) : 0;
   }
 }
 

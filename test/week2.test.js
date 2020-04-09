@@ -523,15 +523,16 @@ describe.only("getBusNumbers", () => {
     expect(() => getBusNumbers(5.6)).toThrow();
     expect(() => getBusNumbers(24.76)).toThrow();
     expect(() => getBusNumbers(40.2)).toThrow();
-    expect(() => getBusNumbers(42.0)).toThrow();
+    expect(() => getBusNumbers(42.0)).toThrow(); // I'm leaving this in because I think it's invalid input even if it's mathematically the same as the valid input
     expect(() => getBusNumbers(98.99)).toThrow();
     expect(() => getBusNumbers(-123.23)).toThrow();
     expect(() => getBusNumbers(-675.99)).toThrow();
   });
 
   // 0 shouldn't break
-  xtest("0 is valid input", () => {
-    expect(() => getBusNumbers(0)).toBe(0);
+  test("0 is valid input", () => {
+    //expect(() => getBusNumbers(0)).toBe(0); // find out why I'm having to write these tests differently
+    expect(getBusNumbers(0)).toBe(0);
   });
 
   test("returns 1 if all the people fit in 1 bus", () => {
@@ -558,11 +559,11 @@ describe.only("getBusNumbers", () => {
     expect(getBusNumbers(120)).toBe(3);
   });
 
-  xtest("returns the correct number of buses for larger numbers of people", () => {
+  test("returns the correct number of buses for larger numbers of people", () => {
     expect(getBusNumbers(43728)).toBe(1094);
-    expect(getBusNumbers(39999999)).toBe(3);
-    expect(getBusNumbers(40000000)).toBe(3);
-    expect(getBusNumbers(40000001)).toBe(3);
+    expect(getBusNumbers(39999999)).toBe(1000000);
+    expect(getBusNumbers(40000000)).toBe(1000000);
+    expect(getBusNumbers(40000001)).toBe(1000001);
   });
 });
 
