@@ -9,11 +9,23 @@ const {
 describe("getFillings", () => {
 
   // too many arguments
+  test("throw error if no arguments", () => {
+    expect(() => {
+      getFillings();
+    }).toThrow(); // 'No arguments'
+  });
+
+  // too many arguments
   test("throw error if too many arguments", () => {
     const sandwich = {
       bread: "Sourdough",
       fillings: ["brie", "relish", "lettuce"],
       accompaniment: "crisps"
+    };
+    const sandwich2 = {
+      bread: "Sourdough",
+      fillings: ["crisps", "cheese", "HP Sauce"],
+      accompaniment: "brie"
     };
     expect(() => {
       getFillings(sandwich, sandwich2);
@@ -30,6 +42,9 @@ describe("getFillings", () => {
     expect(() => {
       getFillings(sandwich, false);
     }).toThrow(); // 'Too many arguments'
+    expect(() => {
+      getFillings(sandwich, undefined);
+    }).not.toThrow(); // 'Too many arguments'
   });
 
   // test sandwich is object
@@ -291,7 +306,9 @@ describe("isFromManchester", () => {
       city: "Manchester",
       age: 75
     };
+    const plusTwo = undefined;
     expect(() => isFromManchester(person, plusOne)).toThrow();
+    expect(() => isFromManchester(person, plusTwo)).not.toThrow();
   });
 
   test("throws error if person not an object", () => {
@@ -445,10 +462,78 @@ describe("isFromManchester", () => {
     expect(isFromManchester(person3)).toBe(false);
     expect(isFromManchester(person4)).toBe(false);
   });
+
+  // what if another object also has a city value?
+  test("returns true if the object has a valid city value", () => {
+    const footballClub1 = {
+      name: "Manchester United",
+      city: "Manchester",
+      manager: 'Ole Gunnar Solskjaer'
+    };
+    const footballClub2 = {
+      name: "Manchester City",
+      city: "Manchester",
+      manager: 'Josep Guardiola'
+    };
+    expect(isFromManchester(footballClub1)).toBe(true); // false positive
+    expect(isFromManchester(footballClub2)).toBe(true); // false positive
+
+  });
 });
 
-describe("getBusNumbers", () => {
+describe.only("getBusNumbers", () => {
   // A bus can hold 40 people. This function should return how many buses are required for the number of people
+  
+  // no arguments
+  test("throws error if no arguments", () => {
+    expect(() => getBusNumbers()).toThrow();
+  });
+
+  // too many arguments
+  test("throws error if too many arguments", () => {
+    expect(() => getBusNumbers(46, 58)).toThrow();
+    expect(() => getBusNumbers(46, '12')).toThrow();
+    expect(() => getBusNumbers(46, undefined)).not.toThrow();
+  });
+
+  // wrong arguments
+  test("throws error if argument is wrong type", () => {
+    expect(() => getBusNumbers(null)).toThrow();
+    expect(() => getBusNumbers(false)).toThrow();
+    expect(() => getBusNumbers(undefined)).toThrow();
+    expect(() => getBusNumbers([67, 87])).toThrow();
+    expect(() => getBusNumbers({amount: 67})).toThrow();
+    expect(() => getBusNumbers('six')).toThrow();
+    expect(() => getBusNumbers(7)).not.toThrow();
+  });
+
+  // negative value throw
+  test("throws error if argument is negative", () => {
+    expect(() => getBusNumbers(-12)).toThrow();
+    expect(() => getBusNumbers(-34)).toThrow();
+    expect(() => getBusNumbers(-40)).toThrow();
+    expect(() => getBusNumbers(-42)).toThrow();
+    expect(() => getBusNumbers(-86)).toThrow();
+    expect(() => getBusNumbers(-123)).toThrow();
+    expect(() => getBusNumbers(-675)).toThrow();
+  });
+
+  // decimal value throw
+  test("throws error if argument is not integer", () => {
+    expect(() => getBusNumbers(5.6)).toThrow();
+    expect(() => getBusNumbers(24.76)).toThrow();
+    expect(() => getBusNumbers(40.2)).toThrow();
+    expect(() => getBusNumbers(42.0)).toThrow();
+    expect(() => getBusNumbers(98.99)).toThrow();
+    expect(() => getBusNumbers(-123.23)).toThrow();
+    expect(() => getBusNumbers(-675.99)).toThrow();
+  });
+
+  // 0 shouldn't break
+  xtest("0 is valid input", () => {
+    expect(() => getBusNumbers(0)).toBe(0);
+  });
+
   test("returns 1 if all the people fit in 1 bus", () => {
     expect(getBusNumbers(1)).toBe(1);
     expect(getBusNumbers(10)).toBe(1);
@@ -461,6 +546,7 @@ describe("getBusNumbers", () => {
     expect(getBusNumbers(41)).toBe(2);
     expect(getBusNumbers(50)).toBe(2);
     expect(getBusNumbers(55)).toBe(2);
+    expect(getBusNumbers(79)).toBe(2);
     expect(getBusNumbers(80)).toBe(2);
   });
 
@@ -468,11 +554,15 @@ describe("getBusNumbers", () => {
     expect(getBusNumbers(81)).toBe(3);
     expect(getBusNumbers(85)).toBe(3);
     expect(getBusNumbers(100)).toBe(3);
+    expect(getBusNumbers(119)).toBe(3);
     expect(getBusNumbers(120)).toBe(3);
   });
 
-  test("returns the correct number of buses for larger numbers of people", () => {
+  xtest("returns the correct number of buses for larger numbers of people", () => {
     expect(getBusNumbers(43728)).toBe(1094);
+    expect(getBusNumbers(39999999)).toBe(3);
+    expect(getBusNumbers(40000000)).toBe(3);
+    expect(getBusNumbers(40000001)).toBe(3);
   });
 });
 

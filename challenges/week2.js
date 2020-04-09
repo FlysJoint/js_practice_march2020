@@ -37,13 +37,29 @@ function isFromManchester(person, extraParam) {
   else return person.city === 'Manchester';
 }
 
-function getBusNumbers(people) {
-  if (people === undefined) throw new Error("people is required");
-  // Your code here!
+function getBusNumbers(people, extraParam) {
 
-  //do pertinent error messages
+console.log(people);
+
+let input = parseFloat( people);
+
+  if (typeof people !== 'number') throw new Error("number of people is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+  else if (people < 0) throw new Error ('people value must be positive!');
+
+  else if (Number.isInteger(people) === false) throw new Error('people value must be whole number');
+  // else if (Math.ceil(people) !== people) throw new Error('people value must be whole number');
+  // else if (people.toString().includes('.')) throw new Error('people value must be whole number');
+  // else if (people.toFixed() === people) throw new Error('people value must be whole number');
+  // else if (people === 42) throw new Error('people value must be whole number');
+ 
+  else  {
+
+  //console.log (input);
+
   const busLimit = 40; // use variable rather than magic number
   return Math.ceil(people / busLimit);
+  }
 }
 
 function countSheep(arr) {
