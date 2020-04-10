@@ -54,15 +54,19 @@ function getBusNumbers(people, extraParam) {
   }
 }
 
-function countSheep(arr) {
-  if (arr === undefined) throw new Error("arr is required");
-  // Your code here!
+function countSheep(arr, extraParam) {
+  if (typeof arr !== 'object') throw new Error("Array is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+  else {
 
-  // do pertinent error messages
+    for (let i = 0; i < arr.length; i++) {
+      if ( typeof arr[i] !== 'string') throw new Error ('Invalid array element: ' + arr[i]);
+    }
 
-  const numOfSheep = arr.filter(word => word === 'sheep');
+    const numOfSheep = arr.filter(word => word === 'sheep');
 
-  return numOfSheep.length;
+    return numOfSheep.length;
+  }
 }
 
 function hasMPostCode(person) {

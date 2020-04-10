@@ -481,7 +481,7 @@ describe("isFromManchester", () => {
   });
 });
 
-describe.only("getBusNumbers", () => {
+describe("getBusNumbers", () => {
   // A bus can hold 40 people. This function should return how many buses are required for the number of people
   
   // no arguments
@@ -568,6 +568,74 @@ describe.only("getBusNumbers", () => {
 });
 
 describe("countSheep", () => {
+
+  // no arguments
+  test("throws error if no arguments", () => {
+    expect(() => countSheep()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const arr = ["dog", "badger", "dog", "dog", "chicken"];
+    const arr2 = ["chicken", "dog", "badger", "dog", "dog"];
+    expect(() => countSheep(arr, arr2)).toThrow();
+    expect(() => countSheep(arr, true)).toThrow();
+    expect(() => countSheep(arr, 3)).toThrow();
+    expect(() => countSheep(arr, null)).toThrow();
+    expect(() => countSheep(arr, {animal: 'sheep'})).toThrow();
+    expect(() => countSheep(arr, 'sheep')).toThrow();
+    expect(() => countSheep(arr, undefined)).not.toThrow();
+  });
+
+  test("throws if argument not an array", () => {
+    const arr1 = null;
+    const arr2 = undefined;
+    const arr3 = 3;
+    const arr4 = 'four';
+    const arr5 = true;
+    const arr6 = {animal: 'sheep'};
+    const arr7 = ['sheep', 'cat'];
+    expect(() => countSheep(arr1)).toThrow();
+    expect(() => countSheep(arr2)).toThrow();
+    expect(() => countSheep(arr3)).toThrow();
+    expect(() => countSheep(arr4)).toThrow();
+    expect(() => countSheep(arr5)).toThrow();
+    expect(() => countSheep(arr6)).toThrow();
+    expect(() => countSheep(arr7)).not.toThrow();
+  });
+
+  test("throws if any array elements are invalid types", () => {
+    const arr1 = ["dog", "badger", null, "dog", "chicken"]; // don't throw?
+    const arr2 = ["dog", "badger", undefined, "dog", "chicken"];
+    const arr3 = ["dog", "badger", "dog", 3, "chicken"];
+    const arr4 = ["dog", "two", "dog", "dog", "chicken"];
+    const arr5 = ["dog", false, "dog", "dog", "chicken"];
+    const arr6 = ["dog", "badger", "dog", {animal: 'sheep'}, "chicken"];
+    const arr7 = ["dog", ['sheep', 'cat'], "dog", "dog", "chicken"];
+    expect(() => countSheep(arr1)).toThrow();
+    expect(() => countSheep(arr2)).toThrow();
+    expect(() => countSheep(arr3)).toThrow();
+    expect(() => countSheep(arr4)).not.toThrow();
+    expect(() => countSheep(arr5)).toThrow();
+    expect(() => countSheep(arr6)).toThrow();
+    expect(() => countSheep(arr7)).toThrow();
+  });
+
+  // test not implemented because overkill
+ xtest("throws if any array elements are invalid entries", () => {
+    const arr1 = ["dog", "badger", " sheep", "dog", "chicken"];
+    const arr2 = ["dog", "badger", "sheep ", "dog", "chicken"];
+    const arr3 = ["dog", "badger", "dog", "c a t", "chicken"];
+    const arr4 = ["dog", " tw o ", "dog", "dog", "chicken"];
+    const arr5 = ["dog", "2dog", "dog", "dog", "chicken"];
+    const arr6 = ["dog", "badger", "dog", "sh33p", "chicken"];
+    expect(() => countSheep(arr1)).toThrow();
+    expect(() => countSheep(arr2)).toThrow();
+    expect(() => countSheep(arr3)).toThrow();
+    expect(() => countSheep(arr4)).toThrow();
+    expect(() => countSheep(arr5)).toThrow();
+    expect(() => countSheep(arr6)).toThrow();
+  });
+
   test("returns 0 if there are 0 sheep in the array", () => {
     const arr = ["dog", "badger", "dog", "dog", "chicken"];
     expect(countSheep(arr)).toBe(0);
@@ -599,8 +667,145 @@ describe("countSheep", () => {
   });
 });
 
-describe("hasMPostCode", () => {
-  test("returns true if the person has a postcode starting with M", () => {
+describe.only("hasMPostCode", () => {
+  
+// person is object
+// person has postCode property
+// other object has postCode property
+// postCode property is string
+// postCode property is correctly formatted 's(s)n(n)nss'
+
+  test("throws error if no arguments", () => {
+    expect(() => hasMPostCode()).toThrow();
+  });
+
+  test("throws error if too many arguments", () => {
+    const person = {
+      name: "Mohammed",
+      city: "Manchester",
+      age: 23
+    };
+    const plusOne = {
+      name: "Ken",
+      city: "Manchester",
+      age: 75
+    };
+    const plusTwo = undefined;
+    expect(() => isFromManchester(person, plusOne)).toThrow();
+    expect(() => isFromManchester(person, plusTwo)).not.toThrow();
+  });
+
+  xtest("throws error if person not an object", () => {
+    const person1 = 4;
+    const person2 = true;
+    const person3 = null;
+    const person4 = undefined;
+    const person5 = 'Mohammed';
+    const person6 = ['Mohammed', 'Manchester'];
+    const person7 = [['name:', 'Mohammed'], ['city:', 'Manchester']];
+
+    expect(() => isFromManchester(person1)).toThrow();      // because not an object
+    expect(() => isFromManchester(person2)).toThrow();      // because not an object
+    expect(() => isFromManchester(person3)).toThrow();      // because not an object
+    expect(() => isFromManchester(person4)).toThrow();      // because not an object
+    expect(() => isFromManchester(person5)).toThrow();      // because not an object
+    expect(() => isFromManchester(person6)).toThrow();      // because arrays are objects, but not object required
+    expect(() => isFromManchester(person7)).toThrow();      // because arrays are objects, but not object required
+
+  });
+
+  // test city property exists
+  xtest("test person has city property", () => {
+
+    const person2 = {};
+    const person3 = {
+      name: "Mohammed",
+      age: 23
+    };
+    const person4 = {
+      name: "Dave",
+      town: 'Macclesfield',
+      age: 64
+    };
+    const person5 = {
+      city: 'Liverpool',
+      name: "Paul",
+      age: 32
+    };
+    
+    expect(() => isFromManchester(person2)).toThrow(); // city property not found
+    expect(() => isFromManchester(person3)).toThrow(); // city property not found
+    expect(() => isFromManchester(person4)).toThrow(); // city property not found
+    expect(() => isFromManchester(person5)).not.toThrow(); // city property found, but in unusual position
+  });
+
+  // test city value is string
+  xtest("test city value is string", () => {
+
+    const person2 = {
+      city: 1,
+      name: "Paul",
+      age: true
+    };
+    const person3 = {
+      name: "Paul",
+      city: true,
+      age: null
+    };
+    const person4 = {
+      name: "Paul",
+      age: 32,
+      city: null
+    };
+    const person5 = {
+      name: "Max",
+      city: undefined,
+      age: 'sixteen'
+    };
+    const person6 = {
+      name: false,
+      city: ['Kingston', '-upon-', 'Thames'],
+      age: undefined
+    };
+    const person7 = {
+      name: 'Deirdre',
+      city: {suburb: 'Trafford'},
+      age: 56
+    };
+    const person8 = {
+      name: 'Pierre',
+      city: 'Paris',
+      age: 40  
+    };
+    
+    expect(() => isFromManchester(person2)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person3)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person4)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person5)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person6)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person7)).toThrow(); // city value not a string
+    expect(() => isFromManchester(person8)).not.toThrow(); // city value IS a string
+  });
+
+  // test city value isn't empty
+  xtest("test city value isn't empty", () => {
+
+    const person2 = {
+      name: 'Peter',
+      city: '',
+      age: 50  
+    };
+    const person3 = {
+      name: 'Peter',
+      city: 'M4nc435t3r',
+      age: 50  
+    };
+
+    expect(() => isFromManchester(person2)).toThrow(); // city value empty
+    expect(() => isFromManchester(person3)).not.toThrow(); // city value isn't empty
+  });
+
+  xtest("returns true if the person has a postcode starting with M", () => {
     const person = {
       name: "Mohammed",
       age: 23,
@@ -613,7 +818,7 @@ describe("hasMPostCode", () => {
     expect(hasMPostCode(person)).toBe(true);
   });
 
-  test("returns false if the person does not have a postcode starting with M", () => {
+  xtest("returns false if the person does not have a postcode starting with M", () => {
     const person = {
       name: "Anisa",
       age: 39,
@@ -626,7 +831,7 @@ describe("hasMPostCode", () => {
     expect(hasMPostCode(person)).toBe(false);
   });
 
-  test("returns false if the postcode starts with M but is not for Manchester", () => {
+  xtest("returns false if the postcode starts with M but is not for Manchester", () => {
     const person = {
       name: "Jahin",
       age: 55,
