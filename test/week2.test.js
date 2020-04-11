@@ -668,9 +668,10 @@ describe("countSheep", () => {
 });
 
 describe.only("hasMPostCode", () => {
-  
-// person is object
-// person has postCode property
+
+// object has address property
+// address property has postCode property
+
 // other object has postCode property
 // postCode property is string
 // postCode property is correctly formatted 's(s)n(n)nss'
@@ -679,133 +680,7 @@ describe.only("hasMPostCode", () => {
     expect(() => hasMPostCode()).toThrow();
   });
 
-  test("throws error if too many arguments", () => {
-    const person = {
-      name: "Mohammed",
-      city: "Manchester",
-      age: 23
-    };
-    const plusOne = {
-      name: "Ken",
-      city: "Manchester",
-      age: 75
-    };
-    const plusTwo = undefined;
-    expect(() => isFromManchester(person, plusOne)).toThrow();
-    expect(() => isFromManchester(person, plusTwo)).not.toThrow();
-  });
-
-  xtest("throws error if person not an object", () => {
-    const person1 = 4;
-    const person2 = true;
-    const person3 = null;
-    const person4 = undefined;
-    const person5 = 'Mohammed';
-    const person6 = ['Mohammed', 'Manchester'];
-    const person7 = [['name:', 'Mohammed'], ['city:', 'Manchester']];
-
-    expect(() => isFromManchester(person1)).toThrow();      // because not an object
-    expect(() => isFromManchester(person2)).toThrow();      // because not an object
-    expect(() => isFromManchester(person3)).toThrow();      // because not an object
-    expect(() => isFromManchester(person4)).toThrow();      // because not an object
-    expect(() => isFromManchester(person5)).toThrow();      // because not an object
-    expect(() => isFromManchester(person6)).toThrow();      // because arrays are objects, but not object required
-    expect(() => isFromManchester(person7)).toThrow();      // because arrays are objects, but not object required
-
-  });
-
-  // test city property exists
-  xtest("test person has city property", () => {
-
-    const person2 = {};
-    const person3 = {
-      name: "Mohammed",
-      age: 23
-    };
-    const person4 = {
-      name: "Dave",
-      town: 'Macclesfield',
-      age: 64
-    };
-    const person5 = {
-      city: 'Liverpool',
-      name: "Paul",
-      age: 32
-    };
-    
-    expect(() => isFromManchester(person2)).toThrow(); // city property not found
-    expect(() => isFromManchester(person3)).toThrow(); // city property not found
-    expect(() => isFromManchester(person4)).toThrow(); // city property not found
-    expect(() => isFromManchester(person5)).not.toThrow(); // city property found, but in unusual position
-  });
-
-  // test city value is string
-  xtest("test city value is string", () => {
-
-    const person2 = {
-      city: 1,
-      name: "Paul",
-      age: true
-    };
-    const person3 = {
-      name: "Paul",
-      city: true,
-      age: null
-    };
-    const person4 = {
-      name: "Paul",
-      age: 32,
-      city: null
-    };
-    const person5 = {
-      name: "Max",
-      city: undefined,
-      age: 'sixteen'
-    };
-    const person6 = {
-      name: false,
-      city: ['Kingston', '-upon-', 'Thames'],
-      age: undefined
-    };
-    const person7 = {
-      name: 'Deirdre',
-      city: {suburb: 'Trafford'},
-      age: 56
-    };
-    const person8 = {
-      name: 'Pierre',
-      city: 'Paris',
-      age: 40  
-    };
-    
-    expect(() => isFromManchester(person2)).toThrow(); // city value not a string
-    expect(() => isFromManchester(person3)).toThrow(); // city value not a string
-    expect(() => isFromManchester(person4)).toThrow(); // city value not a string
-    expect(() => isFromManchester(person5)).toThrow(); // city value not a string
-    expect(() => isFromManchester(person6)).toThrow(); // city value not a string
-    expect(() => isFromManchester(person7)).toThrow(); // city value not a string
-    expect(() => isFromManchester(person8)).not.toThrow(); // city value IS a string
-  });
-
-  // test city value isn't empty
-  xtest("test city value isn't empty", () => {
-
-    const person2 = {
-      name: 'Peter',
-      city: '',
-      age: 50  
-    };
-    const person3 = {
-      name: 'Peter',
-      city: 'M4nc435t3r',
-      age: 50  
-    };
-
-    expect(() => isFromManchester(person2)).toThrow(); // city value empty
-    expect(() => isFromManchester(person3)).not.toThrow(); // city value isn't empty
-  });
-
-  xtest("returns true if the person has a postcode starting with M", () => {
+  xtest("throws error if too many arguments", () => {
     const person = {
       name: "Mohammed",
       age: 23,
@@ -815,32 +690,469 @@ describe.only("hasMPostCode", () => {
         postCode: "M16 8DR"
       }
     };
-    expect(hasMPostCode(person)).toBe(true);
-  });
-
-  xtest("returns false if the person does not have a postcode starting with M", () => {
-    const person = {
-      name: "Anisa",
-      age: 39,
+    const plusOne = {
+      name: "Mohammed",
+      age: 23,
       address: {
-        line1: "44 Bridge Street",
-        city: "Leeds",
-        postCode: "LS11 6BT"
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "M16 8DR"
       }
     };
-    expect(hasMPostCode(person)).toBe(false);
+    expect(() => hasMPostCode(person, plusOne)).toThrow();
+    expect(() => hasMPostCode(person, undefined)).not.toThrow();
   });
 
-  xtest("returns false if the postcode starts with M but is not for Manchester", () => {
-    const person = {
+  test("throws error if person not an object", () => {
+    const person1 = 4;
+    const person2 = true;
+    const person3 = null;
+    const person4 = undefined;
+    const person5 = 'Mohammed';
+    const person6 = ['Mohammed', 'Manchester'];
+    const person7 = [['name:', 'Mohammed'], ['city:', 'Manchester']];
+
+    expect(() => hasMPostCode(person1)).toThrow();      // because not an object
+    expect(() => hasMPostCode(person2)).toThrow();      // because not an object
+    expect(() => hasMPostCode(person3)).toThrow();      // because not an object
+    expect(() => hasMPostCode(person4)).toThrow();      // because not an object
+    expect(() => hasMPostCode(person5)).toThrow();      // because not an object
+    expect(() => hasMPostCode(person6)).toThrow();      // because arrays are objects, but not object required
+    expect(() => hasMPostCode(person7)).toThrow();      // because arrays are objects, but not object required
+
+  });
+
+  // test address exists
+  test("test person has address property", () => {
+
+    const person1 = {};
+    const person2 = {
+      name: "Mohammed",
+      age: 23,
+      postCode: "I am a postcode property"
+    };
+    const person3 = {
+      name: "Mohammed",
+      age: 23,
+      adress: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "I am a postcode property"
+      }
+    };
+    expect(() => hasMPostCode(person1)).toThrow();
+    expect(() => hasMPostCode(person2)).toThrow();
+    expect(() => hasMPostCode(person3)).toThrow();
+  });
+
+  // test person.address is object - return and resolve
+  test("throws error if address value not an object", () => {
+
+    const person2 = {
+      name: "Mohammed",
+      age: 23,
+      address: null
+    };
+    const person3 = {
+      name: "Mohammed",
+      age: 23,
+      address: undefined
+    };
+    const person4 = {
+      name: "Mohammed",
+      age: 23,
+      address: true
+    };
+    const person5 = {
+      name: "Mohammed",
+      age: 23,
+      address: ["1a Pool Road", "Manchester", "I am a postcode property"]
+    };
+    const person6 = {
+      name: "Mohammed",
+      age: 23,
+      address: 4
+    };
+    const person7 = {
+      name: "Mohammed",
+      age: 23,
+      address: "1a Pool Road, Manchester, my postcode"
+    };
+    expect(() => hasMPostCode(person2)).toThrow();
+    expect(() => hasMPostCode(person3)).toThrow();
+    expect(() => hasMPostCode(person4)).toThrow();
+    expect(() => hasMPostCode(person5)).toThrow();
+    expect(() => hasMPostCode(person6)).toThrow();
+    expect(() => hasMPostCode(person7)).toThrow();
+  });
+
+  // test postCode property exists
+  test("test person has postCode property", () => {
+
+    const person1 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road, Manchester, M16 8DR"
+      }
+    };
+    const person2 = {
+      name: "Mohammed",
+      age: 23,
+      address: ["1a Pool Road", "Manchester", "M16 8DR"]
+    };
+    const person3 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postcode: "I am a postcode property"
+      }
+    };
+    expect(() => hasMPostCode(person1)).toThrow();
+    expect(() => hasMPostCode(person2)).toThrow();
+    expect(() => hasMPostCode(person3)).toThrow();
+  });
+
+  // test postCode value is string
+  test("test postCode value is string", () => {
+
+    const person2 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: 2
+      }
+    };
+    const person3 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: true
+      }
+    };
+    const person4 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: null
+      }
+    };
+    const person5 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: undefined
+      }
+    };
+    const person6 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: ['M', '1', ' ', '1', 'A', 'A']
+      }
+    };
+    const person7 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: {firstPart: 'M1', secondPart: '1AA'}
+      }
+    };
+    expect(() => hasMPostCode(person2)).toThrow();
+    expect(() => hasMPostCode(person3)).toThrow();
+    expect(() => hasMPostCode(person4)).toThrow();
+    expect(() => hasMPostCode(person5)).toThrow();
+    expect(() => hasMPostCode(person6)).toThrow();
+    expect(() => hasMPostCode(person7)).toThrow();
+  });
+
+  // test postCode value isn't empty
+  test("test postCode value isn't empty", () => {
+
+    const person1 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: ""
+      }
+    };
+    expect(() => hasMPostCode(person1)).toThrow();
+  });
+
+  xtest("throws error if postCode part 2 incorrectly formatted", () => {
+    const person1 = {
       name: "Jahin",
       age: 55,
       address: {
         line1: "11 Stone Street",
         city: "Maidstone",
-        postCode: "ME20 5BR"
+        postCode: "M12345"
       }
     };
-    expect(hasMPostCode(person)).toBe(false);
+    const person2 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "M1UTD"
+      }
+    };
+    const person3 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "M12U5D"
+      }
+    };
+    const person4 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "M11AB2"
+      }
+    };
+    const person5 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "M1 11A"
+      }
+    };
+    expect(() => hasMPostCode(person1)).toThrow();
+    expect(() => hasMPostCode(person2)).toThrow();
+    expect(() => hasMPostCode(person3)).toThrow();
+    expect(() => hasMPostCode(person4)).toThrow();
+    expect(() => hasMPostCode(person5)).toThrow();
   });
+
+  xtest("throws error if postCode part 1 incorrectly formatted", () => {
+    const person1 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "M111 8RD" // double digit start, with space
+      }
+    };
+    const person2 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "MMM 1CD"
+      }
+    };
+    const person3 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "S10K 1EF"
+      }
+    };
+    const person4 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "11M 1GH"
+      }
+    };
+    const person6 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "12 1IJ"
+      }
+    };
+    const person7 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "2 1KL"
+      }
+    };
+    expect(hasMPostCode(person1)).toThrow();
+    // // expect(hasMPostCode(person2)).toThrow();
+    // // expect(hasMPostCode(person3)).toThrow();
+    // // expect(hasMPostCode(person4)).toThrow();
+    // // expect(hasMPostCode(person6)).toThrow();
+    // // expect(hasMPostCode(person7)).toThrow();
+  });
+
+  test("returns true if the person has a postcode starting with M", () => {
+    const person1 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "M96 8RD" // double digit start, with space
+      }
+    };
+    const person2 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "M368DR" // double digit start, no space
+      }
+    };
+    const person3 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "M1 8DR" // single digit start, with space
+      }
+    };
+    const person4 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "M18DR" // single digit start, no space
+      }
+    };
+    const person5 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "M01DR"
+      }
+    };
+    expect(hasMPostCode(person1)).toBe(true);
+    expect(hasMPostCode(person2)).toBe(true);
+    expect(hasMPostCode(person3)).toBe(true);
+    expect(hasMPostCode(person4)).toBe(true);
+    expect(hasMPostCode(person5)).not.toBe(true);
+
+  });
+
+  test("returns false if the person does not have a postcode starting with M", () => {
+    const person1 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Lincoln",
+        postCode: "LN20 5BR" // double digit start, with space
+      }
+    };
+    const person2 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Lincoln",
+        postCode: "LN20 5BR" // double digit start, no space
+      }
+    };
+    const person3 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Lincoln",
+        postCode: "LN2 5BR" // single digit start, with space
+      }
+    };
+    const person4 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Lincoln",
+        postCode: "LN25BR" // single digit start, no space
+      }
+    };
+
+    expect(hasMPostCode(person1)).toBe(false);
+    expect(hasMPostCode(person2)).toBe(false);
+    expect(hasMPostCode(person3)).toBe(false);
+    expect(hasMPostCode(person4)).toBe(false);
+  });
+
+  test("returns false if the postcode starts with M but is not for Manchester", () => {
+    const person1 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "ME20 5BR" // double digit start, with space
+      }
+    };
+    const person2 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "ME205BR" // double digit start, no space
+      }
+    };
+    const person3 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "ME2 5BR" // single digit start, with space
+      }
+    };
+    const person4 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "ME25BR" // single digit start, no space
+      }
+    };
+
+    expect(hasMPostCode(person1)).toBe(false);
+    expect(hasMPostCode(person2)).toBe(false);
+    expect(hasMPostCode(person3)).toBe(false);
+    expect(hasMPostCode(person4)).toBe(false);
+  });
+
+//test valid lower case postcodes work
+
 });

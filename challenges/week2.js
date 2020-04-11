@@ -69,13 +69,77 @@ function countSheep(arr, extraParam) {
   }
 }
 
-function hasMPostCode(person) {
-  if (person === undefined) throw new Error("person is required");
-  // Your code here!
+function hasMPostCode(person, extraParam) {
 
-  //do pertinent error messages
+  if (extraParam !== undefined) throw new Error('too many arguments');
+  else if (typeof person !== 'object') throw new Error('person must be an object');
+  else if (Object.keys(person).includes('address') === false) throw new Error('Address property not found');
+  else if (typeof person.address !== 'object') throw new Error('Address value not an object') // this line doesn't do what I hoped
+  else if (Object.keys(person.address).includes('postCode') === false) throw new Error('PostCode property not found');
+  else if (typeof person.address.postCode !== 'string') throw new Error('PostCode value not a string');  
+  else if (person.address.postCode.length === 0) throw new Error('PostCode value is empty!');  
 
-  return person.address.postCode.startsWith('M') && person.address.postCode.length === 7; // if this not strong enough, check 2nd char is a number
+  function validatePostCode(){
+
+  let pc = person.address.postCode.split(' ').join('');
+  let postCodeValidated = false;
+  // LN   NLL -correct formatting, could be Manchester
+  // LLN  NLL -correct formatting, definitely not Manchester
+  // LNN  NLL -correct formatting, could be Manchester
+  // LLNN NLL -correct formatting, definitely not Manchester
+  let pc1 = "";
+  let pc2 = pc.substr(pc.length - 3, pc.length);
+  let isALetter =  new RegExp(/[A-Z]/gi);
+  let isANumber =  new RegExp(/[0-9]/g);
+
+  //if (pc.length < 5 || pc.length > 7) throw new Error ('invalid postcode format'); // I know what I want to do but I'm being beaten by screen size. This is very unwieldy.
+
+  switch (pc.length) {
+    case 5:
+      pc1 = pc.substr(0, 2);
+      if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'n') !== true) postCodeValidated = false;
+      break;
+    case 6:
+      pc1 = pc.substr(0, 3);
+      if (testChar(pc1[0], 'l') !== true || (testChar(pc1[1], 'n') !== true && testChar(pc1[1], 'l') !== true) || testChar(pc1[2], 'n') !== true) postCodeValidated = false;
+      break;
+    case 7:
+      pc1 = pc.substr(0, 4)
+      if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'l') !== true || testChar(pc1[1], 'n') !== true || testChar(pc1[1], 'n') !== true) postCodeValidated = false;
+      break;
+    default:
+      throw new Error ('invalid postcode format');
+  }
+
+function testChar(charToTest, testType) {
+
+  let valid = false;
+
+  switch (testType) {
+    case 'n':
+      if (isANumber.test(charToTest) === true) valid = true;
+      isANumber =  new RegExp(/[0-9]/g);
+      break;
+    case 'l':
+      if (isALetter.test(charToTest) === true) valid = true;
+      isALetter =  new RegExp(/[A-Z]/gi);
+      break;
+    default:
+      return 'testChar error';
+  }
+  return valid;
+}
+
+for (let i = 0; i < pc2.length;i ++) {
+  if (testChar(pc2[i]) !== true) postCodeValidated = false;
+}
+  
+}
+//validatePostCode();
+
+return person.address.postCode[0] === 'M';
+
+
 }
 
 module.exports = {
