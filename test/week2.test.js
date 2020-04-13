@@ -1032,7 +1032,7 @@ describe.only("hasMPostCode", () => {
     expect(() => hasMPostCode(person)).toThrow();
   });
 
-  xtest("returns true if the person has a postcode starting with M", () => {
+  test("returns true if the person has a postcode starting with M", () => {
     const person1 = {
       name: "Mohammed",
       age: 23,
@@ -1069,24 +1069,13 @@ describe.only("hasMPostCode", () => {
         postCode: "M18DR" // single digit start, no space
       }
     };
-    const person5 = {
-      name: "Mohammed",
-      age: 23,
-      address: {
-        line1: "1a Pool Road",
-        city: "Manchester",
-        postCode: "M01DR"
-      }
-    };
     expect(hasMPostCode(person1)).toBe(true);
     expect(hasMPostCode(person2)).toBe(true);
     expect(hasMPostCode(person3)).toBe(true);
     expect(hasMPostCode(person4)).toBe(true);
-    expect(hasMPostCode(person5)).not.toBe(true);
-
   });
 
-  xtest("returns false if the person does not have a postcode starting with M", () => {
+  test("returns false if the person does not have a postcode starting with M", () => {
     const person1 = {
       name: "Jahin",
       age: 55,
@@ -1130,7 +1119,7 @@ describe.only("hasMPostCode", () => {
     expect(hasMPostCode(person4)).toBe(false);
   });
 
-  xtest("returns false if the postcode starts with M but is not for Manchester", () => {
+  test("returns false if the postcode starts with M but is not for Manchester", () => {
     const person1 = {
       name: "Jahin",
       age: 55,
@@ -1175,6 +1164,8 @@ describe.only("hasMPostCode", () => {
   });
 
 //test valid lower case postcodes work
+
+// test otherwise valid postcode where 2nd char is 0
 
 // other object has postCode property
 

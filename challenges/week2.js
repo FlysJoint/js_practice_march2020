@@ -83,7 +83,7 @@ function hasMPostCode(person, extraParam) {
 
   function validatePostCode(trimmedPC){
 
-    console.log('validating ' + trimmedPC);
+    // console.log('validating ' + trimmedPC);
     let postCodeValidated = true;
     // LN   NLL -correct formatting, could be Manchester
     // LLN  NLL -correct formatting, definitely not Manchester
@@ -96,17 +96,17 @@ function hasMPostCode(person, extraParam) {
 
     switch (pc.length) {
       case 5:
-        console.log('testing 5 length part 1...');
+        // console.log('testing 5 length part 1...');
         pc1 = pc.substr(0, 2);
         if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'n') !== true) postCodeValidated = false;
         break;
       case 6:
-        console.log('testing 6 length part 1...');
+        // console.log('testing 6 length part 1...');
         pc1 = pc.substr(0, 3);
         if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'ln') !== true || testChar(pc1[2], 'n') !== true) postCodeValidated = false;
         break;
       case 7:
-        console.log('testing 7 length part 1...');
+        // console.log('testing 7 length part 1...');
         pc1 = pc.substr(0, 4)
         if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'l') !== true || testChar(pc1[2], 'n') !== true || testChar(pc1[3], 'n') !== true) postCodeValidated = false;
         break;
@@ -117,38 +117,38 @@ function hasMPostCode(person, extraParam) {
     function testChar(charToTest, testType) {
 
       let valid = false;
-      console.log('validating ' + charToTest + ' expecting ' + testType + '...');
+      //console.log('validating ' + charToTest + ' expecting ' + testType + '...');
 
       switch (testType) {
         case 'n':
           if (isANumber.test(charToTest) === true) {
-            console.log('char pass');
+            // console.log('char pass');
             valid = true;
           }
           else {
-            console.log('char fail');
+            // console.log('char fail');
             throw new Error('char failed test'); // could throw here to save time
           }
           isANumber =  new RegExp(/[0-9]/g);
           break;
         case 'l':
           if (isALetter.test(charToTest) === true) {
-            console.log('char pass');
+            // console.log('char pass');
             valid = true;
           }
           else {
-            console.log('char fail');
+            // console.log('char fail');
             throw new Error('char failed test'); // could throw here to save time
           }
           isALetter =  new RegExp(/[A-Z]/gi);
           break;
         case 'ln':
           if (isALetter.test(charToTest) === true || isANumber.test(charToTest) === true) {
-            console.log('char pass');
+            // console.log('char pass');
             valid = true;
           }
           else {
-            console.log('char fail');
+            // console.log('char fail');
             throw new Error('char failed test'); // could throw here to save time
           }
           isALetter =  new RegExp(/[A-Z]/gi);
@@ -161,12 +161,12 @@ function hasMPostCode(person, extraParam) {
 }
 
     for (let i = 0; i < pc2.length;i ++) {
-      console.log('testing part 2...');
+      // console.log('testing part 2...');
       switch(i) {
         case 0:
           if (testChar(pc2[i], 'n' ) !== true) {
             postCodeValidated = false;
-            console.log('pc2 prob');
+            // console.log('pc2 prob');
             throw new Error(pc2[i] + ' postcode error');
           }
           break;
@@ -174,7 +174,7 @@ function hasMPostCode(person, extraParam) {
         case 2:
           if (testChar(pc2[i], 'l' ) !== true) {
             postCodeValidated = false;
-            console.log('pc2 prob');
+            // console.log('pc2 prob');
             throw new Error(pc2[i] + ' postcode error');
           }
           break;
@@ -185,7 +185,7 @@ function hasMPostCode(person, extraParam) {
   
     if (postCodeValidated === true) {
       console.log('postcode valid');
-      return pc[0] === 'M';
+      return pc[0] === 'M' && isANumber.test(pc[1]) === true;
     }
     else {
       console.log('postcode invalid');
@@ -193,7 +193,7 @@ function hasMPostCode(person, extraParam) {
     }
   }
 
-  validatePostCode(pc);
+  return validatePostCode(pc);
 }
 
 module.exports = {
