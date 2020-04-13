@@ -667,20 +667,13 @@ describe("countSheep", () => {
   });
 });
 
-describe("hasMPostCode", () => {
-
-// object has address property
-// address property has postCode property
-
-// other object has postCode property
-// postCode property is string
-// postCode property is correctly formatted 's(s)n(n)nss'
+describe.only("hasMPostCode", () => {
 
   test("throws error if no arguments", () => {
     expect(() => hasMPostCode()).toThrow();
   });
 
-  xtest("throws error if too many arguments", () => {
+  test("throws error if too many arguments", () => {
     const person = {
       name: "Mohammed",
       age: 23,
@@ -895,14 +888,14 @@ describe("hasMPostCode", () => {
     expect(() => hasMPostCode(person1)).toThrow();
   });
 
-  xtest("throws error if postCode part 2 incorrectly formatted", () => {
+  test("throws error if postCode part 2 not format nll", () => {
     const person1 = {
       name: "Jahin",
       age: 55,
       address: {
         line1: "11 Stone Street",
         city: "Maidstone",
-        postCode: "M12345"
+        postCode: "M12345" // nnn
       }
     };
     const person2 = {
@@ -911,7 +904,7 @@ describe("hasMPostCode", () => {
       address: {
         line1: "11 Stone Street",
         city: "Maidstone",
-        postCode: "M1UTD"
+        postCode: "M1UTD" // lll
       }
     };
     const person3 = {
@@ -920,7 +913,7 @@ describe("hasMPostCode", () => {
       address: {
         line1: "11 Stone Street",
         city: "Maidstone",
-        postCode: "M12U5D"
+        postCode: "M12U5D" // lnl
       }
     };
     const person4 = {
@@ -929,7 +922,7 @@ describe("hasMPostCode", () => {
       address: {
         line1: "11 Stone Street",
         city: "Maidstone",
-        postCode: "M11AB2"
+        postCode: "M11AB2" // lln
       }
     };
     const person5 = {
@@ -938,7 +931,7 @@ describe("hasMPostCode", () => {
       address: {
         line1: "11 Stone Street",
         city: "Maidstone",
-        postCode: "M1 11A"
+        postCode: "M1 11A" // nnl
       }
     };
     expect(() => hasMPostCode(person1)).toThrow();
@@ -948,26 +941,34 @@ describe("hasMPostCode", () => {
     expect(() => hasMPostCode(person5)).toThrow();
   });
 
-  xtest("throws error if postCode part 1 incorrectly formatted", () => {
-    const person1 = {
+  test("throws if postcode part 1 format nnn", () => {
+    const person = {
       name: "Mohammed",
       age: 23,
       address: {
         line1: "1a Pool Road",
         city: "Manchester",
-        postCode: "M111 8RD" // double digit start, with space
+        postCode: "111 8RD"
       }
     };
-    const person2 = {
-      name: "Jahin",
-      age: 55,
+    expect(() => hasMPostCode(person)).toThrow();
+  });
+
+  test("throws if postcode part 1 format lll", () => {
+    const person = {
+      name: "Mohammed",
+      age: 23,
       address: {
-        line1: "11 Stone Street",
-        city: "Maidstone",
-        postCode: "MMM 1CD"
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "MMM 8RD"
       }
     };
-    const person3 = {
+    expect(() => hasMPostCode(person)).toThrow();
+  });
+
+  test("throws if postcode part 1 format lnnl", () => {
+    const person = {
       name: "Jahin",
       age: 55,
       address: {
@@ -976,7 +977,24 @@ describe("hasMPostCode", () => {
         postCode: "S10K 1EF"
       }
     };
-    const person4 = {
+    expect(() => hasMPostCode(person)).toThrow();
+  });
+
+  test("throws if postcode part 1 format lnl", () => {
+    const person = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "S1K 1EF"
+      }
+    };
+    expect(() => hasMPostCode(person)).toThrow();
+  });
+
+  test("throws if postcode part 1 format nnl", () => {
+    const person = {
       name: "Jahin",
       age: 55,
       address: {
@@ -985,33 +1003,36 @@ describe("hasMPostCode", () => {
         postCode: "11M 1GH"
       }
     };
-    const person6 = {
-      name: "Jahin",
-      age: 55,
-      address: {
-        line1: "11 Stone Street",
-        city: "Maidstone",
-        postCode: "12 1IJ"
-      }
-    };
-    const person7 = {
-      name: "Jahin",
-      age: 55,
-      address: {
-        line1: "11 Stone Street",
-        city: "Maidstone",
-        postCode: "2 1KL"
-      }
-    };
-    expect(hasMPostCode(person1)).toThrow();
-    // // expect(hasMPostCode(person2)).toThrow();
-    // // expect(hasMPostCode(person3)).toThrow();
-    // // expect(hasMPostCode(person4)).toThrow();
-    // // expect(hasMPostCode(person6)).toThrow();
-    // // expect(hasMPostCode(person7)).toThrow();
+    expect(() => hasMPostCode(person)).toThrow();
   });
 
-  test("returns true if the person has a postcode starting with M", () => {
+  test("throws if postcode part 1 format nn", () => {
+    const person = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "11 1GH"
+      }
+    };
+    expect(() => hasMPostCode(person)).toThrow();
+  });
+
+  test("throws if postcode part 1 format nl", () => {
+    const person = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "1M1GH"
+      }
+    };
+    expect(() => hasMPostCode(person)).toThrow();
+  });
+
+  xtest("returns true if the person has a postcode starting with M", () => {
     const person1 = {
       name: "Mohammed",
       age: 23,
@@ -1061,11 +1082,11 @@ describe("hasMPostCode", () => {
     expect(hasMPostCode(person2)).toBe(true);
     expect(hasMPostCode(person3)).toBe(true);
     expect(hasMPostCode(person4)).toBe(true);
-    //expect(hasMPostCode(person5)).not.toBe(true);
+    expect(hasMPostCode(person5)).not.toBe(true);
 
   });
 
-  test("returns false if the person does not have a postcode starting with M", () => {
+  xtest("returns false if the person does not have a postcode starting with M", () => {
     const person1 = {
       name: "Jahin",
       age: 55,
@@ -1081,7 +1102,7 @@ describe("hasMPostCode", () => {
       address: {
         line1: "11 Stone Street",
         city: "Lincoln",
-        postCode: "LN20 5BR" // double digit start, no space
+        postCode: "LN205BR" // double digit start, no space
       }
     };
     const person3 = {
@@ -1154,5 +1175,7 @@ describe("hasMPostCode", () => {
   });
 
 //test valid lower case postcodes work
+
+// other object has postCode property
 
 });
