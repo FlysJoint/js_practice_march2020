@@ -667,7 +667,7 @@ describe("countSheep", () => {
   });
 });
 
-describe.only("hasMPostCode", () => {
+describe("hasMPostCode", () => {
 
   test("throws error if no arguments", () => {
     expect(() => hasMPostCode()).toThrow();
@@ -1072,8 +1072,8 @@ describe.only("hasMPostCode", () => {
       }
     };
     expect(() => hasMPostCode(person1)).toThrow();
-    //expect(() => hasMPostCode(person2)).toThrow();
-    //expect(() => hasMPostCode(person3)).toThrow();
+    expect(() => hasMPostCode(person2)).toThrow();
+    expect(() => hasMPostCode(person3)).toThrow();
     expect(() => hasMPostCode(person4)).toThrow();
   });
 

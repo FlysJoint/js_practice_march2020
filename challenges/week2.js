@@ -105,9 +105,11 @@ function hasMPostCode(person, extraParam) {
         // console.log('testing 6 length part 1...');
         //pc[1] === '0')
         pc1 = pc.substr(0, 3);
-        if (testChar(pc1[0], 'l') !== true || 
-        (testChar(pc1[1], 'ln') !== true && pc1[2] !== 0) || 
-        (testChar(pc1[2], 'n') !== true && pc1[2] !== 0)) postCodeValidated = false;
+        //console.log(pc[1]);
+        if (testChar(pc1[0], 'l') === false || (testChar(pc1[1], 'ln') === false) || testChar(pc1[2], 'n') === false) postCodeValidated = false;
+
+        if ((pc1[1] === '0') || (testChar(pc1[1], 'l') === true && pc1[2] === '0')) postCodeValidated = false;
+        
         break;
       case 7:
         // console.log('testing 7 length part 1...');
@@ -127,34 +129,22 @@ function hasMPostCode(person, extraParam) {
       switch (testType) {
         case 'n':
           if (isANumber.test(charToTest) === true) {
-            // console.log('char pass');
+            //console.log('char pass');
             valid = true;
-          }
-          else {
-            // console.log('char fail');
-            throw new Error('char failed test'); // could throw here to save time
           }
           isANumber =  new RegExp(/[0-9]/g);
           break;
         case 'l':
           if (isALetter.test(charToTest) === true) {
-            // console.log('char pass');
+            //console.log('char pass');
             valid = true;
-          }
-          else {
-            // console.log('char fail');
-            throw new Error('char failed test'); // could throw here to save time
           }
           isALetter =  new RegExp(/[A-Z]/gi);
           break;
         case 'ln':
           if (isALetter.test(charToTest) === true || isANumber.test(charToTest) === true) {
-            // console.log('char pass');
+            //console.log('char pass');
             valid = true;
-          }
-          else {
-            // console.log('char fail');
-            throw new Error('char failed test'); // could throw here to save time
           }
           isALetter =  new RegExp(/[A-Z]/gi);
           isANumber =  new RegExp(/[0-9]/g);
