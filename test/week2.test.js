@@ -808,6 +808,8 @@ describe.only("hasMPostCode", () => {
     expect(() => hasMPostCode(person3)).toThrow();
   });
 
+  // other object has postCode property? bug/feature?
+
   // test postCode value is string
   test("test postCode value is string", () => {
 
@@ -1032,6 +1034,82 @@ describe.only("hasMPostCode", () => {
     expect(() => hasMPostCode(person)).toThrow();
   });
 
+  test("throws if 1st number is 0", () => {
+    const person1 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "M0 1AA"
+      }
+    };
+    const person2 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "M01 1AA"
+      }
+    };
+    const person3 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "ME0 1AA"
+      }
+    };
+    const person4 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "ME02 1AA"
+      }
+    };
+    expect(() => hasMPostCode(person1)).toThrow();
+    //expect(() => hasMPostCode(person2)).toThrow();
+    //expect(() => hasMPostCode(person3)).toThrow();
+    expect(() => hasMPostCode(person4)).toThrow();
+  });
+
+  test("does not throw with lowercase valid postcode", () => {
+    const person1 = {
+      name: "Mohammed",
+      age: 23,
+      address: {
+        line1: "1a Pool Road",
+        city: "Manchester",
+        postCode: "m96 8rd" // double digit start, with space
+      }
+    };
+    const person2 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Lincoln",
+        postCode: "ln205br" // double digit start, no space
+      }
+    };
+    const person3 = {
+      name: "Jahin",
+      age: 55,
+      address: {
+        line1: "11 Stone Street",
+        city: "Maidstone",
+        postCode: "me2 5br" // single digit start, with space
+      }
+    };
+    expect(() => hasMPostCode(person1)).not.toThrow();
+    expect(() => hasMPostCode(person2)).not.toThrow();
+    expect(() => hasMPostCode(person3)).not.toThrow();
+  });
+
   test("returns true if the person has a postcode starting with M", () => {
     const person1 = {
       name: "Mohammed",
@@ -1156,17 +1234,9 @@ describe.only("hasMPostCode", () => {
         postCode: "ME25BR" // single digit start, no space
       }
     };
-
     expect(hasMPostCode(person1)).toBe(false);
     expect(hasMPostCode(person2)).toBe(false);
     expect(hasMPostCode(person3)).toBe(false);
     expect(hasMPostCode(person4)).toBe(false);
   });
-
-//test valid lower case postcodes work
-
-// test otherwise valid postcode where 2nd char is 0
-
-// other object has postCode property
-
 });

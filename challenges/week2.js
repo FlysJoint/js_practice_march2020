@@ -98,17 +98,22 @@ function hasMPostCode(person, extraParam) {
       case 5:
         // console.log('testing 5 length part 1...');
         pc1 = pc.substr(0, 2);
-        if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'n') !== true) postCodeValidated = false;
+        //console.log(pc[1]);
+        if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'n') !== true || pc[1] === '0') postCodeValidated = false;
         break;
       case 6:
         // console.log('testing 6 length part 1...');
+        //pc[1] === '0')
         pc1 = pc.substr(0, 3);
-        if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'ln') !== true || testChar(pc1[2], 'n') !== true) postCodeValidated = false;
+        if (testChar(pc1[0], 'l') !== true || 
+        (testChar(pc1[1], 'ln') !== true && pc1[2] !== 0) || 
+        (testChar(pc1[2], 'n') !== true && pc1[2] !== 0)) postCodeValidated = false;
         break;
       case 7:
         // console.log('testing 7 length part 1...');
         pc1 = pc.substr(0, 4)
-        if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'l') !== true || testChar(pc1[2], 'n') !== true || testChar(pc1[3], 'n') !== true) postCodeValidated = false;
+        //console.log(pc[2]);
+        if (testChar(pc1[0], 'l') !== true || testChar(pc1[1], 'l') !== true || testChar(pc1[2], 'n') !== true || testChar(pc1[3], 'n') !== true || pc[2] === 0 || pc[2] === '0') postCodeValidated = false;
         break;
       default:
         throw new Error ('invalid postcode length');
@@ -183,12 +188,12 @@ function hasMPostCode(person, extraParam) {
       }
     }
   
-    if (postCodeValidated === true) {
-      console.log('postcode valid');
+    if (postCodeValidated === true)  {
+      //console.log('postcode valid');
       return pc[0] === 'M' && isANumber.test(pc[1]) === true;
     }
     else {
-      console.log('postcode invalid');
+      //console.log('postcode invalid');
       throw new Error(pc + ' is invalid postcode');
     }
   }
