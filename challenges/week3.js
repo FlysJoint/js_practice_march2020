@@ -1,5 +1,10 @@
-function getSquares(nums) {
+function getSquares(nums, extraParam) {
   if (nums === undefined) throw new Error("nums is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+  for (let i = 0; i < nums.length; i++) {
+    if (typeof nums[i] !== 'number') throw new Error('array of numbers required');
+  }
+
   let squares = nums.map(x => x * x);
 return squares;
 }

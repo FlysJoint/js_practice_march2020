@@ -7,6 +7,8 @@ const {
 } = require("../challenges/week3");
 
 describe("camelCaseWords", () => {
+
+
   test("camel cases a single word (i.e. no capital letter at beginning)", () => {
     expect(camelCaseWords(["my"])).toBe("my");
   });
@@ -23,11 +25,39 @@ describe("camelCaseWords", () => {
       "isHigherThanMinNumber"
     );
   });
+
+
+
 });
 
 describe("getSquares", () => {
   test("returns an empty array if empty array passed", () => {
     expect(getSquares([])).toEqual([]);
+  });
+
+  test("throws if additional parameters are defined", () => {
+    expect(() => getSquares([2, 4, 6], 'throw me')).toThrow();
+    expect(() => getSquares([2, 4, 6], null)).toThrow();
+    expect(() => getSquares([2, 4, 6], 6)).toThrow();
+    expect(() => getSquares([2, 4, 6], {num : 6})).toThrow();
+    expect(() => getSquares([2, 4, 6], [2, 4, 6])).toThrow();
+    expect(() => getSquares([2, 4, 6], undefined)).not.toThrow();
+  });
+
+  test("throws if argument isn't an array", () => {
+    expect(() => getSquares('throw me')).toThrow();
+    expect(() => getSquares(null)).toThrow();
+    expect(() => getSquares(6)).toThrow();
+    expect(() => getSquares({num : 6})).toThrow();
+    expect(() => getSquares(undefined)).toThrow();
+  });
+
+  test("throws if argument isn't an array of numbers", () => {
+    expect(() => getSquares([6, 'throw', 'me'])).toThrow();
+    expect(() => getSquares([1, null])).toThrow();
+    expect(() => getSquares([2, 4, 6, {num : 6}])).toThrow();
+    expect(() => getSquares([5, [2, 4, 6], [2, 4, 6]])).toThrow();
+    expect(() => getSquares([2, 4, 6, undefined])).toThrow();
   });
 
   test("returns an array of squares of the original numbers", () => {
@@ -41,6 +71,8 @@ describe("getSquares", () => {
       4356,
       984064
     ]);
+    expect(getSquares([-2, 0, -6])).toEqual([4, 0, 36]);
+    expect(getSquares([0.5, 1.2, 2.5])).toEqual([0.25, 1.44, 6.25]);
   });
 });
 
