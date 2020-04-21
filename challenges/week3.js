@@ -12,16 +12,17 @@ return squares;
 function camelCaseWords(words) {
 
 let capitalised = [];
-  
+
 for (let i = 0; i < words.length; i++) {
 
-  for (let j = 0; j < words[i].length; j++) {
-    if (j === 0 && i !== 0) capitalised.push(words[i][j].toUpperCase());
-    else capitalised.push(words[i][j].toLowerCase());
-  }
+    for (let j = 0; j < words[i].length; j++) {
+      if (j === 0 && i !== 0) capitalised.push(words[i][j].toUpperCase());
+      else capitalised.push(words[i][j].toLowerCase());
+    }
 }
+  if (capitalised.join('').search(/[^a-zA-Z]+/) === -1) return capitalised.join('');
+  else throw new Error('Unexpected symbols in string');
 
-return capitalised.join('');
 }
 
 function getTotalSubjects(people) {

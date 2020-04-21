@@ -8,6 +8,29 @@ const {
 
 describe("camelCaseWords", () => {
 
+  test("throw if no argument", () => {
+    expect(() => camelCaseWords().toThrow());
+  });
+
+  test("throw if too many arguments", () => {
+    expect(() => camelCaseWords(["my"], ["variable"]).toThrow());
+    expect(() => camelCaseWords(["my", "variable"], "variable").toThrow());
+    expect(() => camelCaseWords(["my"], 2).toThrow());
+    expect(() => camelCaseWords(["my"], false).toThrow());
+    expect(() => camelCaseWords(["my"], {name: 'variable'}).toThrow());
+    expect(() => camelCaseWords(["my"], null).toThrow());
+    expect(() => camelCaseWords(["my"], undefined).not.toThrow());
+  });
+
+  test("throw if array not just strings", () => {
+    expect(() => camelCaseWords(["my", "strings"]).not.toThrow());
+    expect(() => camelCaseWords(["my", ["variable"]]).toThrow());
+    expect(() => camelCaseWords(["my", 2]).toThrow());
+    expect(() => camelCaseWords(["my", false]).toThrow());
+    expect(() => camelCaseWords(["my", {name: 'variable'}]).toThrow());
+    expect(() => camelCaseWords(["my", null]).toThrow());
+    expect(() => camelCaseWords(["my", undefined]).toThrow());
+  });
 
   test("camel cases a single word (i.e. no capital letter at beginning)", () => {
     expect(camelCaseWords(["my"])).toBe("my");
@@ -26,7 +49,38 @@ describe("camelCaseWords", () => {
     );
   });
 
+  test("test capitals work", () => {
+    expect(camelCaseWords(["MY", "VARIABLE"])).toBe("myVariable");
+    expect(camelCaseWords(["MY", "VARIABLE", "NAME"])).toBe("myVariableName");
+    expect(camelCaseWords(["IS", "UNIQUE"])).toBe("isUnique");
+    expect(camelCaseWords(["IS", "HIGHER", "THAN", "MIN", "NUMBER"])).toBe(
+      "isHigherThanMinNumber"
+    );
+  });
 
+  test("test lowercase and uppercase mixed words work", () => {
+    expect(camelCaseWords(["MY", "variable"])).toBe("myVariable");
+    expect(camelCaseWords(["MY", "variable", "NAME"])).toBe("myVariableName");
+    expect(camelCaseWords(["is", "UNIQUE"])).toBe("isUnique");
+    expect(camelCaseWords(["is", "HIGHER", "THAN", "min", "NUMBER"])).toBe(
+      "isHigherThanMinNumber"
+    );
+  });
+
+  test("test lowercase and uppercase mixed letters work", () => {
+    expect(camelCaseWords(["My", "vaRiaBle"])).toBe("myVariable");
+    expect(camelCaseWords(["mY", "vAriAble", "NaME"])).toBe("myVariableName");
+    expect(camelCaseWords(["iS", "UniQUe"])).toBe("isUnique");
+    expect(camelCaseWords(["Is", "HiGhEr", "ThaN", "mIn", "NuMbEr"])).toBe(
+      "isHigherThanMinNumber"
+    );
+  });
+
+  test("throw if string not letters only", () => {
+    expect(() => camelCaseWords(["my ", "variable"])).toThrow();
+    expect(() => camelCaseWords(["m!y", "variable"])).toThrow();
+    expect(() => camelCaseWords(["my", "vari4ble"])).toThrow();
+  });
 
 });
 
