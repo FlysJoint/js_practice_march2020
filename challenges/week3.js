@@ -11,37 +11,40 @@ return squares;
 
 function camelCaseWords(words) {
 
-let capitalised = [];
+  let capitalised = [];
 
-for (let i = 0; i < words.length; i++) {
+  for (let i = 0; i < words.length; i++) {
 
-    for (let j = 0; j < words[i].length; j++) {
-      if (j === 0 && i !== 0) capitalised.push(words[i][j].toUpperCase());
-      else capitalised.push(words[i][j].toLowerCase());
-    }
-}
-  if (capitalised.join('').search(/[^a-zA-Z]+/) === -1) return capitalised.join('');
-  else throw new Error('Unexpected symbols in string');
+      for (let j = 0; j < words[i].length; j++) {
+        if (j === 0 && i !== 0) capitalised.push(words[i][j].toUpperCase());
+        else capitalised.push(words[i][j].toLowerCase());
+      }
+  }
+    if (capitalised.join('').search(/[^a-zA-Z]+/) === -1) return capitalised.join('');
+    else throw new Error('Unexpected symbols in string');
 
-}
+  }
 
-function getTotalSubjects(people) {
-  if (people === undefined) throw new Error("people is required");
+function getTotalSubjects(people, extraParam) {
+  if (typeof people !== 'object') throw new Error("people is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
 
-  let subjects = 0;
+  let sSubjects = 0;
 
   for (let i = 0; i < people.length; i++) {
-    subjects += people[i].subjects.length;
+    if (Array.isArray(people[i].subjects) === false) throw new Error('subjects not an array: ' + typeof people[i].subjects);
+    for (let s = 0; s < people[i].subjects.length; s++) {
+      if (typeof people[i].subjects[s] !== 'string' && people[i].subjects[s] !== null && people[i].subjects[s] !== undefined) throw new Error('subject element not a string');
+    }
+    sSubjects += people[i].subjects.length;
   }
   
-  return subjects;
+  return sSubjects;
 }
 
 function checkIngredients(menu, ingredient) {
   if (menu === undefined) throw new Error("menu is required");
   if (!ingredient) throw new Error("ingredient is required");
-
-  let subjects = 0;
 
   for (let i = 0; i < menu.length; i++) {
     if (menu[i].ingredients.includes(ingredient)) return true;

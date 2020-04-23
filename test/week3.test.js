@@ -130,7 +130,107 @@ describe("getSquares", () => {
   });
 });
 
-describe("getTotalSubjects", () => {
+describe.only("getTotalSubjects", () => {
+
+// empty arguments
+  test("throw if no arguments", () => {
+    expect(() => getTotalSubjects()).toThrow();
+  });
+// too many arguments
+  test("throw if too many arguments", () => {
+    const people = [
+      { name: "Billy", subjects: ['geography'] },
+      { name: "Claude", subjects: ['maths'] },
+      { name: "Aneeta", subjects: ['history'] }
+    ];
+    expect(() => getTotalSubjects(people, 1)).toThrow();
+    expect(() => getTotalSubjects(people, 'two')).toThrow();
+    expect(() => getTotalSubjects(people, true)).toThrow();
+    expect(() => getTotalSubjects(people, {name: 'name'})).toThrow();
+    expect(() => getTotalSubjects(people, [people, people])).toThrow();
+    expect(() => getTotalSubjects(people, null)).toThrow();
+    expect(() => getTotalSubjects(people, undefined)).not.toThrow();
+  });
+
+  test("throw if people not an object", () => {
+    const people = 3;
+    const people2 = 'two';
+    const people3 = false;
+    const people4 = null;
+    const people5 = undefined;
+    const people6 = ['chemistry', 'maths'];
+    expect(() => getTotalSubjects(people)).toThrow();
+    expect(() => getTotalSubjects(people2)).toThrow();
+    expect(() => getTotalSubjects(people3)).toThrow();
+    expect(() => getTotalSubjects(people4)).toThrow();
+    expect(() => getTotalSubjects(people5)).toThrow();
+    expect(() => getTotalSubjects(people6)).toThrow();
+  });
+
+  test("throw if subjects not an array", () => {
+    const people = [
+      { name: "Billy"}
+    ];
+    const people2 = [
+      { name: "Aneeta", subjects: 4 }
+    ];
+    const people3 = [
+      { name: "Billy", subjects: true }
+    ];
+    const people4 = [
+      { name: "Billy", subjects: null }
+    ];
+    const people5 = [
+      { name: "Claude", subjects: {name: 'chemistry'}}
+    ];
+    expect(() => getTotalSubjects(people)).toThrow();
+    expect(() => getTotalSubjects(people2)).toThrow();
+    expect(() => getTotalSubjects(people3)).toThrow();
+    expect(() => getTotalSubjects(people4)).toThrow();
+    expect(() => getTotalSubjects(people5)).toThrow();
+  });
+
+  test("throw if any subject elements not a string", () => {
+    const people = [
+      { name: "Billy", subjects: ['geography'] },
+      { name: "Claude", subjects: ['maths', false] },
+      { name: "Aneeta", subjects: ['history'] }
+    ];
+    const people2 = [
+      { name: "Billy", subjects: ['geography'] },
+      { name: "Claude", subjects: ['maths', 3, 'English'] },
+      { name: "Aneeta", subjects: ['history'] }
+    ];
+    const people3 = [
+      { name: "Billy", subjects: ['geography'] },
+      { name: "Claude", subjects: ['maths', null, 'English'] },
+      { name: "Aneeta", subjects: ['history'] }
+    ];
+    const people4 = [
+      { name: "Billy", subjects: ['geography'] },
+      { name: "Claude", subjects: ['maths', ['geography', 'history'], 'English'] },
+      { name: "Aneeta", subjects: ['history'] }
+    ];
+    const people5 = [
+      { name: "Billy", subjects: ['geography'] },
+      { name: "Claude", subjects: ['maths', {subjects: 'history'}, 'English'] },
+      { name: "Aneeta", subjects: ['history'] }
+    ];
+    const people6 = [
+      { name: "Billy", subjects: ['geography'] },
+      { name: "Claude", subjects: ['maths', undefined, 'English'] },
+      { name: "Aneeta", subjects: ['history'] }
+    ];
+    expect(() => getTotalSubjects(people)).toThrow();
+    expect(() => getTotalSubjects(people2)).toThrow();
+    expect(() => getTotalSubjects(people3)).not.toThrow();
+    expect(() => getTotalSubjects(people4)).toThrow();
+    expect(() => getTotalSubjects(people5)).toThrow();
+    expect(() => getTotalSubjects(people6)).not.toThrow();
+  });
+
+// as subjects is probably finite could check subjects against a const list
+
   test("returns 0 if no people have subjects", () => {
     const people = [
       { name: "Billy", subjects: [] },
@@ -160,6 +260,18 @@ describe("getTotalSubjects", () => {
 });
 
 describe("checkIngredients", () => {
+
+  // empty arguments
+  test("throw if no arguments", () => {
+    expect(() => checkIngredients()).toThrow();
+  });
+
+// too many arguments
+// menu is not an object
+// menu[i].ingredients does not exist
+// menu[i].ingredients is not an array
+// menu[i].ingredients is not an array of only strings
+
   test("returns false if no menu items include the specified ingredient", () => {
     const menu = [
       {
