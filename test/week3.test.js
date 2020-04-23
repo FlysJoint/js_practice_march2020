@@ -9,27 +9,27 @@ const {
 describe("camelCaseWords", () => {
 
   test("throw if no argument", () => {
-    expect(() => camelCaseWords().toThrow());
+    expect(() => camelCaseWords()).toThrow();
   });
 
   test("throw if too many arguments", () => {
-    expect(() => camelCaseWords(["my"], ["variable"]).toThrow());
-    expect(() => camelCaseWords(["my", "variable"], "variable").toThrow());
-    expect(() => camelCaseWords(["my"], 2).toThrow());
-    expect(() => camelCaseWords(["my"], false).toThrow());
-    expect(() => camelCaseWords(["my"], {name: 'variable'}).toThrow());
-    expect(() => camelCaseWords(["my"], null).toThrow());
-    expect(() => camelCaseWords(["my"], undefined).not.toThrow());
+    expect(() => camelCaseWords(["my"], ["variable"])).toThrow();
+    expect(() => camelCaseWords(["my", "variable"], "variable")).toThrow();
+    expect(() => camelCaseWords(["my"], 2)).toThrow();
+    expect(() => camelCaseWords(["my"], false)).toThrow();
+    expect(() => camelCaseWords(["my"], {name: 'variable'})).toThrow();
+    expect(() => camelCaseWords(["my"], null)).toThrow();
+    expect(() => camelCaseWords(["my"], undefined)).not.toThrow();
   });
 
   test("throw if array not just strings", () => {
-    expect(() => camelCaseWords(["my", "strings"]).not.toThrow());
-    expect(() => camelCaseWords(["my", ["variable"]]).toThrow());
-    expect(() => camelCaseWords(["my", 2]).toThrow());
-    expect(() => camelCaseWords(["my", false]).toThrow());
-    expect(() => camelCaseWords(["my", {name: 'variable'}]).toThrow());
-    expect(() => camelCaseWords(["my", null]).toThrow());
-    expect(() => camelCaseWords(["my", undefined]).toThrow());
+    expect(() => camelCaseWords(["my", "strings"])).not.toThrow();
+    expect(() => camelCaseWords(["my", ["variable"]])).toThrow();
+    expect(() => camelCaseWords(["my", 2])).toThrow();
+    expect(() => camelCaseWords(["my", false])).toThrow();
+    expect(() => camelCaseWords(["my", {name: 'variable'}])).toThrow();
+    expect(() => camelCaseWords(["my", null])).toThrow();
+    expect(() => camelCaseWords(["my", undefined])).toThrow();
   });
 
   test("camel cases a single word (i.e. no capital letter at beginning)", () => {
@@ -130,7 +130,7 @@ describe("getSquares", () => {
   });
 });
 
-describe.only("getTotalSubjects", () => {
+describe("getTotalSubjects", () => {
 
 // empty arguments
   test("throw if no arguments", () => {
@@ -267,10 +267,193 @@ describe("checkIngredients", () => {
   });
 
 // too many arguments
+  test("throw if too many arguments", () => {
+    const menu = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", "garam masala", "rice"]
+      },
+      {
+        name: "chocolate tiffin",
+        ingredients: [
+          "dark chocolate",
+          "egg",
+          "flour",
+          "brown sugar",
+          "vanilla essence"
+        ]
+      },
+      {
+        name: "hummus",
+        ingredients: ["chickpeas", "tahini", "lemon", "garlic", "salt"]
+      }
+    ];
+    expect(() => checkIngredients(menu, 'rice', 'lemon')).toThrow();
+    expect(() => checkIngredients(menu, 'rice', 3)).toThrow();
+    expect(() => checkIngredients(menu, 'rice', true)).toThrow();
+    expect(() => checkIngredients(menu, 'rice', null)).toThrow();
+    expect(() => checkIngredients(menu, 'rice', ['rice', 'lemon'])).toThrow();
+    expect(() => checkIngredients(menu, 'rice', {ingredient: 'lemon'})).toThrow();
+    expect(() => checkIngredients(menu, 'rice', undefined)).not.toThrow();
+  });
+
 // menu is not an object
+  test("throw if menu not an object", () => {
+    const menu = ['rice', 'lemon'];
+    const menu2 = 3;
+    const menu3 = true;
+    const menu4 = null;
+    const menu5 = undefined;
+    const menu6 = 'rice'
+    expect(() => checkIngredients(menu, 'rice')).toThrow();
+    expect(() => checkIngredients(menu2, 3)).toThrow();
+    expect(() => checkIngredients(menu3, true)).toThrow();
+    expect(() => checkIngredients(menu4, null)).toThrow();
+    expect(() => checkIngredients(menu5, undefined)).toThrow();
+    expect(() => checkIngredients(menu6, 'rice')).toThrow();
+  });
+
 // menu[i].ingredients does not exist
-// menu[i].ingredients is not an array
+  test("throw if menu[i].ingredients does not exist", () => {
+    const menu = [
+      {
+        name: "tofu fritters",
+        stuffThatGoesInRecipe: '["tofu", "egg yolk", "breadbrumbs", "paprika"]'
+      }
+    ];
+    expect(() => checkIngredients(menu, 'tofu')).toThrow();
+  });
+
+// menu[i].ingredients not an array
+  test("throw if menu[i].ingredients is not an array", () => {
+    const menu = [
+      {
+        name: "tofu fritters",
+        ingredients: 'tofu'
+      }
+    ];
+    const menu2 = [
+      {
+        name: "tofu fritters",
+        ingredients: 1
+      }
+    ];
+    const menu3 = [
+      {
+        name: "tofu fritters",
+        ingredients: null
+      }
+    ];
+    const menu4 = [
+      {
+        name: "tofu fritters",
+        ingredients: undefined
+      }
+    ];
+    const menu5 = [
+      {
+        name: "tofu fritters",
+        ingredients: {herbs: 'sage'}
+      }
+    ];
+    const menu6 = [
+      {
+        name: "tofu fritters",
+        ingredients: true
+      }
+    ];
+    expect(() => checkIngredients(menu, 'tofu')).toThrow();
+    expect(() => checkIngredients(menu2, 1)).toThrow();
+    expect(() => checkIngredients(menu3, null)).toThrow();
+    expect(() => checkIngredients(menu4, undefined)).toThrow();
+    expect(() => checkIngredients(menu5, 'sage')).toThrow();
+    expect(() => checkIngredients(menu6, true)).toThrow();
+  });
+
 // menu[i].ingredients is not an array of only strings
+  test("throw if menu[i].ingredients is not an array", () => {
+    const menu = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", 2, "rice"]
+      }
+    ];
+    const menu2 = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", false, "rice"]
+      }
+    ];
+    const menu3 = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", null, "rice"]
+      }
+    ];
+    const menu4 = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", ['rice', 'garlic'], "rice"]
+      }
+    ];
+    const menu5 = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", {spices : '5 spice powder'}, "rice"]
+      }
+    ];
+    const menu6 = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", undefined, "rice"]
+      }
+    ];
+    const menu7 = [
+      {
+        name: "tofu fritters",
+        ingredients: ["tofu", "egg yolk", "breadbrumbs", "paprika"]
+      },
+      {
+        name: "black bean curry",
+        ingredients: ["black beans", "rice", 3] // placed the failure after the success
+      }
+    ];
+    expect(() => checkIngredients(menu, 'rice')).toThrow();
+    expect(() => checkIngredients(menu2, 'rice')).toThrow();
+    expect(() => checkIngredients(menu3, 'rice')).not.toThrow();
+    expect(() => checkIngredients(menu4, 'rice')).toThrow();
+    expect(() => checkIngredients(menu5, 'rice')).toThrow();
+    expect(() => checkIngredients(menu6, 'rice')).not.toThrow();
+    expect(() => checkIngredients(menu7, 'rice')).toThrow();
+  });
 
   test("returns false if no menu items include the specified ingredient", () => {
     const menu = [
@@ -332,6 +515,52 @@ describe("checkIngredients", () => {
 });
 
 describe("duplicateNumbers", () => {
+
+  // empty arguments
+  test("throw if no arguments", () => {
+    expect(() => duplicateNumbers()).toThrow();
+  });
+
+  // 1 argument
+  test("throw if only one argument", () => {
+    expect(() => duplicateNumbers([2, 6, 7, 3, 15])).toThrow();
+  });
+
+// too many arguments
+  test("throw if too many arguments", () => {
+    let arr1 = [1, 55, 4, 3, 7, 8];
+    let arr2 = [55, 23, 65, 0, 1];
+    let arr3 = [46, 55, 32, 3, 9, 8];
+    let arr4 = 'an array';
+    let arr5 = true;
+    let arr6 = {array: 'numbers'};
+    let arr7 = null;
+    let arr8 = 42;
+    let arr9 = undefined;
+    expect(() => duplicateNumbers(arr1, arr2, arr3)).toThrow();
+    expect(() => duplicateNumbers(arr1, arr2, arr4)).toThrow();
+    expect(() => duplicateNumbers(arr1, arr2, arr5)).toThrow();
+    expect(() => duplicateNumbers(arr1, arr2, arr6)).toThrow();
+    expect(() => duplicateNumbers(arr1, arr2, arr7)).toThrow();
+    expect(() => duplicateNumbers(arr1, arr2, arr8)).toThrow();
+    expect(() => duplicateNumbers(arr1, arr2, arr9)).not.toThrow();
+  });
+
+// check both arrays have only numbers
+  test("throw if argument 1 or 2 arent array", () => {
+    let arr1 = [5, 20, 8, true, 56, 19];
+    let arr2 = [20, null, 24, 56, 12];
+    expect(() => duplicateNumbers(arr1, arr2)).toThrow();
+
+    arr1 = [76, 88, undefined, 8];
+    arr2 = ['8', 12, 14, 87];
+    expect(() => duplicateNumbers(arr1, arr2)).toThrow();
+
+    arr1 = [76, 88, [5, 19], 8];
+    arr2 = [{number: 8}, 12, 14, 87];
+    expect(() => duplicateNumbers(arr1, arr2)).toThrow();
+  });
+
   test("returns an array of numbers which appear in both arr1 and arr2", () => {
     let arr1 = [1, 55, 4, 3, 7, 8];
     let arr2 = [55, 23, 65, 0];
