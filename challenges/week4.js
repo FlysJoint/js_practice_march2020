@@ -31,8 +31,8 @@ function getCities(users) {
 
 function getSquareRoots(nums) {
   if (!nums) throw new Error("nums is required");
-  console.log(nums.map(x => Math.sqrt(x).toFixed(2)));
-  return nums.map(x => Math.sqrt(x).toFixed(2));
+
+  return nums.map(x => Number(Math.sqrt(x).toFixed(2)));
 }
 
 function findSentencesContaining(sentences, str) {
