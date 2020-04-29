@@ -1,32 +1,33 @@
 function findSmallNums(nums) {
   if (!nums) throw new Error("nums is required");
-  // Your code here
+  return nums.filter(x => x < 1);
 }
 
 function findNamesBeginningWith(names, char) {
   if (!names) throw new Error("names is required");
   if (!char) throw new Error("char is required");
-  // Your code here
+  return names.filter(x => x.startsWith(char));
 }
 
 function findVerbs(words) {
   if (!words) throw new Error("words is required");
-  // Your code here
+  return words.filter(x => x.startsWith('to '));
 }
 
 function getIntegers(nums) {
   if (!nums) throw new Error("nums is required");
-  // Your code here
+  return nums.filter(x => Number.isInteger(x));
 }
 
 function getCities(users) {
   if (!users) throw new Error("users is required");
-  // Your code here
+  return 0;
 }
 
 function getSquareRoots(nums) {
   if (!nums) throw new Error("nums is required");
-  // Your code here
+  console.log(nums.map(x => Math.sqrt(x).toFixed(2)));
+  return nums.map(x => Math.sqrt(x).toFixed(2));
 }
 
 function findSentencesContaining(sentences, str) {
@@ -37,7 +38,7 @@ function findSentencesContaining(sentences, str) {
 
 function getLongestSides(triangles) {
   if (!triangles) throw new Error("triangles is required");
-  // Your code here
+  return triangles.map(x => Math.max(...x));
 }
 
 module.exports = {
