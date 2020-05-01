@@ -18,8 +18,6 @@ function findNamesBeginningWith(names, char, extraParam) {
 }
 
 function findVerbs(words, extraParam) {
-  // if (!words) throw new Error("words is required");
-
   if (Array.isArray(words) !== true) throw new Error("words is required");
   else if (extraParam !== undefined) throw new Error('too many arguments');
 
@@ -30,8 +28,14 @@ function findVerbs(words, extraParam) {
   return words.filter(x => x.startsWith('to '));
 }
 
-function getIntegers(nums) {
-  if (!nums) throw new Error("nums is required");
+function getIntegers(nums, extraParam) {
+  if ((Array.isArray(nums) === false)) throw new Error("nums is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+ 
+  for (let i = 0; i < nums.length; i++) {
+    if (typeof nums[i] !== 'number') throw new Error('nums must contain numbers only');
+  }
+
   return nums.filter(x => Number.isInteger(x));
 }
 
@@ -45,15 +49,22 @@ function getCities(users) {
   return cities;
 }
 
-function getSquareRoots(nums) {
-  if (!nums) throw new Error("nums is required");
+function getSquareRoots(nums, extraParam) {
+  if ((Array.isArray(nums) === false)) throw new Error("nums is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+ 
+  for (let i = 0; i < nums.length; i++) {
+    if (typeof nums[i] !== 'number') throw new Error('nums must contain numbers only');
+  }
 
   return nums.map(x => Number(Math.sqrt(x).toFixed(2)));
 }
 
-function findSentencesContaining(sentences, str) {
-  if (!sentences) throw new Error("sentences is required");
-  if (!str) throw new Error("str is required");
+function findSentencesContaining(sentences, str, extraParam) {
+  if (Array.isArray(sentences) !== true) throw new Error("sentences is required");
+  else if (typeof str !== 'string') throw new Error("str is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+
 
   let matches = [];
   let match = str;
@@ -65,8 +76,19 @@ function findSentencesContaining(sentences, str) {
   return matches;
 }
 
-function getLongestSides(triangles) {
-  if (!triangles) throw new Error("triangles is required");
+function getLongestSides(triangles, extraParam) {
+  if ((Array.isArray(triangles) === false)) throw new Error("triangles is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+ 
+  for (let i = 0; i < triangles.length; i++) {
+    if (Array.isArray(triangles[i]) === false) throw new Error('triangles must contain arrays only');
+
+    for (let j = 0; j < triangles[i].length; j++) {
+      if (Number.isInteger(triangles[i][j]) === false) throw new Error('triangles arrays must contain positive numbers only');
+      else if (triangles[i][j] <= 0) throw new Error('triangles arrays must contain positive numbers only');
+    }
+  }
+
   return triangles.map(x => Math.max(...x));
 }
 

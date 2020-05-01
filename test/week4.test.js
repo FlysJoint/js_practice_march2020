@@ -164,6 +164,37 @@ describe("findVerbs", () => {
 });
 
 describe("getIntegers", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => getIntegers()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const nums = [1, 3.5, 2.1, 1, 4, 9];
+    expect(() => getIntegers(nums, [1, 2, 3])).toThrow();
+    expect(() => getIntegers(nums, 'a string')).toThrow();
+    expect(() => getIntegers(nums, {number: 4})).toThrow();
+    expect(() => getIntegers(nums, null)).toThrow();
+    expect(() => getIntegers(nums, true)).toThrow();
+    expect(() => getIntegers(nums, 5)).toThrow();
+    expect(() => getIntegers(nums, undefined)).not.toThrow();
+  });
+
+  test("throws if nums contains non-numbers", () => {
+    const nums1 = [1, 'two', 2.1, 1, 4, 9];
+    const nums2 = [1, true, 2.1, 1, 4, 9];
+    const nums3 = [1, null, 2.1, 1, 4, 9];
+    const nums4 = [1, undefined, 2.1, 1, 4, 9];
+    const nums5 = [1, [2], 2.1, 1, 4, 9];
+    const nums6 = [1, {number: 2}, 2.1, 1, 4, 9];
+    expect(() => getIntegers(nums1)).toThrow();
+    expect(() => getIntegers(nums2)).toThrow();
+    expect(() => getIntegers(nums3)).toThrow();
+    expect(() => getIntegers(nums4)).toThrow();
+    expect(() => getIntegers(nums5)).toThrow();
+    expect(() => getIntegers(nums6)).toThrow();
+  });
+
   test("returns an array containing only integers", () => {
     const nums = [1, 3.5, 2.1, 1, 4, 9];
     expect(getIntegers(nums)).toEqual([1, 1, 4, 9]);
@@ -217,6 +248,37 @@ describe("getCities", () => {
 });
 
 describe("getSquareRoots", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => getSquareRoots()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const nums = [36, 77, 12, 355, 92, 5];
+    expect(() => getSquareRoots(nums, [1, 2, 3])).toThrow();
+    expect(() => getSquareRoots(nums, 'a string')).toThrow();
+    expect(() => getSquareRoots(nums, {number: 4})).toThrow();
+    expect(() => getSquareRoots(nums, null)).toThrow();
+    expect(() => getSquareRoots(nums, true)).toThrow();
+    expect(() => getSquareRoots(nums, 5)).toThrow();
+    expect(() => getSquareRoots(nums, undefined)).not.toThrow();
+  });
+
+  test("throws if nums contains non-numbers", () => {
+    const nums1 = [1, 'two', 12, 355, 92, 5];
+    const nums2 = [1, true, 12, 355, 92, 5];
+    const nums3 = [1, null, 12, 355, 92, 5];
+    const nums4 = [1, undefined, 12, 355, 92, 5];
+    const nums5 = [1, [2], 12, 355, 92, 5];
+    const nums6 = [1, {number: 2}, 12, 355, 92, 5];
+    expect(() => getSquareRoots(nums1)).toThrow();
+    expect(() => getSquareRoots(nums2)).toThrow();
+    expect(() => getSquareRoots(nums3)).toThrow();
+    expect(() => getSquareRoots(nums4)).toThrow();
+    expect(() => getSquareRoots(nums5)).toThrow();
+    expect(() => getSquareRoots(nums6)).toThrow();
+  });
+
   test("gets the square root of each number to 2 decimal places", () => {
     const nums = [36, 77, 12, 355, 92, 5];
     expect(getSquareRoots(nums)).toEqual([6, 8.77, 3.46, 18.84, 9.59, 2.24]);
@@ -224,6 +286,12 @@ describe("getSquareRoots", () => {
 });
 
 describe("findSentencesContaining", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => findSentencesContaining()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
   const sentencesAboutPackageJson = [
     "You should specify a license for your package so that people know how they are permitted to use it",
     "The main field is a module ID that is the primary entry point to your program",
@@ -236,7 +304,78 @@ describe("findSentencesContaining", () => {
     "Put keywords in it. It's an array of strings. This helps people discover your package as it's listed in npm search",
     "The bugs field should hold the url to your project’s issue tracker and / or the email address to which issues should be reported."
   ];
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, "license", [1, 2, 3])).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, "license", 'a string')).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, "license", {number: 4})).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, "license", null)).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, "license", true)).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, "license", 5)).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, "license", undefined)).not.toThrow();
+  });
 
+  test("throws if sentences not an array", () => {
+  const sentences1 = 1;
+  const sentences2 = true;
+  const sentences3 = 'two';
+  const sentences4 = {name: 'Bob'};
+  const sentences5 = null;
+  const sentences6 = undefined;
+    expect(() => findSentencesContaining(sentences1, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences2, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences3, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences4, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences5, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences6, 'license')).toThrow();
+  });
+
+  test("throws if sentences elements not strings", () => {
+  const sentences1 = [1];
+  const sentences2 = [true];
+  const sentences3 = [['two']];
+  const sentences4 = [{name: 'Bob'}];
+  const sentences5 = [null];
+  const sentences6 = [undefined];
+    expect(() => findSentencesContaining(sentences1, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences2, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences3, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences4, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences5, 'license')).toThrow();
+    expect(() => findSentencesContaining(sentences6, 'license')).toThrow();
+  });
+
+  test("throws if str not a string", () => {
+  const sentencesAboutPackageJson = [
+    "You should specify a license for your package so that people know how they are permitted to use it",
+    "The main field is a module ID that is the primary entry point to your program",
+    "The repository field should specify the place where your code lives",
+    "The 'scripts' property is a dictionary containing script commands that are run at various times in the lifecycle of your package",
+    "Dependencies are specified in a simple object that maps a package name to a version range",
+    "It's best to map these additional items such as a test framework, which is not needed for running your project, in a devDependencies object",
+    "If you plan to publish your package, the most important things in your package.json are the name and version fields as they will be required",
+    "If you don’t plan to publish your package, the name and version fields are optional",
+    "Put keywords in it. It's an array of strings. This helps people discover your package as it's listed in npm search",
+    "The bugs field should hold the url to your project’s issue tracker and / or the email address to which issues should be reported."
+  ];
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, [1, 2, 3])).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, {number: 4})).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, null)).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, true)).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, 5)).toThrow();
+    expect(() => findSentencesContaining(sentencesAboutPackageJson, undefined)).toThrow();
+  });
+
+  const sentencesAboutPackageJson = [
+    "You should specify a license for your package so that people know how they are permitted to use it",
+    "The main field is a module ID that is the primary entry point to your program",
+    "The repository field should specify the place where your code lives",
+    "The 'scripts' property is a dictionary containing script commands that are run at various times in the lifecycle of your package",
+    "Dependencies are specified in a simple object that maps a package name to a version range",
+    "It's best to map these additional items such as a test framework, which is not needed for running your project, in a devDependencies object",
+    "If you plan to publish your package, the most important things in your package.json are the name and version fields as they will be required",
+    "If you don’t plan to publish your package, the name and version fields are optional",
+    "Put keywords in it. It's an array of strings. This helps people discover your package as it's listed in npm search",
+    "The bugs field should hold the url to your project’s issue tracker and / or the email address to which issues should be reported."
+  ];
   test("returns only the sentences containing the specified string", () => {
     expect(
       findSentencesContaining(sentencesAboutPackageJson, "license")
@@ -260,6 +399,74 @@ describe("findSentencesContaining", () => {
 });
 
 describe("getLongestSides", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => getLongestSides()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const data = [[6, 7, 10], [9, 3, 6], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    expect(() => getLongestSides(data, [1, 2, 3])).toThrow();
+    expect(() => getLongestSides(data, 'a string')).toThrow();
+    expect(() => getLongestSides(data, {number: 4})).toThrow();
+    expect(() => getLongestSides(data, null)).toThrow();
+    expect(() => getLongestSides(data, true)).toThrow();
+    expect(() => getLongestSides(data, 5)).toThrow();
+    expect(() => getLongestSides(data, undefined)).not.toThrow();
+  });
+
+  test("throws if data is not an array", () => {
+    const data1 = 'string';
+    const data2 = 6;
+    const data3 = {numbers: [6, 7, 10]};
+    const data4 = true;
+    const data5 = null;
+    const data6 = undefined;
+    expect(() => getLongestSides(data1)).toThrow();
+    expect(() => getLongestSides(data2)).toThrow();
+    expect(() => getLongestSides(data3)).toThrow();
+    expect(() => getLongestSides(data4)).toThrow();
+    expect(() => getLongestSides(data5)).toThrow();
+    expect(() => getLongestSides(data6)).toThrow();
+  });
+
+  test("throws if data contains non-arrays", () => {
+    const data1 = [1];
+    const data2 = ['two'];
+    const data3 = [{number: 6}];
+    const data4 = [null];
+    const data5 = [false];
+    const data6 = [undefined];
+    expect(() => getLongestSides(data1)).toThrow();
+    expect(() => getLongestSides(data2)).toThrow();
+    expect(() => getLongestSides(data3)).toThrow();
+    expect(() => getLongestSides(data4)).toThrow();
+    expect(() => getLongestSides(data5)).toThrow();
+    expect(() => getLongestSides(data6)).toThrow();
+  });
+
+  test("throws if arrays in data contains non-numbers", () => {
+    const data1 = [[6, 7, 10], ['nine', 'three', 'six'], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    const data2 = [[6, 7, 10], [{numbers: [6, 4, 10]}], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    const data3 = [[6, 7, 10], [null], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    const data4 = [[6, 7, 10], [false], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    const data5 = [[6, 7, 10], [undefined], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    const data6 = [[6, 7, 10], [[4, 6, 8], [6, 3, 5]], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    expect(() => getLongestSides(data1)).toThrow();
+    expect(() => getLongestSides(data2)).toThrow();
+    expect(() => getLongestSides(data3)).toThrow();
+    expect(() => getLongestSides(data4)).toThrow();
+    expect(() => getLongestSides(data5)).toThrow();
+    expect(() => getLongestSides(data6)).toThrow();
+  });
+
+  test("throws if any sides are 0 or less", () => {
+    const data1 = [[6, 7, 10], [9, 0, 6], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
+    const data2 = [[6, 7, 10], [9, 3, 6], [6, 3, 5], [-6, 13, 12], [7, 12, 8]];
+    expect(() => getLongestSides(data1)).toThrow();
+    expect(() => getLongestSides(data2)).toThrow();
+  });
+
   test("returns the longest side of each set of triangle data", () => {
     const data = [[6, 7, 10], [9, 3, 6], [6, 3, 5], [6, 13, 12], [7, 12, 8]];
     expect(getLongestSides(data)).toEqual([10, 9, 6, 13, 12]);
