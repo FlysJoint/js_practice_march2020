@@ -17,8 +17,16 @@ function findNamesBeginningWith(names, char, extraParam) {
   return names.filter(x => x.startsWith(char));
 }
 
-function findVerbs(words) {
-  if (!words) throw new Error("words is required");
+function findVerbs(words, extraParam) {
+  // if (!words) throw new Error("words is required");
+
+  if (Array.isArray(words) !== true) throw new Error("words is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+
+  for (let i = 0; i < words.length; i++) {
+    if (typeof words[i] !== 'string') throw new Error('words must contain strings only');
+  }
+
   return words.filter(x => x.startsWith('to '));
 }
 

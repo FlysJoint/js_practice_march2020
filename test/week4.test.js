@@ -114,6 +114,29 @@ describe("findNamesBeginningWith", () => {
 });
 
 describe("findVerbs", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => findVerbs()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const words = [
+      "to eat",
+      "fajita",
+      "mouse",
+      "to sneak",
+      "to squeak",
+      "cheesemonger"
+    ];
+    expect(() => findVerbs(words, [1, 2, 3])).toThrow();
+    expect(() => findVerbs(words, 'a string')).toThrow();
+    expect(() => findVerbs(words, {number: 4})).toThrow();
+    expect(() => findVerbs(words, null)).toThrow();
+    expect(() => findVerbs(words, true)).toThrow();
+    expect(() => findVerbs(words, 5)).toThrow();
+    expect(() => findVerbs(words, undefined)).not.toThrow();
+  });
+
   test("returns an array of words that are considered verbs (because they begin with 'to ')", () => {
     const words = [
       "to eat",
