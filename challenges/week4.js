@@ -1,5 +1,11 @@
-function findSmallNums(nums) {
-  if (!nums) throw new Error("nums is required");
+function findSmallNums(nums, extraParam) {
+  if ((Array.isArray(nums) === false)) throw new Error("nums is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+ 
+  for (let i = 0; i < nums.length; i++) {
+    if (typeof nums[i] !== 'number') throw new Error('nums must contain numbers only');
+  }
+
   return nums.filter(x => x < 1);
 }
 

@@ -9,13 +9,39 @@ const {
   getLongestSides
 } = require("../challenges/week4");
 
-describe("findSmallNums", () => {
+describe.only("findSmallNums", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => findSmallNums()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    expect(() => findSmallNums([1, 2, 3], [1, 2, 3])).toThrow();
+    expect(() => findSmallNums([1, 2, 3], 'a string')).toThrow();
+    expect(() => findSmallNums([1, 2, 3], {number: 4})).toThrow();
+    expect(() => findSmallNums([1, 2, 3], null)).toThrow();
+    expect(() => findSmallNums([1, 2, 3], true)).toThrow();
+    expect(() => findSmallNums([1, 2, 3], 5)).toThrow();
+    expect(() => findSmallNums([1, 2, 3], undefined)).not.toThrow();
+  });
+
+  test("throws if elements not numbers", () => {
+    expect(() => findSmallNums([1, 'two', 3])).toThrow();
+    expect(() => findSmallNums([1, true, 3])).toThrow();
+    expect(() => findSmallNums([1, null, 3])).toThrow();
+    expect(() => findSmallNums([1, undefined, 3])).toThrow();
+    expect(() => findSmallNums([1, [2], 3])).toThrow();
+    expect(() => findSmallNums([1, {number: 2}, 3])).toThrow();
+  });
+
   test("returns an array of numbers smaller than 1", () => {
     expect(findSmallNums([8, 1, 1.3, 0.9, 0.4, -1])).toEqual([0.9, 0.4, -1]);
     expect(findSmallNums([-7, -243])).toEqual([-7, -243]);
     expect(findSmallNums([100, 88])).toEqual([]);
     expect(findSmallNums([])).toEqual([]);
   });
+
+
 });
 
 describe("findNamesBeginningWith", () => {
