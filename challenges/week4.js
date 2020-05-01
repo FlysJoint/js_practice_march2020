@@ -39,11 +39,14 @@ function getIntegers(nums, extraParam) {
   return nums.filter(x => Number.isInteger(x));
 }
 
-function getCities(users) {
-  if (!users) throw new Error("users is required");
+function getCities(users, extraParam) {
+
+  if (Array.isArray(users) !== true && typeof users !== 'object') throw new Error("users is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
 
   let cities = [];
   for (let i = 0; i < users.length; i++) {
+    if (typeof users[i].data.city.displayName !== 'string') throw new Error("displayname  is required");
     cities.push(users[i].data.city.displayName);
   }
   return cities;

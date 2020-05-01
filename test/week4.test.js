@@ -40,8 +40,6 @@ describe("findSmallNums", () => {
     expect(findSmallNums([100, 88])).toEqual([]);
     expect(findSmallNums([])).toEqual([]);
   });
-
-
 });
 
 describe("findNamesBeginningWith", () => {
@@ -93,12 +91,12 @@ describe("findNamesBeginningWith", () => {
 
   test("throws if char not a string", () => {
     const names = ['Allie', 'Billy', 'Charlie'];
-    expect(() => findNamesBeginningWith(names1, 1)).toThrow();
-    expect(() => findNamesBeginningWith(names2, true)).toThrow();
-    expect(() => findNamesBeginningWith(names3, {number: 6})).toThrow();
-    expect(() => findNamesBeginningWith(names4, null)).toThrow();
-    expect(() => findNamesBeginningWith(names5, undefined)).toThrow();
-    expect(() => findNamesBeginningWith(names6, ['C'])).toThrow();
+    expect(() => findNamesBeginningWith(names, 1)).toThrow();
+    expect(() => findNamesBeginningWith(names, true)).toThrow();
+    expect(() => findNamesBeginningWith(names, {number: 6})).toThrow();
+    expect(() => findNamesBeginningWith(names, null)).toThrow();
+    expect(() => findNamesBeginningWith(names, undefined)).toThrow();
+    expect(() => findNamesBeginningWith(names, ['C'])).toThrow();
   });
 
   test("returns an array of names beginning with the specified character", () => {
@@ -204,6 +202,311 @@ describe("getIntegers", () => {
 });
 
 describe("getCities", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => getCities()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const users = [
+      {
+        id: 12,
+        data: {
+          city: {
+            id: 1,
+            displayName: "MCR"
+          }
+        }
+      },
+      {
+        id: 44,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 5,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 2,
+        data: {
+          city: {
+            id: 7,
+            displayName: "GLW"
+          }
+        }
+      }
+    ];
+    expect(() => getCities(users, [1, 2, 3])).toThrow();
+    expect(() => getCities(users, 'a string')).toThrow();
+    expect(() => getCities(users, {number: 4})).toThrow();
+    expect(() => getCities(users, null)).toThrow();
+    expect(() => getCities(users, true)).toThrow();
+    expect(() => getCities(users, 5)).toThrow();
+    expect(() => getCities(users, undefined)).not.toThrow();
+  });
+
+  test("throws if users not an object", () => {
+    const users1 = 1;
+    const users2 = 'object';
+    const users3 = true;
+    const users4 = null;
+    const users5 = undefined;
+    const users6 = ['Liverpool', 'Manchester'];
+    expect(() => getCities(users1)).toThrow();
+    expect(() => getCities(users2)).toThrow();
+    expect(() => getCities(users3)).toThrow();
+    expect(() => getCities(users4)).toThrow();
+    expect(() => getCities(users5)).toThrow();
+    expect(() => getCities(users6)).toThrow();
+  });
+
+  test("throws if displayname not string", () => {
+    const users1 = [
+      {
+        id: 12,
+        data: {
+          city: {
+            id: 1,
+            displayName: "MCR"
+          }
+        }
+      },
+      {
+        id: 44,
+        data: {
+          city: {
+            id: 4,
+            displayName: 2
+          }
+        }
+      },
+      {
+        id: 5,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 2,
+        data: {
+          city: {
+            id: 7,
+            displayName: "GLW"
+          }
+        }
+      }
+    ];
+    expect(() => getCities(users1)).toThrow();
+    const users2 = [
+      {
+        id: 12,
+        data: {
+          city: {
+            id: 1,
+            displayName: "MCR"
+          }
+        }
+      },
+      {
+        id: 44,
+        data: {
+          city: {
+            id: 4,
+            displayName: true
+          }
+        }
+      },
+      {
+        id: 5,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 2,
+        data: {
+          city: {
+            id: 7,
+            displayName: "GLW"
+          }
+        }
+      }
+    ];
+    expect(() => getCities(users2)).toThrow();
+    const users3 = [
+      {
+        id: 12,
+        data: {
+          city: {
+            id: 1,
+            displayName: "MCR"
+          }
+        }
+      },
+      {
+        id: 44,
+        data: {
+          city: {
+            id: 4,
+            displayName: null
+          }
+        }
+      },
+      {
+        id: 5,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 2,
+        data: {
+          city: {
+            id: 7,
+            displayName: "GLW"
+          }
+        }
+      }
+    ];
+    expect(() => getCities(users3)).toThrow();
+    const users4 = [
+      {
+        id: 12,
+        data: {
+          city: {
+            id: 1,
+            displayName: "MCR"
+          }
+        }
+      },
+      {
+        id: 44,
+        data: {
+          city: {
+            id: 4,
+            displayName: undefined
+          }
+        }
+      },
+      {
+        id: 5,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 2,
+        data: {
+          city: {
+            id: 7,
+            displayName: "GLW"
+          }
+        }
+      }
+    ];
+    expect(() => getCities(users4)).toThrow();
+    const users5 = [
+      {
+        id: 12,
+        data: {
+          city: {
+            id: 1,
+            displayName: "MCR"
+          }
+        }
+      },
+      {
+        id: 44,
+        data: {
+          city: {
+            id: 4,
+            displayName: ['LVP', 'GLW']
+          }
+        }
+      },
+      {
+        id: 5,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 2,
+        data: {
+          city: {
+            id: 7,
+            displayName: "GLW"
+          }
+        }
+      }
+    ];
+    expect(() => getCities(users5)).toThrow();
+    const users6 = [
+      {
+        id: 12,
+        data: {
+          city: {
+            id: 1,
+            displayName: "MCR"
+          }
+        }
+      },
+      {
+        id: 44,
+        data: {
+          city: {
+            id: 4,
+            displayName: {city: 'LVP'}
+          }
+        }
+      },
+      {
+        id: 5,
+        data: {
+          city: {
+            id: 4,
+            displayName: "LVP"
+          }
+        }
+      },
+      {
+        id: 2,
+        data: {
+          city: {
+            id: 7,
+            displayName: "GLW"
+          }
+        }
+      }
+    ];
+    expect(() => getCities(users6)).toThrow();
+  });
+
   test("returns an array of the cities of each user", () => {
     const users = [
       {
