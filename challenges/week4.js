@@ -9,9 +9,11 @@ function findSmallNums(nums, extraParam) {
   return nums.filter(x => x < 1);
 }
 
-function findNamesBeginningWith(names, char) {
-  if (!names) throw new Error("names is required");
-  if (!char) throw new Error("char is required");
+function findNamesBeginningWith(names, char, extraParam) {
+  if (Array.isArray(names) !== true) throw new Error("names is required");
+  else if (typeof char !== 'string') throw new Error("char is required");
+  else if (extraParam !== undefined) throw new Error('too many arguments');
+  
   return names.filter(x => x.startsWith(char));
 }
 

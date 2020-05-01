@@ -9,7 +9,7 @@ const {
   getLongestSides
 } = require("../challenges/week4");
 
-describe.only("findSmallNums", () => {
+describe("findSmallNums", () => {
 
   test("throws if no arguments", () => {
     expect(() => findSmallNums()).toThrow();
@@ -45,6 +45,62 @@ describe.only("findSmallNums", () => {
 });
 
 describe("findNamesBeginningWith", () => {
+
+  test("throws if no arguments", () => {
+    expect(() => findNamesBeginningWith()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const names = ['Allie', 'Billy', 'Charlie'];
+    expect(() => findNamesBeginningWith(names, 'A', [1, 2, 3])).toThrow();
+    expect(() => findNamesBeginningWith(names, 'A', 'a string')).toThrow();
+    expect(() => findNamesBeginningWith(names, 'A', {number: 4})).toThrow();
+    expect(() => findNamesBeginningWith(names, 'A', null)).toThrow();
+    expect(() => findNamesBeginningWith(names, 'A', true)).toThrow();
+    expect(() => findNamesBeginningWith(names, 'A', 5)).toThrow();
+    expect(() => findNamesBeginningWith(names, 'A', undefined)).not.toThrow();
+  });
+
+  test("throws if names not an array", () => {
+    const names1 = 1;
+    const names2 = true;
+    const names3 = 'two';
+    const names4 = {name: 'Bob'};
+    const names5 = null;
+    const names6 = undefined;
+    expect(() => findNamesBeginningWith(names1, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names2, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names3, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names4, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names5, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names6, 'A')).toThrow();
+  });
+
+  test("throws if names elements not strings", () => {
+    const names1 = ['Alan', 1, 'Chuck'];
+    const names2 = ['Alan', true, 'Chuck'];
+    const names3 = ['Alan', ['Bily'], 'Chuck'];
+    const names4 = ['Alan', {name: 'Bob'}, 'Chuck'];
+    const names5 = ['Alan', null, 'Chuck'];
+    const names6 = ['Alan', undefined, 'Chuck'];
+    expect(() => findNamesBeginningWith(names1, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names2, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names3, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names4, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names5, 'A')).toThrow();
+    expect(() => findNamesBeginningWith(names6, 'A')).toThrow();
+  });
+
+  test("throws if char not a string", () => {
+    const names = ['Allie', 'Billy', 'Charlie'];
+    expect(() => findNamesBeginningWith(names1, 1)).toThrow();
+    expect(() => findNamesBeginningWith(names2, true)).toThrow();
+    expect(() => findNamesBeginningWith(names3, {number: 6})).toThrow();
+    expect(() => findNamesBeginningWith(names4, null)).toThrow();
+    expect(() => findNamesBeginningWith(names5, undefined)).toThrow();
+    expect(() => findNamesBeginningWith(names6, ['C'])).toThrow();
+  });
+
   test("returns an array of names beginning with the specified character", () => {
     const names = ["Sally", "Dave", "Susan", "Geoff", "Riley", "Sam"];
     expect(findNamesBeginningWith(names, "S")).toEqual([
