@@ -65,14 +65,13 @@ const findNeedle = (haystack, searchTerm) => {
   if (haystack === undefined) throw new Error("haystack is required");
   if (searchTerm === undefined) throw new Error("searchTerm is required");
 
-  //searchTerm = `/${searchTerm}/gi`;
+  let regex = new RegExp(searchTerm, 'gi');
   let possibleNeedles = Object.values(haystack);
 
   for (let i = 0; i < possibleNeedles.length; i++) {
-    if (typeof possibleNeedles[i] === 'string' && possibleNeedles[i].includes(searchTerm)) return true;
+    if (typeof possibleNeedles[i] === 'string' && regex.test(possibleNeedles[i]) === true) return true;
   }
   return false;
-
 };
 
 const getWordFrequencies = str => {
