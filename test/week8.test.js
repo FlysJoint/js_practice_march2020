@@ -9,10 +9,58 @@ const {
 } = require("../challenges/week8");
 
 describe("findNextNumber", () => {
+
+  test("throws if no parameters", () => {
+    expect(() => findNextNumber()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7, 5)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7, 'five')).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7, true)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7, null)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7, [3, 4])).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7, {number: 5})).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7, undefined)).not.toThrow();
+  });
+
+  test("throws if nums not an array", () => {
+    expect(() => findNextNumber(12, 7)).toThrow();
+    expect(() => findNextNumber('five', 7)).toThrow();
+    expect(() => findNextNumber(false, 7)).toThrow();
+    expect(() => findNextNumber(null, 7)).toThrow();
+    expect(() => findNextNumber({array: [6, 7, 9]}, 7)).toThrow();
+    expect(() => findNextNumber(undefined, 7)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7)).not.toThrow();
+  });
+
+  test("throws if nums elements not integers", () => {
+    expect(() => findNextNumber([5, 3, [5, 7], 8, 1, 10], 7)).toThrow();
+    expect(() => findNextNumber([5, 3, 'five', 8, 1, 10], 7)).toThrow();
+    expect(() => findNextNumber([5, 3, false, 8, 1, 10], 7)).toThrow();
+    expect(() => findNextNumber([5, 3, null, 8, 1, 10], 7)).toThrow();
+    expect(() => findNextNumber([5, 3, {array: [6, 7, 9]}, 8, 1, 10], 7)).toThrow();
+    expect(() => findNextNumber([5, 3, undefined, 8, 1, 10], 7)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7)).not.toThrow();
+  });
+
+  test("throws if n not a number", () => {
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], [7])).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], '5')).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], true)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], null)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], {array: [6, 7, 9]})).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10],undefined)).toThrow();
+    expect(() => findNextNumber([5, 3, 7, 8, 1, 10], 7)).not.toThrow();
+  });
+
   test("returns the next number after the given number in the array", () => {
     expect(findNextNumber([5, 3, 7, 8, 1, 10], 7)).toBe(8);
     expect(findNextNumber([5, 3, 7, 8, 1, 10], 1)).toBe(10);
     expect(findNextNumber([4, 22, 654, 123, 65, 23, 40, 1], 22)).toBe(654);
+    expect(findNextNumber([5, 3, -7, 8, 1, 10], -7)).toBe(8);
+    expect(findNextNumber([5, 3, 7, 0, 1, 10], 0)).toBe(1);
+    expect(findNextNumber([5, 3, 7, 1, 1, 10], 1)).toBe(1);
   });
 
   test("if the number is not found in the array, returns null", () => {
@@ -21,6 +69,7 @@ describe("findNextNumber", () => {
 
   test("if the number is found more than once, returns the number after the first instance", () => {
     expect(findNextNumber([5, 3, 7, 8, 1, 3, 10], 3)).toBe(7);
+    expect(findNextNumber([5, 3, 7, 1, 1, 10], 1)).toBe(1);
   });
 
   test("if the number is found in the final index position of the array, returns null", () => {

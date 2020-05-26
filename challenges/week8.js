@@ -1,8 +1,10 @@
-const findNextNumber = (nums, n) => {
-  if (nums === undefined) throw new Error("nums is required");
-  if (n === undefined) throw new Error("n is required");
+const findNextNumber = (nums, n, extraParam) => {
+  if (Array.isArray(nums) !== true) throw new Error("array nums is required");
+  if (Number.isInteger(n) !== true) throw new Error("integer n is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
 
   for (let i = 0; i < nums.length; i++) {
+    if (Number.isInteger(nums[i]) !== true) throw new Error('nums elements must be integers');
     if (nums[i] === n && i !== nums.length - 1) return nums[i + 1];
   }
   return null;
