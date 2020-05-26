@@ -78,7 +78,46 @@ describe("findNextNumber", () => {
 });
 
 describe("count1sand0s", () => {
+
+  test("throws if no parameters", () => {
+    expect(() => count1sand0s()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    expect(() => count1sand0s("11000", "11000")).toThrow();
+    expect(() => count1sand0s("11000", 11000)).toThrow();
+    expect(() => count1sand0s("11000", null)).toThrow();
+    expect(() => count1sand0s("11000", true)).toThrow();
+    expect(() => count1sand0s("11000", ['110', '0011'])).toThrow();
+    expect(() => count1sand0s("11000", {bin: "11000"})).toThrow();
+    expect(() => count1sand0s("11000", undefined)).not.toThrow();
+  });
+
+  test("throws if str not a string", () => {
+    expect(() => count1sand0s(11000)).toThrow();
+    expect(() => count1sand0s(null)).toThrow();
+    expect(() => count1sand0s(true)).toThrow();
+    expect(() => count1sand0s(['110', '011'])).toThrow();
+    expect(() => count1sand0s({bin: '1101'})).toThrow();
+    expect(() => count1sand0s(undefined)).toThrow();
+    expect(() => count1sand0s("11000")).not.toThrow();
+  });
+
+  test("throws if str not exclusively 1s or 0s", () => {
+    expect(() => count1sand0s("11020")).toThrow();
+    expect(() => count1sand0s("110l0")).toThrow();
+    expect(() => count1sand0s("110*0")).toThrow();
+    expect(() => count1sand0s("110 0")).toThrow();
+    expect(() => count1sand0s("11000")).not.toThrow();
+  });
+
   test("returns an object with the count of 1s and 0s in a string", () => {
+
+    expect(count1sand0s("")).toEqual({
+      1: 0,
+      0: 0
+    });
+
     expect(count1sand0s("11000")).toEqual({
       1: 2,
       0: 3

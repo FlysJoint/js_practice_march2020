@@ -10,8 +10,9 @@ const findNextNumber = (nums, n, extraParam) => {
   return null;
 };
 
-const count1sand0s = str => {
-  if (str === undefined) throw new Error("str is required");
+const count1sand0s = (str, extraParam) => {
+  if (typeof str !== 'string') throw new Error("string str is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
 
   let binary = {
     1: 0,
@@ -21,6 +22,7 @@ const count1sand0s = str => {
   for (let i = 0; i < str.length; i++) {
     if(str[i] === '1') binary['1']++;
     else if (str[i] === '0') binary['0']++;
+    else throw new Error('str must be binary only');
   }
 
   return binary;
