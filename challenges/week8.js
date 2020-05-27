@@ -56,7 +56,10 @@ const sumArrays = (arrs, extraParam) => {
   return count;
 };
 
-const arrShift = arr => {
+const arrShift = (arr, extraParam) => {
+  if (Array.isArray(arr) !== true) throw new Error('array arr required');
+  if (extraParam !== undefined) throw new Error('too many arguments');
+
 
   if (arr.length >= 2) {
     let tempStart = arr.shift();
@@ -70,9 +73,10 @@ const arrShift = arr => {
   return arr;
 };
 
-const findNeedle = (haystack, searchTerm) => {
-  if (haystack === undefined) throw new Error("haystack is required");
-  if (searchTerm === undefined) throw new Error("searchTerm is required");
+const findNeedle = (haystack, searchTerm, extraParam) => {
+  if (typeof haystack !== 'object' || Array.isArray(haystack) === true) throw new Error("object haystack is required");
+  if (typeof searchTerm !== 'string') throw new Error("string searchTerm is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
 
   let regex = new RegExp(searchTerm, 'gi');
   let possibleNeedles = Object.values(haystack);
@@ -83,12 +87,11 @@ const findNeedle = (haystack, searchTerm) => {
   return false;
 };
 
-const getWordFrequencies = str => {
-  if (str === undefined) throw new Error("str is required");
+const getWordFrequencies = (str, extraParam) => {
+  if (typeof str !== 'string') throw new Error("string str is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
 
-  let frequencies = {};
   let regex = /[^a-z]/gi
-
   let answer = {};
 
   str = str.toLowerCase().replace(regex, ' ').split(' ');

@@ -217,7 +217,7 @@ describe("sumArrays", () => {
     expect(() => sumArrays([[1, 2, 3], 54])).toThrow();
     expect(() => sumArrays([[1, 2, 3], undefined])).toThrow();
   });
-// test sub array elemnets are numbers only
+
   test("throws if sub-array elements arent integers", () => {
     expect(() => sumArrays([[1, 2, 3], [6, 3, 1]])).not.toThrow();
     expect(() => sumArrays([[1, 2, 3], [6, {array: [123]}, 1]])).toThrow();
@@ -228,7 +228,6 @@ describe("sumArrays", () => {
     expect(() => sumArrays([[1, 2, 3], [6, undefined, 1]])).toThrow();
   });
 
-
   test("returns the total of the numbers in all sub arrays", () => {
     const arrs = [[1, 2, 3], [6, 3, 1], [1], [9, 10], [3, 5]];
     expect(sumArrays(arrs)).toBe(44);
@@ -236,10 +235,43 @@ describe("sumArrays", () => {
 });
 
 describe("arrShift", () => {
+
+  test("throws if no parameters", () => {
+    expect(() => arrShift()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    expect(() => arrShift([1, 2], 3)).toThrow();
+    expect(() => arrShift([1, 2], '3')).toThrow();
+    expect(() => arrShift([1, 2], null)).toThrow();
+    expect(() => arrShift([1, 2], false)).toThrow();
+    expect(() => arrShift([1, 2], [3, 6])).toThrow();
+    expect(() => arrShift([1, 2], {num: 8})).toThrow();
+    expect(() => arrShift([1, 2], undefined)).not.toThrow();
+  });
+
+  test("throws if arr not an array", () => {
+    expect(() => arrShift(3)).toThrow();
+    expect(() => arrShift('3')).toThrow();
+    expect(() => arrShift(null)).toThrow();
+    expect(() => arrShift(false)).toThrow();
+    expect(() => arrShift([1, 2], [3, 6])).toThrow();
+    expect(() => arrShift({num: 8})).toThrow();
+    expect(() => arrShift(undefined)).toThrow();
+    expect(() => arrShift([1, 2, 3, 6])).not.toThrow();
+  });
+
   test("returns an array with the first and last items swapped", () => {
     expect(arrShift([1, 2])).toEqual([2, 1]);
     expect(arrShift([1, 2, 3])).toEqual([3, 2, 1]);
     expect(arrShift([1, 2, 3, 4])).toEqual([4, 2, 3, 1]);
+  });
+
+// test didn't specify integers only so testing with other types
+  test("returns an array with the first and last items swapped", () => {
+    expect(arrShift(['one', [2]])).toEqual([[2], 'one']);
+    expect(arrShift([null, 2, undefined])).toEqual([undefined, 2, null]);
+    expect(arrShift([{first: true}, null, 'six', {first: false}])).toEqual([{first: false}, null, 'six', {first: true}]);
   });
 
   test("makes no difference when the array length is < 2", () => {
@@ -249,6 +281,63 @@ describe("arrShift", () => {
 });
 
 describe("findNeedle", () => {
+
+  test("throws if no parameters", () => {
+    expect(() => findNeedle()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    const obj1 = {
+      name: "LINNMON",
+      description: "Small round table",
+      price: 31.89,
+      store: "Warrington",
+      code: 12872
+    };
+    expect(() => findNeedle(obj1, "table", 1)).toThrow();
+    expect(() => findNeedle(obj1, "table", '1')).toThrow();
+    expect(() => findNeedle(obj1, "table", null)).toThrow();
+    expect(() => findNeedle(obj1, "table", true)).toThrow();
+    expect(() => findNeedle(obj1, "table", [1, 6, 7])).toThrow();
+    expect(() => findNeedle(obj1, "table", {thing: true})).toThrow();
+    expect(() => findNeedle(obj1, "table", undefined)).not.toThrow();
+  });
+
+  test("throws if haystack not an object", () => {
+    const obj1 = {
+      name: "LINNMON",
+      description: "Small round table",
+      price: 31.89,
+      store: "Warrington",
+      code: 12872
+    };
+    expect(() => findNeedle(1, "table")).toThrow();
+    expect(() => findNeedle('1', "table")).toThrow();
+    expect(() => findNeedle(null, "table")).toThrow();
+    expect(() => findNeedle(true, "table")).toThrow();
+    expect(() => findNeedle([1, 6, 7], "table")).toThrow();
+    expect(() => findNeedle(undefined, "table")).toThrow();
+    expect(() => findNeedle({thing: true}, "table")).not.toThrow();
+  });
+
+  test("throws if needle not a string", () => { // as inferred by following test
+    const obj1 = {
+      name: true,
+      description: ['small', 'round', 'table'],
+      price: 31.89,
+      store: null,
+      code: undefined,
+      another: { object: true }
+    };
+    expect(() => findNeedle(obj1, 31.89)).toThrow();
+    expect(() => findNeedle(obj1, null)).toThrow();
+    expect(() => findNeedle(obj1, undefined)).toThrow();
+    expect(() => findNeedle(obj1, ['small', 'round', 'table'])).toThrow();
+    expect(() => findNeedle(obj1, true)).toThrow();
+    expect(() => findNeedle(obj1, { object: true })).toThrow();
+    expect(() => findNeedle(obj1, "table")).not.toThrow();
+  });
+
   test("returns true if any of the properties of an object contain the specified string", () => {
     const obj1 = {
       name: "LINNMON",
@@ -307,6 +396,31 @@ describe("findNeedle", () => {
 });
 
 describe("getWordFrequencies", () => {
+
+  test("throws if no parameters", () => {
+    expect(() => getWordFrequencies()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    expect(() => getWordFrequencies("hello world", 1)).toThrow();
+    expect(() => getWordFrequencies("hello world", 'two')).toThrow();
+    expect(() => getWordFrequencies("hello world", [1, 4, 8])).toThrow();
+    expect(() => getWordFrequencies("hello world", null)).toThrow();
+    expect(() => getWordFrequencies("hello world", false)).toThrow();
+    expect(() => getWordFrequencies("hello world", {'hello': 'world'})).toThrow();
+    expect(() => getWordFrequencies("hello world", undefined)).not.toThrow();
+  });
+
+  test("throws if str not a string", () => {
+    expect(() => getWordFrequencies(1)).toThrow();
+    expect(() => getWordFrequencies([1, 4, 8])).toThrow();
+    expect(() => getWordFrequencies(null)).toThrow();
+    expect(() => getWordFrequencies(false)).toThrow();
+    expect(() => getWordFrequencies({'hello': 'world'})).toThrow();
+    expect(() => getWordFrequencies(undefined)).toThrow();
+    expect(() => getWordFrequencies('two')).not.toThrow();
+  });
+
   test("returns the frequencies of each word in a string", () => {
     expect(getWordFrequencies("hello world")).toEqual({
       hello: 1,
@@ -345,4 +459,7 @@ describe("getWordFrequencies", () => {
       here: 1
     });
   });
+
+  // what about hyphenated words and words with apostrophes - client feedback required
+
 });
