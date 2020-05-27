@@ -141,15 +141,94 @@ describe("count1sand0s", () => {
 });
 
 describe("reverseNumber", () => {
+
+  test("throws if no parameters", () => {
+    expect(() => reverseNumber()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    expect(() => reverseNumber(12345, 56)).toThrow();
+    expect(() => reverseNumber(12345, 'five')).toThrow();
+    expect(() => reverseNumber(12345, null)).toThrow();
+    expect(() => reverseNumber(12345, true)).toThrow();
+    expect(() => reverseNumber(12345, {num: 56})).toThrow();
+    expect(() => reverseNumber(12345, [5, 6])).toThrow();
+    expect(() => reverseNumber(12345, undefined)).not.toThrow();
+  });
+
+  test("throws if n not a number", () => {
+    expect(() => reverseNumber([123, 45])).toThrow();
+    expect(() => reverseNumber('five')).toThrow();
+    expect(() => reverseNumber(null)).toThrow();
+    expect(() => reverseNumber(true)).toThrow();
+    expect(() => reverseNumber({num: 56})).toThrow();
+    expect(() => reverseNumber(undefined)).toThrow();
+    expect(() => reverseNumber(12345)).not.toThrow();
+  });
+
+// are negatives allowed? client feedback required
+  test("throws if n is negative", () => {
+    expect(() => reverseNumber(-5)).toThrow();
+    expect(() => reverseNumber(-124)).toThrow();
+    expect(() => reverseNumber(-100)).toThrow();
+    expect(() => reverseNumber(0)).not.toThrow();
+  });
+
   test("reverses the digits of a number", () => {
     expect(reverseNumber(5)).toBe(5);
     expect(reverseNumber(104)).toBe(401);
     expect(reverseNumber(12345)).toBe(54321);
-    expect(reverseNumber(100)).toBe(1); // No leading 0 necessary
+    expect(reverseNumber(100)).toBe(1); // No leading 0 necessary // so assuming only integers allowed
   });
 });
 
 describe("sumArrays", () => {
+
+  test("throws if no parameters", () => {
+    expect(() => sumArrays()).toThrow();
+  });
+
+  test("throws if too many arguments", () => {
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]], [[1, 2, 3], [6, 3, 1]])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]], {array: [123]})).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]], true)).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]], null)).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]], '6, 9, 4')).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]], 54)).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]], undefined)).not.toThrow();
+  });
+
+  test("throws if not array", () => {
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]])).not.toThrow();
+    expect(() => sumArrays({array: [123]})).toThrow();
+    expect(() => sumArrays(true)).toThrow();
+    expect(() => sumArrays(null)).toThrow();
+    expect(() => sumArrays('6, 9, 4')).toThrow();
+    expect(() => sumArrays(54)).toThrow();
+    expect(() => sumArrays(undefined)).toThrow();
+  });
+
+  test("throws if array elements arent arrays", () => {
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]])).not.toThrow();
+    expect(() => sumArrays([[1, 2, 3], {array: [123]}])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], true])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], null])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], '6, 3, 1'])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], 54])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], undefined])).toThrow();
+  });
+// test sub array elemnets are numbers only
+  test("throws if sub-array elements arent integers", () => {
+    expect(() => sumArrays([[1, 2, 3], [6, 3, 1]])).not.toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, {array: [123]}, 1]])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, true, 1]])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, null, 1]])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, '3', 1]])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, [6, 3, 1], 1]])).toThrow();
+    expect(() => sumArrays([[1, 2, 3], [6, undefined, 1]])).toThrow();
+  });
+
+
   test("returns the total of the numbers in all sub arrays", () => {
     const arrs = [[1, 2, 3], [6, 3, 1], [1], [9, 10], [3, 5]];
     expect(sumArrays(arrs)).toBe(44);

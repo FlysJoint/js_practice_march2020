@@ -28,27 +28,32 @@ const count1sand0s = (str, extraParam) => {
   return binary;
 };
 
-const reverseNumber = n => {
-  if (n === undefined) throw new Error("n is required");
+const reverseNumber = (n, extraParam) => {
+  if (Number.isInteger(n) !== true) throw new Error("n is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+  if (n < 0) throw new Error('n must be positive');
 
   return parseInt(n.toString().split('').reverse().join(''));
 
 };
 
-const sumArrays = arrs => {
-  if (arrs === undefined) throw new Error("arrs is required");
+const sumArrays = (arrs, extraParam) => {
+  if (Array.isArray(arrs) !== true) throw new Error("array arrs is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
 
   let count = 0;
 
   for (let i = 0; i < arrs.length; i++) {
 
+    if (Array.isArray(arrs[i]) !== true) throw new Error('arrs elements must be arrays');
+
     for (let s = 0; s < arrs[i].length; s++) {
+      if (Number.isInteger(arrs[i][s]) !== true) throw new Error('sub array elements must be integers');
       count += arrs[i][s];
     }
 
   }
   return count;
-
 };
 
 const arrShift = arr => {
