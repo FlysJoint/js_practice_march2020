@@ -4,8 +4,18 @@
  * @param {Array} arr
  * @returns {Number}
  */
-const sumMultiples = arr => {
+const sumMultiples = (arr, extraParam) => {
   if (arr === undefined) throw new Error("arr is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+
+  for (let i = 0; i < arr.length; i++) {
+    if (Number.isInteger(arr[i]) === false) throw new Error('array elements must be numbers');
+  }
+
+  let multiple = arr.filter(num => num % 3 === 0 || num % 5 === 0);
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+  return multiple.reduce(reducer);
 };
 
 /**
@@ -13,8 +23,11 @@ const sumMultiples = arr => {
  * @param {String} str
  * @returns {Boolean}
  */
-const isValidDNA = str => {
+const isValidDNA = (str, extraParam) => {
   if (str === undefined) throw new Error("str is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+
+  return str.length > 0 ? /^[CGTA]*$/g.test(str) : false;
 };
 
 /**
@@ -24,6 +37,31 @@ const isValidDNA = str => {
  */
 const getComplementaryDNA = str => {
   if (str === undefined) throw new Error("str is required");
+
+  // running it through isValidDNA first which will do many of the appropriate checks
+
+  let compDNA = [];
+
+  if (isValidDNA(str)) {
+    for (let i = 0; i < str.length; i++) {
+      switch (str[i]) {
+        case 'A':
+          compDNA.push('T');
+          break;
+        case 'T':
+          compDNA.push('A');
+          break;
+        case 'C':
+          compDNA.push('G');
+          break;
+        case 'G':
+          compDNA.push('C');
+          break;
+      }
+    }
+  }
+  else throw new Error ('Invalid DNA string');
+  return compDNA.join('');
 };
 
 /**
@@ -31,8 +69,14 @@ const getComplementaryDNA = str => {
  * @param {Number} n
  * @returns {Boolean}
  */
-const isItPrime = n => {
-  if (n === undefined) throw new Error("n is required");
+const isItPrime = (n, extraParam) => {
+  if (Number.isInteger(n) !== true) throw new Error("number n is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+
+  for (let i = 2; i < Math.floor(n / 2); i++) {
+    if (n % i === 0) return false;
+  }
+  return true;
 };
 
 /**
@@ -46,9 +90,24 @@ const isItPrime = n => {
  * @param {Any} fill
  * @returns {Array}
  */
-const createMatrix = (n, fill) => {
-  if (n === undefined) throw new Error("n is required");
+const createMatrix = (n, fill, extraParam) => {
+  if (Number.isInteger(n) !== true) throw new Error("n is required");
   if (fill === undefined) throw new Error("fill is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+
+  let matrix = [];
+
+  for (let x = 0; x < n; x++) {
+
+    matrix.push([]);
+
+    for (let y = 0; y < n; y++) {
+
+      matrix[x].push(fill);
+
+    }
+  }
+  return matrix;
 };
 
 /**
@@ -63,9 +122,33 @@ const createMatrix = (n, fill) => {
  * @param {String} day
  * @returns {Boolean}
  */
-const areWeCovered = (staff, day) => {
+const areWeCovered = (staff, day, extraParam) => {
   if (staff === undefined) throw new Error("staff is required");
-  if (day === undefined) throw new Error("day is required");
+  if (typeof day !== 'string') throw new Error("day is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+
+
+
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  if (days.includes(day) !== true) throw new Error('invalid day');  
+
+  let cover = 0;
+
+  for (let i = 0; i < staff.length; i++) {
+    if (typeof staff[i].name !== 'string') throw new Error('invalid staff name');
+    if (Object.keys(staff[i]).includes('rota') !== true) throw new Error('rota key not present');
+    if (Array.isArray(staff[i].rota) !== true) throw new Error('invalid rota');
+    
+    for (let j = 0; j < staff[i].rota.length; j++) {
+      if (days.includes(staff[i].rota[j]) !== true) throw new Error('rota contains invalid day');
+      if (staff[i].rota.indexOf(day) !== staff[i].rota.lastIndexOf(day)) throw new Error('duplicate day in rota');
+      if (staff[i].rota[j] === day) cover++;
+    }
+  }
+
+  const staffRequired = 3;
+
+  return cover >= staffRequired ? true : false;
 };
 
 module.exports = {
