@@ -2,8 +2,13 @@
  * This function takes a number, e.g. 123 and returns the sum of all its digits, e.g 6 in this example.
  * @param {Number} n
  */
-const sumDigits = n => {
-  if (n === undefined) throw new Error("n is required");
+const sumDigits = (n, extraParam) => {
+  if (Number.isInteger(n) !== true) throw new Error("number n is required");
+  if (extraParam !== undefined) throw new Error('too many parameters');
+
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+  return Math.abs(n).toString().split('').map(x => parseInt(x)).reduce(reducer);
 };
 
 /**
@@ -17,6 +22,8 @@ const sumDigits = n => {
 const createRange = (start, end, step) => {
   if (start === undefined) throw new Error("start is required");
   if (end === undefined) throw new Error("end is required");
+
+// for loop let i = start, i < end , step 1 : i?
 };
 
 /**
