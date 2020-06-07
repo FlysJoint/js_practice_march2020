@@ -75,9 +75,43 @@ const createRange = (start, end, step, extraParam) => {
  * For example, if passed the above users and the date "2019-05-04" the function should return ["beth_1234"] as she used over 100 minutes of screentime on that date.
  * @param {Array} users
  */
-const getScreentimeAlertList = (users, date) => {
-  if (users === undefined) throw new Error("users is required");
+const getScreentimeAlertList = (users, date, extraParam) => {
+  if (typeof users !== 'object') throw new Error("object users is required");
   if (date === undefined) throw new Error("date is required");
+  if (extraParam !== undefined) throw new Error('too many parameters');
+
+  if (/^(((199|200|201)\d)|(2020))-((0[1-9])|(1[0-2]))-((0[1-9])|([12]\d)|(3[01]))$/.test(date) !== true) throw new Error('date is invalid format');
+
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+  let scrnLimit = 100; // to avoid magic numbers
+
+  let sqEyes = [];
+
+  for (let u = 0; u < users.length; u++) {
+
+    if (typeof users[u].username !== 'string') throw new Error('string username required');
+    if (Array.isArray(users[u].screenTime) !== true) throw new Error('array screenTime required');
+
+    scrnMins = 0;
+
+    for (let d = 0; d < users[u].screenTime.length; d++) {
+
+      if (typeof users[u].screenTime[d]['date'] !== 'string') throw new Error('string date required'); 
+      if (typeof users[u].screenTime[d]['usage'] !== 'object') throw new Error('object usage required'); 
+
+      if (users[u].screenTime[d]['date'] === date) {
+
+        let usageErrors = Object.values(users[u].screenTime[d]['usage']).filter(x => Number.isInteger(x) !== true)
+        if (usageErrors.length > 0) throw new Error('usage values must be numbers');
+
+        let scrnMins = Object.values(users[u].screenTime[d]['usage']).filter(x => Number.isInteger(x)).reduce(reducer);
+        if (scrnMins > scrnLimit) sqEyes.push(users[u].username);
+        break;
+      }
+    }
+  }
+  return sqEyes;
 };
 
 /**
