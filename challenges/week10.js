@@ -19,11 +19,31 @@ const sumDigits = (n, extraParam) => {
  * @param {Number} end
  * @param {Number} step
  */
-const createRange = (start, end, step) => {
-  if (start === undefined) throw new Error("start is required");
-  if (end === undefined) throw new Error("end is required");
+const createRange = (start, end, step, extraParam) => {
+  if (Number.isInteger(start) !== true) throw new Error("number start is required");
+  if (Number.isInteger(end) !== true) throw new Error("number end is required");
+  if (Number.isInteger(step) !== true && step !== undefined) throw new Error('step must be number if present');
 
-// for loop let i = start, i < end , step 1 : i?
+  if (extraParam !== undefined) throw new Error('too many parameters');
+
+  let arr = [];
+
+  step = step || 1;
+
+  if (start > end) {
+    for (let i = start; i >= end; i = i - step) {
+      arr.push(i);
+    }
+  }
+  else {
+    for (let i = start; i <= end; i = i + step) {
+      arr.push(i);
+    }
+  }
+
+  if(arr[arr.length - 1] !== end) throw new Error('impossible step amount used');
+  
+  return arr;
 };
 
 /**
