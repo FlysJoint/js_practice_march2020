@@ -389,12 +389,270 @@ describe('hexToRGB', () => {
         expect(() => hexToRGB()).toThrow();
     });
 
+    test('throws if too many parameters', () => {
+        expect(() => hexToRGB('#FF1133', 1)).toThrow();
+        expect(() => hexToRGB('#FF1133', 'e')).toThrow();
+        expect(() => hexToRGB('#FF1133', true)).toThrow();
+        expect(() => hexToRGB('#FF1133', null)).toThrow();
+        expect(() => hexToRGB('#FF1133', ['FF', 13, 15])).toThrow();
+        expect(() => hexToRGB('#FF1133', { num: 45 })).toThrow();
+        expect(() => hexToRGB('#FF1133', undefined)).not.toThrow();
+    });
+
+    test('throws if argument not a string', () => {
+        expect(() => hexToRGB(1)).toThrow();
+        expect(() => hexToRGB(undefined)).toThrow();
+        expect(() => hexToRGB(true)).toThrow();
+        expect(() => hexToRGB(null)).toThrow();
+        expect(() => hexToRGB([16, 45, 37])).toThrow();
+        expect(() => hexToRGB({hex: '#FF1133'})).toThrow();
+    });
+
+    test('throws if argument not correctly formatted', () => {
+        expect(() => hexToRGB('#FF#133')).toThrow();
+        expect(() => hexToRGB('#FF1G33')).toThrow();
+        expect(() => hexToRGB('FF1133')).toThrow();
+        expect(() => hexToRGB('#-1F1133')).toThrow();
+        expect(() => hexToRGB('#FF113368')).toThrow();
+        expect(() => hexToRGB('# FF 11 33')).toThrow();
+        expect(() => hexToRGB('#ff1133')).toThrow();
+    });
+
+    test('returns the hex in rbg', () => {
+        expect(hexToRGB('#FF1133')).toBe("rgb(255,17,51)");
+        expect(hexToRGB('#01DC17')).toBe("rgb(1,220,23)");
+        expect(hexToRGB('#C54D7B')).toBe("rgb(197,77,123)");
+    });
+
 });
 
 describe('findWinner', () => {
 
     test('throw if no parameters', () => {
         expect(() => findWinner()).toThrow();
+    });
+
+    const board = [
+                    ["0", "X", null],
+                    ["0", null, "X"],
+                    ["0", null, "X"]
+    ];
+
+    test('throw if too many parameters', () => {
+        expect(() => findWinner(board, 1)).toThrow();
+        expect(() => findWinner(board, '1')).toThrow();
+        expect(() => findWinner(board, null)).toThrow();
+        expect(() => findWinner(board, true)).toThrow();
+        expect(() => findWinner(board, [3,4,4])).toThrow();
+        expect(() => findWinner(board, {winner: 'X'})).toThrow();
+        expect(() => findWinner(board, undefined)).not.toThrow();
+    });
+
+    test('throw if board not an array', () => {
+        expect(() => findWinner(1)).toThrow();
+        expect(() => findWinner('1')).toThrow();
+        expect(() => findWinner(null)).toThrow();
+        expect(() => findWinner(true)).toThrow();
+        expect(() => findWinner({winner: 'X'})).toThrow();
+        expect(() => findWinner(undefined)).toThrow();
+    });
+
+    const board2 = [
+                    ["X", "0", null],
+                    ["X", null, "0"]
+    ];
+
+    const board4 = [
+                    ["X", "0", null],
+                    ["X", "0", null],
+                    ["X", "0", null],
+                    ["X", null, "0"]
+    ];
+
+    test('throw if board does not contain 3 elements', () => {
+        expect(() => findWinner(board2)).toThrow();
+        expect(() => findWinner(board4)).toThrow();
+    });
+
+    const board5 = [
+                    ["X", "0", null],
+                    "X",
+                    ["X", "0", null]
+    ];
+
+    const board6 = [
+                    ["X", "0", null],
+                    [null, "X"],
+                    null
+    ];
+
+    test('throw if board elements are not all arrays', () => {
+        expect(() => findWinner(board5)).toThrow();
+        expect(() => findWinner(board6)).toThrow();
+    });
+
+    const board7 = [
+                    ["X", "0", null],
+                    ["X", "0", null, "X"],
+                    ["X", "0", null]
+    ];
+
+    const board8 = [
+                    ["X", "0", null],
+                    [null, "X"],
+                    ["X", "0", null]
+    ];
+
+    test('throw if board sub arrays do not contain 3 elements', () => {
+        expect(() => findWinner(board7)).toThrow();
+        expect(() => findWinner(board8)).toThrow();
+    });
+
+    const board9 = [
+                    ["X", "0", null],
+                    ["0", null, "X"],
+                    ["X", "5", null]
+    ];
+
+    const board10 = [
+                    ["X", "0", null],
+                    ["0", undefined, "X"],
+                    ["X", "0", null]
+    ];
+
+    const board11 = [
+                    ["X", "0", null],
+                    ["0", 0, "X"],
+                    ["X", "X", null]
+    ];
+
+    const board12 = [
+                    ["X", "0", null],
+                    ["0", 0, "X"],
+                    ["X", "0X", null]
+    ];
+
+    test('throw if board sub arrays elements are not "X", "0" or null', () => {
+        expect(() => findWinner(board9)).toThrow();
+        expect(() => findWinner(board10)).toThrow();
+        expect(() => findWinner(board11)).toThrow();
+        expect(() => findWinner(board12)).toThrow();
+    });
+
+    const board13 = [
+                    ["X", "0", null],
+                    ["0", "X", "X"],
+                    ["X", "X", null]
+    ];
+
+    const board14 = [
+                    ["0", "0", null],
+                    ["0", "0", "X"],
+                    ["X", "X", "0"]
+    ];
+
+    test('throw if the board has too many Xs or 0s', () => {
+        expect(() => findWinner(board13)).toThrow();
+        expect(() => findWinner(board14)).toThrow();
+    });
+
+    const board16 = [
+                    ["X", "0", null],
+                    ["X", "0", null],
+                    ["X", "0", null]
+    ];
+
+    test('throw if the board has more than one winner', () => {
+        expect(() => findWinner(board16)).toThrow();
+    });
+
+    const board17 = [
+                    ["0", "0", null],
+                    ["0", "X", "X"],
+                    ["0", "X", "X"]
+    ];
+
+    const board18 = [
+                    ["0", "X", null],
+                    ["0", "X", "X"],
+                    [null, "X", "0"]
+    ];
+
+    const board19 = [
+                    ["0", "0", "X"],
+                    ["0", "X", "X"],
+                    [null, "0", "X"]
+    ];
+
+    test('returns the winner of a vertical win', () => {
+        expect(findWinner(board17)).toBe('0');
+        expect(findWinner(board18)).toBe('X');
+        expect(findWinner(board19)).toBe('X');
+    });
+
+    const board20 = [
+                    ["0", "0", "0"],
+                    [null, "X", "X"],
+                    ["0", "X", "X"]
+    ];
+
+    const board21 = [
+                    ["0", "X", null],
+                    ["X", "X", "X"],
+                    [null, "0", "0"]
+    ];
+
+    const board22 = [
+                    ["0", "0", "X"],
+                    ["0", null, "0"],
+                    ["X", "X", "X"]
+    ];
+
+    test('returns the winner of a horizontal win', () => {
+        expect(findWinner(board20)).toBe('0');
+        expect(findWinner(board21)).toBe('X');
+        expect(findWinner(board22)).toBe('X');
+    });
+
+    const board23 = [
+                    ["0", "X", null],
+                    ["X", "0", "X"],
+                    [null, "0", "0"]
+    ];
+
+    const board24 = [
+                    ["0", "0", "X"],
+                    ["0", "X", "0"],
+                    ["X", "0", "X"]
+    ];
+
+    test('returns the winner of a diagonal win', () => {
+        expect(findWinner(board23)).toBe('0');
+        expect(findWinner(board24)).toBe('X');
+    });
+
+    const board25 = [
+                    ["0", "0", "X"],
+                    [null, null, "0"],
+                    ["X", "0", "X"]
+    ];
+
+    const board26 = [
+                    ["0", "0", "X"],
+                    ["0", null, "0"],
+                    ["X", null, "X"]
+    ];
+
+    const board27 = [
+                    ["0", "X", null],
+                    ["0", null, "X"],
+                    [null, "X", "0"]
+    ];
+
+    test('returns null if no winner', () => {
+        expect(findWinner(board25)).toBe(null);
+        expect(findWinner(board26)).toBe(null);
+        expect(findWinner(board27)).toBe(null);
     });
 
 });

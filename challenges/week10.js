@@ -124,8 +124,41 @@ const getScreentimeAlertList = (users, date, extraParam) => {
  * Hint: You will need to convert each hexadecimal value for R, G and B into its decimal equivalent!
  * @param {String} str
  */
-const hexToRGB = hexStr => {
+const hexToRGB = (hexStr, extraParam) => {
   if (hexStr === undefined) throw new Error("hexStr is required");
+  if (extraParam !== undefined) throw new Error('too many parameters');
+  if (/^#([\dA-F]){6}$/.test(hexStr) === false) throw new Error('invalid hex code'); // as the format was defined without mention of lowercase, lowercase is classed as invalid
+
+  let hex = hexStr.split('');
+  let rgb = [];
+
+  for (let i = 1; i < hex.length; i++) {
+
+    switch (hex[i]) {
+      case 'A':
+        rgb.push(10);
+        break;
+      case 'B':
+        rgb.push(11);
+        break;
+      case 'C':
+        rgb.push(12);
+        break;
+      case 'D':
+        rgb.push(13);
+        break;
+      case 'E':
+        rgb.push(14);
+        break;
+      case 'F':
+        rgb.push(15);
+        break;
+      default:
+        rgb.push(parseInt(hex[i]));
+        break;
+    }
+  }
+  return `rgb(${rgb[0] * 16 + rgb[1]},${rgb[2] * 16 + rgb[3]},${rgb[4] * 16 + rgb[5]})`;
 };
 
 /**
@@ -138,8 +171,46 @@ const hexToRGB = hexStr => {
  * The function should return "X" if player X has won, "0" if the player 0 has won, and null if there is currently no winner.
  * @param {Array} board
  */
-const findWinner = board => {
-  if (board === undefined) throw new Error("board is required");
+const findWinner = (board, extraParam) => {
+  if (Array.isArray(board) !== true) throw new Error("array board is required");
+  if (extraParam !== undefined) throw new Error('too many arguments');
+
+  if (board.length !== 3) throw new Error('board array should have 3 elements');
+
+  let noughts = 0;
+  let crosses = 0;
+
+  for (let i = 0; i < board.length; i++) {
+    if (Array.isArray(board[i]) !== true) throw new Error('board elements must be arrays');
+    if (board[i].length !== 3) throw new Error('board sub arrays must have 3 elements');
+
+    for (let j = 0; j < 3; j++) {
+
+      if (board[i][j] === "X") crosses++;
+      else if (board[i][j] === "0") noughts++;
+      else if (board[i][j] !== null) throw new Error('invalid board character');
+    }
+  }
+
+  if (noughts > crosses + 1) throw new Error('Noughts has been cheating!');
+  else if (crosses > noughts + 1) throw new Error('Crosses has been cheating!');
+
+  let winner = '';
+
+  if (board[0][0] + board[1][0] + board[2][0] === 'XXX' || board[0][0] + board[1][0] + board[2][0] === '000') winner += board[0][0]; // column 1 win
+  if (board[0][1] + board[1][1] + board[2][1] === 'XXX' || board[0][1] + board[1][1] + board[2][1] === '000') winner += board[0][1]; // column 2 win
+  if (board[0][2] + board[1][2] + board[2][2] === 'XXX' || board[0][2] + board[1][2] + board[2][2] === '000') winner += board[0][2]; // column 3 win
+
+  if (board[0][0] + board[0][1] + board[0][2] === 'XXX' || board[0][0] + board[0][1] + board[0][2] === '000') winner += board[0][0]; // top row win
+  if (board[1][0] + board[1][1] + board[1][2] === 'XXX' || board[1][0] + board[1][1] + board[1][2] === '000') winner += board[1][0]; // middle row win
+  if (board[2][0] + board[2][1] + board[2][2] === 'XXX' || board[2][0] + board[2][1] + board[2][2] === '000') winner += board[2][0]; // bottom row win
+
+  if (board[0][0] + board[1][1] + board[2][2] === 'XXX' || board[0][0] + board[1][1] + board[2][2] === '000') winner += board[1][1]; // top row win
+  if (board[0][2] + board[1][1] + board[2][0] === 'XXX' || board[0][2] + board[1][1] + board[2][0] === '000') winner += board[1][1]; // middle row win
+
+  if (winner.includes('X') && winner.includes('0')) throw new Error('invalid board: 2 winners');
+
+  return winner.length === 0 ? null : winner;
 };
 
 module.exports = {
